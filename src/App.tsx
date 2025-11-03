@@ -4,7 +4,7 @@ import Auth from "./pages/Home";
 function App() {
   return (
     <>
-      <Auth/>
+      <Auth />
     </>
   );
 }
