@@ -22,8 +22,8 @@ export default function Navbar() {
           </svg>
         </div>
         <h1 className="text-2xl tracking-tight font-bold text-center">
-            ride<span className="text-sky-500 ">Able</span>
-         </h1>
+          ride<span className="text-sky-500 ">Able</span>
+        </h1>
       </div>
 
       <div className="flex items-center gap-4">

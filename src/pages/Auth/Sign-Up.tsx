@@ -1,11 +1,10 @@
-import  { useState } from "react";
+import { useState } from "react";
 import Button from "../../components/Button";
 import InputField from "../../components/Input";
 import { apiRequest } from "../../utils/api/api";
 import { motion } from "framer-motion";
-import {BigIcon} from "../../components/React_Icons/Accessible";
+import { BigIcon } from "../../components/React_Icons/Accessible";
 import { Link } from "react-router-dom";
-
 
 export default function Signup() {
   const [form, setForm] = useState({
@@ -20,12 +19,12 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const handleChange = (e) => {
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSignup = async (e) => {
+  const handleSignup = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
@@ -34,7 +33,11 @@ export default function Signup() {
       await apiRequest("/auth/signup", "POST", form);
       setMessage("Account created successfully! You can now log in.");
     } catch (err) {
-      setMessage(err.message);
+        if (err instanceof Error) {
+    setMessage(err.message);
+  } else {
+    setMessage("An unknown error occurred");
+  }
     } finally {
       setLoading(false);
     }
@@ -64,11 +67,9 @@ export default function Signup() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.6 }}
             className="w-100 mx-auto mt-4 opacity-90"
-            > 
-            <BigIcon/>
+          >
+            <BigIcon />
           </motion.div>
-         
-
         </div>
       </motion.div>
 
@@ -93,42 +94,67 @@ export default function Signup() {
               Sign up to book accessible rides effortlessly.
             </p>
           </motion.div>
-              <InputField label="Full Name" name="name" type="text" value={form.name} onChange={handleChange} required />
-              <InputField label="Phone Number" name="phone" type="tel" value={form.phone} onChange={handleChange} required />
-              <InputField label="Email" name="email" type="email" value={form.email} onChange={handleChange} required />
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Disability Type</label>
-                <select
-                  name="disabilityType"
-                  value={form.disabilityType}
-                  onChange={handleChange}
-                  className="w-full border rounded-lg px-3 py-2 mt-1 focus:ring-sky-500 focus:border-sky-500"
-                >
-                  <option value="" disabled>Select option</option>
-                  <option value="Sensory">Sensory</option>
-                  <option value="Mobility">Mobility</option>
-                  <option value="Others">Others</option>
-                </select>
-              </div>
+          <InputField
+            label="Full Name"
+            name="name"
+            type="text"
+            value={form.name}
+            onChange={handleChange}
+            required
+          />
+          <InputField
+            label="Phone Number"
+            name="phone"
+            type="tel"
+            value={form.phone}
+            onChange={handleChange}
+            required
+          />
+          <InputField
+            label="Email"
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Disability Type
+            </label>
+            <select
+              name="disabilityType"
+              value={form.disabilityType}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2 mt-1 focus:ring-sky-500 focus:border-sky-500"
+            >
+              <option value="" disabled>
+                Select option
+              </option>
+              <option value="Sensory">Sensory</option>
+              <option value="Mobility">Mobility</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
 
-              <InputField
-                label="Accessibility Needs (optional)"
-                name="accessibilityNeeds"
-                type="text"
-                value={form.accessibilityNeeds}
-                onChange={handleChange}
-                placeholder="Describe any specific needs"
-              />
+          <InputField
+            label="Accessibility Needs (optional)"
+            name="accessibilityNeeds"
+            type="text"
+            value={form.accessibilityNeeds}
+            onChange={handleChange}
+            placeholder="Describe any specific needs"
+          />
 
-              <InputField
-                label="Password"
-                name="password"
-                type="password"
-                value={form.password}
-                onChange={handleChange}
-                required
-              />
-            {/* </div> */}
+          <InputField
+            label="Password"
+            name="password"
+            type="password"
+            value={form.password}
+            onChange={handleChange}
+            required
+          />
+          {/* </div> */}
           {/* </div> */}
 
           <div className="pt-4">
@@ -136,7 +162,7 @@ export default function Signup() {
               Sign Up
             </Button>
           </div>
-            {message && (
+          {message && (
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -148,7 +174,9 @@ export default function Signup() {
 
           <p className="text-center text-sm text-gray-500">
             Already have an account?{" "}
-            <Link to="/auth/login" className="text-sky-500 hover:underline">Log in</Link>
+            <Link to="/auth/login" className="text-sky-500 hover:underline">
+              Log in
+            </Link>
           </p>
         </form>
       </motion.div>

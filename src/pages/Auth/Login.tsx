@@ -5,15 +5,18 @@ import InputField from "../../components/Input";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { AccessIcon } from "../../components/React_Icons/Accessible";
+import { useNavigate } from "react-router-dom";
+import type { LoginProps } from "../../assets/types";
 
-
-export default function Login({ onAuthSuccess }) {
+export default function Login({ onAuthSuccess }:LoginProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const handleLogin = async (e) => {
+  const navigate = useNavigate()
+
+  const handleLogin = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
@@ -21,9 +24,15 @@ export default function Login({ onAuthSuccess }) {
     try {
       const data = await apiRequest("/auth/login", "POST", { email, password });
       setMessage("Login successful!");
-      onAuthSuccess?.(data); 
+      onAuthSuccess?.(data);
+
+      navigate("/dashboard")
     } catch (err) {
-      setMessage(err.message);
+        if (err instanceof Error) {
+    setMessage(err.message);
+  } else {
+    setMessage("An unknown error occurred");
+  }
     } finally {
       setLoading(false);
     }
@@ -35,10 +44,12 @@ export default function Login({ onAuthSuccess }) {
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="flex items-center justify-center bg-gray-50 px-6 py-10 overflow-y-auto">
+        className="flex items-center justify-center bg-gray-50 px-6 py-10 overflow-y-auto"
+      >
         <form
           onSubmit={handleLogin}
-          className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md space-y-6">
+          className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md space-y-6"
+        >
           <div className="text-center space-y-1">
             <h2 className="text-2xl font-bold text-sky-600">Welcome Back</h2>
             <p className="text-gray-500">Log in to your rideAble account</p>
@@ -90,13 +101,12 @@ export default function Login({ onAuthSuccess }) {
 
           <p className="text-center text-sm text-gray-500">
             Don’t have an account?{" "}
-            <Link to='/auth/signup' className="text-sky-500 hover:underline">
+            <Link to="/auth/signup" className="text-sky-500 hover:underline">
               Sign Up
             </Link>
           </p>
         </form>
       </motion.div>
-
 
       <motion.div
         initial={{ opacity: 0, x: -50 }}
@@ -111,16 +121,18 @@ export default function Login({ onAuthSuccess }) {
             transition={{ delay: 0.5 }}
             className="text-lg leading-relaxed"
           >
-            Accessibility made simple — log in to continue your rideAble journey.
+            Accessibility made simple — log in to continue your rideAble
+            journey.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.6 }}
-            className="w-60 mx-auto mt-4 opacity-90">
-            <AccessIcon/>
-        </motion.div>
+            className="w-60 mx-auto mt-4 opacity-90"
+          >
+            <AccessIcon />
+          </motion.div>
         </div>
       </motion.div>
     </div>
