@@ -2,73 +2,127 @@ import { useState } from "react";
 import Button from "../../components/Button";
 import { apiRequest } from "../../utils/api/api";
 import InputField from "../../components/Input";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { AccessIcon } from "../../components/React_Icons/Accessible";
 
-// export default function Login({ onAuthSuccess }) {
-export default function Login() {
+
+export default function Login({ onAuthSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
+    setMessage("");
 
     try {
       const data = await apiRequest("/auth/login", "POST", { email, password });
-      localStorage.setItem("authToken", data.access_token);
-      console.log(data)
-    //   onAuthSuccess?.(data.pax);
+      setMessage("Login successful!");
+      onAuthSuccess?.(data); 
     } catch (err) {
-      setError(err.message);
+      setMessage(err.message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div 
-    className=" flex  justify-center px-4"
-    >
-      <form
-        onSubmit={handleLogin}
-        className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md space-y-6"
+    <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
+      <motion.div
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="flex items-center justify-center bg-gray-50 px-6 py-10 overflow-y-auto">
+        <form
+          onSubmit={handleLogin}
+          className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md space-y-6">
+          <div className="text-center space-y-1">
+            <h2 className="text-2xl font-bold text-sky-600">Welcome Back</h2>
+            <p className="text-gray-500">Log in to your rideAble account</p>
+          </div>
+
+          {message && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center text-sm text-sky-500"
+            >
+              {message}
+            </motion.p>
+          )}
+
+          <div className="space-y-4">
+            <InputField
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+
+            <div className="space-y-1">
+              <InputField
+                label="Password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <div className="text-right">
+                <a
+                  href="/forgot-password"
+                  className="text-sm text-sky-500 hover:text-sky-600 hover:underline"
+                >
+                  Forgot password?
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-4">
+            <Button type="submit" size="md" loading={loading}>
+              Log In
+            </Button>
+          </div>
+
+          <p className="text-center text-sm text-gray-500">
+            Don’t have an account?{" "}
+            <Link to='/auth/signup' className="text-sky-500 hover:underline">
+              Sign Up
+            </Link>
+          </p>
+        </form>
+      </motion.div>
+
+
+      <motion.div
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="hidden md:flex flex-col justify-center bg-linear-to-br from-sky-300 to-sky-900 text-white p-10 sticky top-0 h-screen"
       >
-        <h2 className="text-2xl font-bold text-center text-sky-600">
-          Welcome Back
-        </h2>
-        <p className="text-gray-500 text-center">Log in to your rideAble account</p>
+        <div className="text-center space-y-6 max-w-sm mx-auto">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="text-lg leading-relaxed"
+          >
+            Accessibility made simple — log in to continue your rideAble journey.
+          </motion.p>
 
-        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-
-        <div>
-          <InputField label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}  required  />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.6 }}
+            className="w-60 mx-auto mt-4 opacity-90">
+            <AccessIcon/>
+        </motion.div>
         </div>
-
-        <div>
-          <InputField label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}  required />
-        </div>
-
-          <div className="text-right">
-    <a
-      href="/forgot-password"
-      className="text-sm text-sky-500 hover:text-sky-600 hover:underline"
-    >
-      Forgot password?
-    </a>
-  </div>
-        <Button variant="primary" type="submit" size="sm" loading={loading}>
-          Log In
-        </Button>
-
-        <p className="text-center text-sm text-gray-500">
-          Don’t have an account?{" "}
-          <a href="/signup" className="text-sky-500 hover:underline">
-            Sign up
-          </a>
-        </p>
-      </form>
+      </motion.div>
     </div>
   );
 }

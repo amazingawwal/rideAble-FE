@@ -1,13 +1,13 @@
 export type InputType = {
-    label? : string
-    type? : string
-    value? : string
-    onChange? : (e)=>void
-    placeholder ?: string
-    required? : boolean
-    name?: string
-    error?: string
-}
+  label?: string;
+  type?: string;
+  value?: string;
+  onChange?: (e) => void;
+  placeholder?: string;
+  required?: boolean;
+  name?: string;
+  error?: string;
+};
 
 export default function InputField({
   label,
@@ -19,7 +19,6 @@ export default function InputField({
   name,
   error = "",
 }: InputType) {
-
   const inputId = name || label?.toLowerCase().replace(/\s+/g, "-");
 
   return (
@@ -41,7 +40,7 @@ export default function InputField({
         placeholder={placeholder}
         required={required}
         className={`w-full border rounded-lg px-3 py-2 mt-1 focus:ring-sky-500 focus:border-sky-500 ${
-          error ? "border-red-500" : "border-gray-300"
+          error ? "border-red-500" : "border"
         }`}
       />
       {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
