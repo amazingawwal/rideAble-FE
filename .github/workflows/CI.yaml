@@ -12,8 +12,8 @@ jobs:
 
     env:
       NODE_ENV: production
-      VITE_API_URL: https://api.rideable.com 
-      JWT_SECRET: dummyjwtsecret 
+      VITE_API_URL: https://api.rideable.com
+      JWT_SECRET: dummyjwtsecret
 
     steps:
       - name: Checkout repository

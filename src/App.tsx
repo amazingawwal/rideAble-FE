@@ -10,24 +10,34 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./utils/ProtectedRoute";
 
 function App() {
-  const [user, setUser] = useState<PassengerData | null>(null)
+  const [user, setUser] = useState<PassengerData | null>(null);
 
-  const handleAuthSuccess = (data:PassengerData)=>{
-    localStorage.setItem('token', data.access_token)
-    console.log(data)
-    setUser(data.pax.name);
-  }
+  const handleAuthSuccess = (data: PassengerData) => {
+    localStorage.setItem("token", data.access_token);
+    console.log(data);
+    setUser(data);
+  };
 
-  
   return (
     <>
       <BrowserRouter>
-        <Navbar />
+        <Navbar user={user} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/auth/login" element={<Login onAuthSuccess={handleAuthSuccess} />} />
+          <Route
+            path="/auth/login"
+            element={<Login onAuthSuccess={handleAuthSuccess} />}
+          />
           <Route path="/auth/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<ProtectedRoute> <Dashboard user={user}/></ProtectedRoute>} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                {" "}
+                <Dashboard user={user} />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>

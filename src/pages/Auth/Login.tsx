@@ -8,31 +8,31 @@ import { AccessIcon } from "../../components/React_Icons/Accessible";
 import { useNavigate } from "react-router-dom";
 import type { LoginProps } from "../../assets/types";
 
-export default function Login({ onAuthSuccess }:LoginProps) {
+export default function Login({ onAuthSuccess }: LoginProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const handleLogin = async (e:React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
 
     try {
-      const data = await apiRequest("/auth/login", "POST", { email, password });
+      const data = await apiRequest("/auth/login", "POST", {email, password});
       setMessage("Login successful!");
       onAuthSuccess?.(data);
 
-      navigate("/dashboard")
+      navigate("/dashboard");
     } catch (err) {
-        if (err instanceof Error) {
-    setMessage(err.message);
-  } else {
-    setMessage("An unknown error occurred");
-  }
+      if (err instanceof Error) {
+        setMessage(err.message);
+      } else {
+        setMessage("An unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }
@@ -59,7 +59,7 @@ export default function Login({ onAuthSuccess }:LoginProps) {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center text-sm text-sky-500"
+              className="text-center text-sm text-red-500"
             >
               {message}
             </motion.p>

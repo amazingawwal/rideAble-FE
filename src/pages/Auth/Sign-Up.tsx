@@ -5,9 +5,10 @@ import { apiRequest } from "../../utils/api/api";
 import { motion } from "framer-motion";
 import { BigIcon } from "../../components/React_Icons/Accessible";
 import { Link } from "react-router-dom";
+import type { Pax } from "../../assets/types";
 
 export default function Signup() {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<Pax>({
     name: "",
     phone: "",
     email: "",
@@ -19,25 +20,27 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const handleChange = (e:React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSignup = async (e:React.FormEvent<HTMLFormElement>) => {
+  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
 
     try {
-      await apiRequest("/auth/signup", "POST", form);
+      await apiRequest("/passenger/signup", "POST", form);
       setMessage("Account created successfully! You can now log in.");
     } catch (err) {
-        if (err instanceof Error) {
-    setMessage(err.message);
-  } else {
-    setMessage("An unknown error occurred");
-  }
+      if (err instanceof Error) {
+        setMessage(err.message);
+      } else {
+        setMessage("An unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }
@@ -166,9 +169,8 @@ export default function Signup() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center text-sm text-red-500"
             >
-              {message}
+              {message === "Account created successfully! You can now log in."? <p className="text-center text-md text-green-500">{message}</p>: <p className="text-center text-sm text-red-500">{message}</p>}
             </motion.p>
           )}
 
