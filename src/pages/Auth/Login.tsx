@@ -26,7 +26,6 @@ export default function Login({ onAuthSuccess }: LoginProps) {
       setMessage("Login successful!");
       onAuthSuccess?.(data);
       navigate("/dashboard");
-
     } catch (err) {
       if (err instanceof Error) {
         setMessage(err.message);
@@ -95,7 +94,7 @@ export default function Login({ onAuthSuccess }: LoginProps) {
 
           <div className="pt-4">
             <Button type="submit" size="md" loading={loading}>
-              {loading?<p>Logging in...</p>: <p>Log in</p>}
+              {loading ? <p>Logging in...</p> : <p>Log in</p>}
             </Button>
           </div>
 

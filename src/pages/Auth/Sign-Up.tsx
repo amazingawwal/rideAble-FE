@@ -162,7 +162,7 @@ export default function Signup() {
 
           <div className="pt-4">
             <Button type="submit" size="md" loading={loading}>
-              {loading?<p>Creating your account </p>: <p>Sign up</p>}
+              {loading ? <p>Creating your account </p> : <p>Sign up</p>}
             </Button>
           </div>
           {message && (
