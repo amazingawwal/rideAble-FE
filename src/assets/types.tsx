@@ -37,5 +37,6 @@ export type UserProps = {
 };
 
 export type ProtectedRouteProps = {
+  loading?: boolean;
   children: React.ReactNode;
 };
