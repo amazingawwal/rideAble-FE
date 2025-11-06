@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: |
           export HUSKY=0
-          npm ci
+          npm install
       - name: Run ESLint
         run: npm run lint --if-present
 
