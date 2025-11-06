@@ -12,8 +12,8 @@ jobs:
 
     env:
       NODE_ENV: production
-      VITE_API_URL: https://api.rideable.com #  backend URL
-      JWT_SECRET: dummyjwtsecret # placeholder
+      VITE_API_URL: https://api.rideable.com
+      JWT_SECRET: dummyjwtsecret
 
     steps:
       - name: Checkout repository
@@ -26,9 +26,9 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
-        env:
-          HUSKY: 0
+        run: |
+          export HUSKY=0
+          npm install
       - name: Run ESLint
         run: npm run lint --if-present
 
