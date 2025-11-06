@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import type { UserProps } from "../assets/types";
 
- const Dashboard: React.FC<UserProps> = ( {user})=> {
+const Dashboard: React.FC<UserProps> = ({ user }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -24,7 +24,6 @@ import type { UserProps } from "../assets/types";
       </div>
     </div>
   );
-}
-
+};
 
 export default Dashboard;

@@ -22,7 +22,7 @@ export default function Login({ onAuthSuccess }: LoginProps) {
     setMessage("");
 
     try {
-      const data = await apiRequest("/auth/login", "POST", {email, password});
+      const data = await apiRequest("/auth/login", "POST", { email, password });
       setMessage("Login successful!");
       onAuthSuccess?.(data);
 

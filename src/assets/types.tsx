@@ -1,4 +1,9 @@
-export type DisabilityType = ""| "Select option" | "Mobility" | "Sensory" | "Others";
+export type DisabilityType =
+  | ""
+  | "Select option"
+  | "Mobility"
+  | "Sensory"
+  | "Others";
 
 export type Pax = {
   name?: string;
@@ -6,7 +11,7 @@ export type Pax = {
   email: string;
   disabilityType?: DisabilityType;
   accessibilityNeeds?: string;
-  password: string
+  password: string;
 };
 
 export type PassengerData = {
@@ -20,14 +25,12 @@ export type LoginProps = {
 
 export type HeadersType = {
   "Content-Type": string;
-  "Authorization"?: string;
+  Authorization?: string;
 };
 
-
 export type Mat_Symbol = {
-    children : string
-}
-
+  children: string;
+};
 
 export type UserProps = {
   user: PassengerData | null;

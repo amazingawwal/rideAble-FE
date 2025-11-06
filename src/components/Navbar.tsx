@@ -1,9 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import type { PassengerData } from "../assets/types";
 
-export default function Navbar({user}: {
-  user: PassengerData | null;
-}) {
+export default function Navbar({ user }: { user: PassengerData | null }) {
   const navigate = useNavigate();
 
   return (
@@ -30,14 +28,18 @@ export default function Navbar({user}: {
       </div>
 
       <div className="flex items-center gap-4">
-        {user? <h1 className="text-2xl font-light text-sky-600">
-          Welcome, {user?.pax.name || "User"}!
-        </h1>:<button
-          onClick={() => navigate("/driver/login")}
-          className="px-4 py-2 rounded-b-lg border border-sky-500 text-sky-600 font-medium hover:bg-sky-100 transition"
-        >
-          Driver
-        </button>}
+        {user ? (
+          <h1 className="text-2xl font-light text-sky-600">
+            Welcome, {user?.pax.name || "User"}!
+          </h1>
+        ) : (
+          <button
+            onClick={() => navigate("/driver/login")}
+            className="px-4 py-2 rounded-b-lg border border-sky-500 text-sky-600 font-medium hover:bg-sky-100 transition"
+          >
+            Driver
+          </button>
+        )}
       </div>
     </header>
   );

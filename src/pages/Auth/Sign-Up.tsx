@@ -166,11 +166,13 @@ export default function Signup() {
             </Button>
           </div>
           {message && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              {message === "Account created successfully! You can now log in."? <p className="text-center text-md text-green-500">{message}</p>: <p className="text-center text-sm text-red-500">{message}</p>}
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              {message ===
+              "Account created successfully! You can now log in." ? (
+                <p className="text-center text-md text-green-500">{message}</p>
+              ) : (
+                <p className="text-center text-sm text-red-500">{message}</p>
+              )}
             </motion.p>
           )}
 

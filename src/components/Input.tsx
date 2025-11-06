@@ -2,7 +2,7 @@ export type InputType = {
   label?: string;
   type?: string;
   value?: string;
-  onChange?: (e:React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   required?: boolean;
   name?: string;
