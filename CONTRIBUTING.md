@@ -1,34 +1,37 @@
-
----
 # Contributing to RideAble FE
 
 Thank you for your interest in contributing to **RideAble FE**!  
 We love contributions from the community — whether it's fixing bugs, improving docs, or building new features.
 
-##  Getting Started
+## Getting Started
 
-1. **Fork** the repository  
+1. **Fork** the repository
 2. **Clone** your fork:
 
    ```bash
    git clone https://github.com/<your-username>/rideAble-FE.git
    cd rideAble-FE
 
+   ```
 
 3. **Install** dependencies:
 
-   ```bash 
+   ```bash
    npm install
- 
+
+   ```
 
 4. Create a new branch:
-   ```bash 
+
+   ```bash
    git checkout -b feat/free-ride-service
 
+   ```
 
 5. Run the app:
-   ```bash 
+   ```bash
    npm run dev
+   ```
 
 # Coding Guidelines
 
@@ -45,17 +48,17 @@ We love contributions from the community — whether it's fixing bugs, improving
 ## Lint & Format
 
 Run linters before pushing:
-   ```bash 
-   npm run lint
-   npm run format
-   ```
+
+```bash
+npm run lint
+npm run format
+```
 
 ## Commit Guidelines
 
 Follow Conventional Commit Messages for clarity:
 
 <type>(scope): description
-
 
 Examples:
 
@@ -83,7 +86,6 @@ Examples:
 
 **Your PR will be reviewed — feedback is friendly and constructive**
 
-
 # Deployment Notes
 
 - Builds are handled by Vite.
@@ -97,8 +99,8 @@ Examples:
 Please treat everyone with respect and kindness.
 We follow the Contributor Covenant in all community interactions.
 
-
 # Thanks
+
 Every contribution makes RideAble better.
 Thank you for your time, effort, and ideas!
 
