@@ -5,6 +5,7 @@ import { apiRequest } from "../../utils/api/api";
 import { motion } from "framer-motion";
 import { BigIcon } from "../../components/React_Icons/Accessible";
 import { Link } from "react-router-dom";
+import Spinner from "../../utils/Spinner";
 import type { Pax } from "../../assets/types";
 
 export default function Signup() {
@@ -141,7 +142,7 @@ export default function Signup() {
           </div>
 
           <InputField
-            label="Accessibility Needs (optional)"
+            label="Accessibility Needs"
             name="accessibilityNeeds"
             type="text"
             value={form.accessibilityNeeds}
@@ -162,7 +163,14 @@ export default function Signup() {
 
           <div className="pt-4">
             <Button type="submit" size="md" loading={loading}>
-              {loading ? <p>Creating your account </p> : <p>Sign up</p>}
+              {loading ? (
+            <div className="flex items-center justify-center gap-2">
+              <Spinner />
+              <span>Creating your account...</span>
+            </div>
+          ) : (
+            "Sign up"
+          )}
             </Button>
           </div>
           {message && (
