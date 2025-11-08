@@ -96,13 +96,13 @@ export default function Login({ onAuthSuccess }: LoginProps) {
           <div className="pt-4">
             <Button type="submit" size="md" loading={loading}>
               {loading ? (
-            <div className="flex items-center justify-center gap-2">
-              <Spinner />
-              <span>Logging in...</span>
-            </div>
-          ) : (
-            "Login"
-          )}
+                <div className="flex items-center justify-center gap-2">
+                  <Spinner />
+                  <span>Logging in...</span>
+                </div>
+              ) : (
+                "Login"
+              )}
             </Button>
           </div>
 

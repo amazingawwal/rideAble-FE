@@ -158,19 +158,17 @@ export default function Signup() {
             onChange={handleChange}
             required
           />
-          {/* </div> */}
-          {/* </div> */}
 
           <div className="pt-4">
             <Button type="submit" size="md" loading={loading}>
               {loading ? (
-            <div className="flex items-center justify-center gap-2">
-              <Spinner />
-              <span>Creating your account...</span>
-            </div>
-          ) : (
-            "Sign up"
-          )}
+                <div className="flex items-center justify-center gap-2">
+                  <Spinner />
+                  <span>Creating your account...</span>
+                </div>
+              ) : (
+                "Sign up"
+              )}
             </Button>
           </div>
           {message && (
