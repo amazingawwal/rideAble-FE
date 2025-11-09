@@ -24,9 +24,8 @@ function App() {
     <>
       <BrowserRouter>
         <Navbar user={user} />
-        <Toaster/>
+        <Toaster />
         <Routes>
-          
           <Route path="/" element={<Home />} />
           <Route path="/driver/login" element={<DriverVehicleRegistration />} />
           <Route
