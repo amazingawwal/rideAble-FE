@@ -7,7 +7,9 @@ import Navbar from "./components/Navbar";
 import { useState } from "react";
 import type { PassengerData } from "./assets/types";
 import Dashboard from "./pages/Dashboard";
+import DriverVehicleRegistration from "./pages/Auth/Driver_Reg";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [user, setUser] = useState<PassengerData | null>(null);
@@ -22,8 +24,11 @@ function App() {
     <>
       <BrowserRouter>
         <Navbar user={user} />
+        <Toaster/>
         <Routes>
+          
           <Route path="/" element={<Home />} />
+          <Route path="/driver/login" element={<DriverVehicleRegistration />} />
           <Route
             path="/auth/login"
             element={<Login onAuthSuccess={handleAuthSuccess} />}
