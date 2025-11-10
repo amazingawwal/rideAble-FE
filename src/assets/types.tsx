@@ -41,10 +41,7 @@ export type ProtectedRouteProps = {
   children: React.ReactNode;
 };
 
-
-export type VehicleType = "" | "Select option" | "Car" |"Van" | "Bus" 
-
-
+export type VehicleType = "" | "Select option" | "Car" | "Van" | "Bus";
 
 export interface DriverData {
   fullName: string;
@@ -55,7 +52,7 @@ export interface DriverData {
 }
 
 export interface VehicleData {
-  plateNumber : string;
+  plateNumber: string;
   type: VehicleType;
   capacity: number;
   image: string[];

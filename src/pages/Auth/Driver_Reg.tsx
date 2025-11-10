@@ -7,8 +7,6 @@
 // import { motion, AnimatePresence } from "framer-motion";
 // import type { DriverData, VehicleData, } from "../../assets/types";
 
-
-
 // export default function DriverVehicleRegistration() {
 //   const [activeTab, setActiveTab] = useState<"driver" | "vehicle">("driver");
 //   const [loading, setLoading] = useState(false);
@@ -400,7 +398,7 @@ export default function DriverVehicleRegistration() {
   const [vehicles, setVehicles] = useState<VehicleData[]>([
     {
       plateNumber: "",
-      type: "Van",
+      type: "",
       capacity: 2,
       image: [],
       make: "",
@@ -443,7 +441,10 @@ export default function DriverVehicleRegistration() {
   };
 
   // ✅ Handle vehicle image uploads
-  const handleImageChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const files = e.target.files ? Array.from(e.target.files) : [];
     setVehicles((prev) => {
       const updated = [...prev];
@@ -474,9 +475,7 @@ export default function DriverVehicleRegistration() {
   // ✅ Toggle open/close for collapsible form
   const toggleOpen = (index: number) => {
     setOpenIndexes((prev) =>
-      prev.includes(index)
-        ? prev.filter((i) => i !== index)
-        : [...prev, index]
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
     );
   };
 
@@ -515,9 +514,12 @@ export default function DriverVehicleRegistration() {
 
       formData.append("driverData", JSON.stringify(driverData));
       vehicles.forEach((v, i) => {
-        formData.append(`vehicles[${i}]`, JSON.stringify({ ...v, image: undefined }));
+        formData.append(
+          `vehicles[${i}]`,
+          JSON.stringify({ ...v, image: undefined }),
+        );
         v.image.forEach((file, j) =>
-          formData.append(`vehicleImages_${i}_${j}`, file)
+          formData.append(`vehicleImages_${i}_${j}`, file),
         );
       });
 
@@ -748,18 +750,28 @@ export default function DriverVehicleRegistration() {
                               Accessibility Features
                             </label>
                             <div className="grid grid-cols-2 gap-2 text-gray-700">
-                              {["Wheelchair Ramp", "Hand Controls", "Lowered Floor", "Other"].map(
-                                (feature) => (
-                                  <label key={feature} className="flex items-center gap-2">
-                                    <input
-                                      type="checkbox"
-                                      checked={vehicle.accessibilityFeatures.includes(feature)}
-                                      onChange={() => handleFeatureToggle(index, feature)}
-                                    />
-                                    {feature}
-                                  </label>
-                                )
-                              )}
+                              {[
+                                "Wheelchair Ramp",
+                                "Hand Controls",
+                                "Lowered Floor",
+                                "Other",
+                              ].map((feature) => (
+                                <label
+                                  key={feature}
+                                  className="flex items-center gap-2"
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={vehicle.accessibilityFeatures.includes(
+                                      feature,
+                                    )}
+                                    onChange={() =>
+                                      handleFeatureToggle(index, feature)
+                                    }
+                                  />
+                                  {feature}
+                                </label>
+                              ))}
                             </div>
                           </div>
 
@@ -770,18 +782,53 @@ export default function DriverVehicleRegistration() {
                             onChange={(e) => handleVehicleChange(index, e)}
                           />
 
-                          <div>
-                            <label className="block font-medium text-gray-700 mb-2">
-                              Upload Vehicle Images
-                            </label>
-                            <input
-                              type="file"
-                              multiple
-                              accept="image/*"
-                              onChange={(e) => handleImageChange(index, e)}
-                              className="w-full border rounded-lg px-3 py-2 focus:ring-sky-500 focus:border-sky-500"
-                            />
-                          </div>
+<div>
+  <label className="block font-medium text-gray-700 mb-2">
+    Upload Vehicle Images
+  </label>
+  <input
+    type="file"
+    multiple
+    accept="image/*"
+    onChange={(e) => handleImageChange(index, e)}
+    className="w-full border rounded-lg px-3 py-2 focus:ring-sky-500 focus:border-sky-500"
+  />
+
+  {/* Image Preview Section */}
+  {vehicle.image && vehicle.image.length > 0 && (
+    <div className="mt-3 flex flex-wrap gap-3">
+      {vehicle.image.map((file, imgIndex) => {
+        const url = URL.createObjectURL(file);
+        return (
+          <div key={imgIndex} className="relative group">
+            <img
+              src={url}
+              alt={`Vehicle ${index + 1} Image ${imgIndex + 1}`}
+              className="h-20 w-20 object-cover rounded-lg border border-gray-300 shadow-sm"
+            />
+            <button
+              type="button"
+              onClick={() => {
+                // Remove selected image
+                setVehicles((prev) => {
+                  const updated = [...prev];
+                  updated[index].image = updated[index].image.filter(
+                    (_, i) => i !== imgIndex
+                  );
+                  return updated;
+                });
+              }}
+              className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full h-5 w-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+            >
+              ✕
+            </button>
+          </div>
+        );
+      })}
+    </div>
+  )}
+</div>
+
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -798,7 +845,12 @@ export default function DriverVehicleRegistration() {
                 + Add Another Vehicle
               </motion.div>
 
-              <Button variant="primary" size="lg" type="submit" disabled={loading}>
+              <Button
+                variant="primary"
+                size="lg"
+                type="submit"
+                disabled={loading}
+              >
                 {loading ? <Spinner /> : "Start Operations"}
               </Button>
             </motion.form>
