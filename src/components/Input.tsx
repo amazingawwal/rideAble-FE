@@ -1,7 +1,7 @@
 export type InputType = {
   label?: string;
-  type?: string;
-  value?: string;
+  type?: "number" | "text" | "tel" | "password" | "email" |"date";
+  value?: string | number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   required?: boolean;
@@ -11,7 +11,7 @@ export type InputType = {
 
 export default function InputField({
   label,
-  type = "text",
+  type,
   value,
   onChange,
   placeholder = "",
