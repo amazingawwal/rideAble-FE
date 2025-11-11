@@ -35,7 +35,6 @@ export default function DriverVehicleRegistration() {
 
   const [openIndexes, setOpenIndexes] = useState<number[]>([0]);
 
-  
   const handleDriverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setDriverData({ ...driverData, [name]: value });
@@ -51,7 +50,6 @@ export default function DriverVehicleRegistration() {
     setVehicles(newVehicles);
   };
 
-
   const handleFeatureToggle = (index: number, feature: string) => {
     setVehicles((prev) => {
       const updated = [...prev];
@@ -63,7 +61,6 @@ export default function DriverVehicleRegistration() {
     });
   };
 
-  
   const handleImageChange = (
     index: number,
     e: React.ChangeEvent<HTMLInputElement>,
@@ -77,7 +74,6 @@ export default function DriverVehicleRegistration() {
       return updated;
     });
   };
-
 
   const addNewVehicle = () => {
     setVehicles([
@@ -97,13 +93,11 @@ export default function DriverVehicleRegistration() {
     setOpenIndexes((prev) => [...prev, vehicles.length]);
   };
 
-  
   const toggleOpen = (index: number) => {
     setOpenIndexes((prev) =>
       prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
     );
   };
-
 
   const validateDriver = () => {
     if (!driverData.fullName || !driverData.email || !driverData.phone)
@@ -119,7 +113,6 @@ export default function DriverVehicleRegistration() {
     return null;
   };
 
-  
   const handleDriverSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const error = validateDriver();
@@ -165,18 +158,15 @@ export default function DriverVehicleRegistration() {
     } finally {
       setLoading(false);
     }
-
   };
 
-      useEffect(() => {
-  return () => {
-    vehicles.forEach(vehicle => {
-      vehicle.image.forEach(url => URL.revokeObjectURL(url));
-    });
-  };
-}, []);
-
-
+  useEffect(() => {
+    return () => {
+      vehicles.forEach((vehicle) => {
+        vehicle.image.forEach((url) => URL.revokeObjectURL(url));
+      });
+    };
+  }, );
 
   const fadeSlide = {
     initial: { opacity: 0, y: 20 },
@@ -195,7 +185,6 @@ export default function DriverVehicleRegistration() {
           Complete both sections to start your operations.
         </p>
 
-
         <div className="flex border-b mb-6">
           {["driver", "vehicle"].map((tab) => (
             <button
@@ -213,7 +202,6 @@ export default function DriverVehicleRegistration() {
         </div>
 
         <AnimatePresence mode="wait">
-      
           {activeTab === "driver" && (
             <motion.form
               key="driver"
@@ -269,7 +257,6 @@ export default function DriverVehicleRegistration() {
             </motion.form>
           )}
 
-          
           {activeTab === "vehicle" && (
             <motion.form
               key="vehicle"
@@ -287,7 +274,6 @@ export default function DriverVehicleRegistration() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3 }}
                   >
-                  
                     <button
                       type="button"
                       onClick={() => toggleOpen(index)}
@@ -427,11 +413,9 @@ export default function DriverVehicleRegistration() {
                               className="w-full border rounded-lg px-3 py-2 focus:ring-sky-500 focus:border-sky-500"
                             />
 
-                          
                             {vehicle.image && vehicle.image.length > 0 && (
                               <div className="mt-3 flex flex-wrap gap-3">
                                 {vehicle.image.map((url, imgIndex) => {
-                                
                                   return (
                                     <div
                                       key={imgIndex}
