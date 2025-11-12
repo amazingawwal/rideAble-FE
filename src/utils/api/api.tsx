@@ -1,7 +1,11 @@
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
-import type { HeadersType, Pax, DriverData } from "../../assets/types";
+import type { HeadersType, Pax, DriverData, VehicleData } from "../../assets/types";
 
-export async function apiRequest(endpoint: string, method = "GET", data: Pax | DriverData) {
+export async function apiRequest(
+  endpoint: string,
+  method = "GET",
+  data: Pax | DriverData | VehicleData,
+) {
   const token = localStorage.getItem("authToken");
 
   const headers: HeadersType = {

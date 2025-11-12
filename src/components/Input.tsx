@@ -1,6 +1,6 @@
 export type InputType = {
   label?: string;
-  type?: "number" | "text" | "tel" | "password" | "email" | "date";
+  type?: "number" | "text" | "tel" | "password" | "email" | "date" | "hidden";
   value?: string | number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;

@@ -53,12 +53,13 @@ export interface DriverData {
 
 export interface VehicleData {
   plateNumber: string;
+  driverEmail: string;
   type: VehicleType;
   capacity: number;
-  image: string[];
-  make: string;
-  model: string;
-  year: string;
-  accessibilityFeatures: string[];
-  otherFeatures: string;
+  images: string[];
+  vehicleMake: string;
+  vehicleModel: string;
+  VehicleYear: string;
+  accessibilityFeature: string[];
+  // otherFeatures: string;
 }

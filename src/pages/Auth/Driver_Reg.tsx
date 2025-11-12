@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+
 import toast from "react-hot-toast";
 import Button from "../../components/Button";
 import InputField from "../../components/Input";
@@ -11,6 +11,8 @@ import { apiRequest } from "../../utils/api/api";
 export default function DriverVehicleRegistration() {
   const [activeTab, setActiveTab] = useState<"driver" | "vehicle">("driver");
   const [loading, setLoading] = useState(false);
+  const [driverEmailAddress, setDriverEmailAddress] = useState("");
+
 
   const [driverData, setDriverData] = useState<DriverData>({
     name: "",
@@ -23,16 +25,18 @@ export default function DriverVehicleRegistration() {
   const [vehicles, setVehicles] = useState<VehicleData[]>([
     {
       plateNumber: "",
+      driverEmail: driverEmailAddress,
       type: "",
       capacity: 2,
-      image: [],
-      make: "",
-      model: "",
-      year: "",
-      accessibilityFeatures: [],
-      otherFeatures: "",
+      images: [],
+      vehicleMake: "",
+      vehicleModel: "",
+      VehicleYear: "",
+      accessibilityFeature: [],
+    //   otherFeatures: "",
     },
   ]);
+
 
   const [openIndexes, setOpenIndexes] = useState<number[]>([0]);
 
@@ -41,31 +45,45 @@ export default function DriverVehicleRegistration() {
     setDriverData({ ...driverData, [name]: value });
   };
 
-  const handleVehicleChange = (
-    index: number,
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-    const newVehicles = [...vehicles];
-    newVehicles[index][name as keyof VehicleData] = value as never;
-    setVehicles(newVehicles);
-  };
+//   const handleVehicleChange = (
+//     index: number,
+//     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+//   ) => {
+//     const { name, value } = e.target;
+//     const newVehicles = [...vehicles];
+//     newVehicles[index][name as keyof VehicleData] = value as never;
+//     const newV = [newVehicles[index].driverEmail='ffff',  ...newVehicles]
+//     setVehicles(newV);
+//   };
 
-const handleFeatureToggle = (index: number, feature: string) => {
-  setVehicles((prev) => {
-    const updated = [...prev];
-    const vehicle = { ...updated[index] }; 
+const handleVehicleChange = (
+  index: number,
+  e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+) => {
+  const { name, value } = e.target;
 
-    const selected = vehicle.accessibilityFeatures.includes(feature);
-    vehicle.accessibilityFeatures = selected
-      ? vehicle.accessibilityFeatures.filter((f) => f !== feature)
-      : [...vehicle.accessibilityFeatures, feature];
-
-    updated[index] = vehicle; 
-    return updated;
-  });
+  setVehicles((prev) =>
+    prev.map((v, i) =>
+      i === index ? { ...v, [name]: value } : v
+    )
+  );
 };
 
+
+  const handleFeatureToggle = (index: number, feature: string) => {
+    setVehicles((prev) => {
+      const updated = [...prev];
+      const vehicle = { ...updated[index] };
+
+      const selected = vehicle.accessibilityFeature.includes(feature);
+      vehicle.accessibilityFeature = selected
+        ? vehicle.accessibilityFeature.filter((f) => f !== feature)
+        : [...vehicle.accessibilityFeature, feature];
+
+      updated[index] = vehicle;
+      return updated;
+    });
+  };
 
   const handleImageChange = (
     index: number,
@@ -76,7 +94,7 @@ const handleFeatureToggle = (index: number, feature: string) => {
 
     setVehicles((prev) => {
       const updated = [...prev];
-      updated[index].image = urls;
+      updated[index].images = urls;
       return updated;
     });
   };
@@ -86,14 +104,15 @@ const handleFeatureToggle = (index: number, feature: string) => {
       ...vehicles,
       {
         plateNumber: "",
+        driverEmail: driverEmailAddress,
         type: "",
         capacity: 0,
-        image: [],
-        make: "",
-        model: "",
-        year: "",
-        accessibilityFeatures: [],
-        otherFeatures: "",
+        images: [],
+        vehicleMake: "",
+        vehicleModel: "",
+        VehicleYear: "",
+        accessibilityFeature: [],
+        // otherFeatures: "",
       },
     ]);
     setOpenIndexes((prev) => [...prev, vehicles.length]);
@@ -106,14 +125,19 @@ const handleFeatureToggle = (index: number, feature: string) => {
   };
 
   const validateDriver = () => {
-    if (!driverData.name || !driverData.email || !driverData.phone || !driverData.licenseNumber)
+    if (
+      !driverData.name ||
+      !driverData.email ||
+      !driverData.phone ||
+      !driverData.licenseNumber
+    )
       return "Please fill in all driver details.";
     return null;
   };
 
   const validateVehicle = () => {
     for (const v of vehicles) {
-      if (!v.make || !v.model || !v.year)
+      if (!v.vehicleMake || !v.vehicleModel || !v.VehicleYear)
         return "Please complete all vehicle details.";
     }
     return null;
@@ -125,17 +149,20 @@ const handleFeatureToggle = (index: number, feature: string) => {
     e.preventDefault();
     const error = validateDriver();
     if (error) return toast.error(error);
-    console.log(driverData)
-
+    console.log(driverData);
+    setDriverEmailAddress(driverData.email);
+    localStorage.setItem("driverEmail", driverData.email)    
+    console.log(driverEmailAddress)
     try {
       await apiRequest("/registration/driver", "POST", driverData);
-      console.log(driverData)
+      console.log(driverData);
       toast.success("Driver registration successful!");
       setActiveTab("vehicle");
+
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message);
-        console.log(err.message)
+        console.log(err.message);
       } else {
         toast.error("An unknown error occurred");
       }
@@ -143,36 +170,22 @@ const handleFeatureToggle = (index: number, feature: string) => {
       setLoading(false);
     }
   };
+ useEffect(() => {
+  const savedEmail = localStorage.getItem("driverEmail");
+  if (savedEmail) setDriverEmailAddress(savedEmail);
+}, []);
 
   const handleVehicleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const error = validateVehicle();
     if (error) return toast.error(error);
-
+    console.log(vehicles)
+    console.log('email: ', driverEmailAddress)
     setLoading(true);
     try {
-      const formData = new FormData();
-      formData.append("driverData", JSON.stringify(driverData));
+        await apiRequest("/registration/vehicle", "POST", vehicles[0]);
 
-      vehicles.forEach((v, i) => {
-        formData.append(
-          `vehicles[${i}]`,
-          JSON.stringify({ ...v, image: undefined }),
-        );
-        v.image.forEach((file, j) =>
-          formData.append(`vehicleImages_${i}_${j}`, file),
-        );
-      });
-
-      await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/drivers/register`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
+      console.log(vehicles)
 
       toast.success("Registration completed successfully!");
     } catch (err) {
@@ -185,9 +198,18 @@ const handleFeatureToggle = (index: number, feature: string) => {
   };
 
   useEffect(() => {
+  if (driverEmailAddress) {
+    setVehicles((prev) =>
+      prev.map((v) => ({ ...v, driverEmail: driverEmailAddress }))
+    );
+  }
+}, [driverEmailAddress]);
+
+
+  useEffect(() => {
     return () => {
       vehicles.forEach((vehicle) => {
-        vehicle.image.forEach((url) => URL.revokeObjectURL(url));
+        vehicle.images.forEach((url) => URL.revokeObjectURL(url));
       });
     };
   }, []);
@@ -275,8 +297,14 @@ const handleFeatureToggle = (index: number, feature: string) => {
                   required
                 />
               </div>
-              <Button variant="outline" size="sm" type="submit">
-                Save and Continue to Vehicle Registration
+              <Button variant="outline" loading={loading} size="sm" type="submit">
+                {loading?(
+                <div className="flex items-center justify-center gap-2">
+                  <Spinner />
+                  <span>Loading request...</span>
+                </div>
+              ):
+                "Save and Continue to Vehicle Registration"}
               </Button>
             </motion.form>
           )}
@@ -328,15 +356,15 @@ const handleFeatureToggle = (index: number, feature: string) => {
                           <div className="grid grid-cols-2 gap-4">
                             <InputField
                               label="Vehicle Make"
-                              name="make"
-                              value={vehicle.make}
+                              name="vehicleMake"
+                              value={vehicle.vehicleMake}
                               onChange={(e) => handleVehicleChange(index, e)}
                               required
                             />
                             <InputField
                               label="Vehicle Model"
-                              name="model"
-                              value={vehicle.model}
+                              name="vehicleModel"
+                              value={vehicle.vehicleModel}
                               onChange={(e) => handleVehicleChange(index, e)}
                               required
                             />
@@ -345,8 +373,8 @@ const handleFeatureToggle = (index: number, feature: string) => {
                           <div className="grid grid-cols-2 gap-4">
                             <InputField
                               label="Vehicle Year"
-                              name="year"
-                              value={vehicle.year}
+                              name="VehicleYear"
+                              value={vehicle.VehicleYear}
                               onChange={(e) => handleVehicleChange(index, e)}
                               required
                             />
@@ -387,21 +415,27 @@ const handleFeatureToggle = (index: number, feature: string) => {
                               </select>
                             </div>
                           </div>
-
+                          <InputField
+                            name="driverEmail"
+                            type="email"
+                            value={vehicle.driverEmail}
+                            onChange={(e) => handleVehicleChange(index, e)}
+                            required
+                          />
                           <div>
                             <label className="block font-medium mb-2">
                               Accessibility Features
                             </label>
                             <div className="grid grid-cols-2 gap-2 text-gray-700">
                               {[
-                               "Ramps_and_lifts",
-  "Wide_door_openings",
-  "Lowered_floors",
-  "Swivel_seats",
-  "Wheelchair_restraints",
-  "Spacious_interior",
-  "Customizable_seating",
-  "Others"
+                                "Ramps_and_lifts",
+                                "Wide_door_openings",
+                                "Lowered_floors",
+                                "Swivel_seats",
+                                "Wheelchair_restraints",
+                                "Spacious_interior",
+                                "Customizable_seating",
+                                "Others",
                               ].map((feature) => (
                                 <label
                                   key={feature}
@@ -409,7 +443,7 @@ const handleFeatureToggle = (index: number, feature: string) => {
                                 >
                                   <input
                                     type="checkbox"
-                                    checked={vehicle.accessibilityFeatures.includes(
+                                    checked={vehicle.accessibilityFeature.includes(
                                       feature,
                                     )}
                                     onChange={() =>
@@ -422,12 +456,12 @@ const handleFeatureToggle = (index: number, feature: string) => {
                             </div>
                           </div>
 
-                          <InputField
+                          {/* <InputField
                             label="Specify other features"
                             name="otherFeatures"
                             value={vehicle.otherFeatures}
                             onChange={(e) => handleVehicleChange(index, e)}
-                          />
+                          /> */}
 
                           <div>
                             <label className="block font-medium text-gray-700 mb-2">
@@ -441,9 +475,9 @@ const handleFeatureToggle = (index: number, feature: string) => {
                               className="w-full border rounded-lg px-3 py-2 focus:ring-sky-500 focus:border-sky-500"
                             />
 
-                            {vehicle.image && vehicle.image.length > 0 && (
+                            {vehicle.images && vehicle.images.length > 0 && (
                               <div className="mt-3 flex flex-wrap gap-3">
-                                {vehicle.image.map((url, imgIndex) => {
+                                {vehicle.images.map((url, imgIndex) => {
                                   return (
                                     <div
                                       key={imgIndex}
@@ -457,12 +491,11 @@ const handleFeatureToggle = (index: number, feature: string) => {
                                       <button
                                         type="button"
                                         onClick={() => {
-                                          // Remove selected image
                                           setVehicles((prev) => {
                                             const updated = [...prev];
-                                            updated[index].image = updated[
+                                            updated[index].images = updated[
                                               index
-                                            ].image.filter(
+                                            ].images.filter(
                                               (_, i) => i !== imgIndex,
                                             );
                                             return updated;
@@ -498,9 +531,14 @@ const handleFeatureToggle = (index: number, feature: string) => {
                 variant="primary"
                 size="lg"
                 type="submit"
-                disabled={loading}
+                loading={loading}
               >
-                {loading ? <Spinner /> : "Start Operations"}
+                {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <Spinner />
+                  <span>Loading request...</span>
+                </div>
+              ) : "Start Operations"}
               </Button>
             </motion.form>
           )}
@@ -509,4 +547,3 @@ const handleFeatureToggle = (index: number, feature: string) => {
     </div>
   );
 }
-
