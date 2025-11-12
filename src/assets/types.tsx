@@ -44,7 +44,7 @@ export type ProtectedRouteProps = {
 export type VehicleType = "" | "Select option" | "Car" | "Van" | "Bus";
 
 export interface DriverData {
-  fullName: string;
+  name: string;
   email: string;
   phone: string;
   licenseNumber: string;

@@ -6,13 +6,14 @@ import InputField from "../../components/Input";
 import Spinner from "../../utils/Spinner";
 import { motion, AnimatePresence } from "framer-motion";
 import type { DriverData, VehicleData } from "../../assets/types";
+import { apiRequest } from "../../utils/api/api";
 
 export default function DriverVehicleRegistration() {
   const [activeTab, setActiveTab] = useState<"driver" | "vehicle">("driver");
   const [loading, setLoading] = useState(false);
 
   const [driverData, setDriverData] = useState<DriverData>({
-    fullName: "",
+    name: "",
     email: "",
     phone: "",
     licenseNumber: "",
@@ -50,16 +51,21 @@ export default function DriverVehicleRegistration() {
     setVehicles(newVehicles);
   };
 
-  const handleFeatureToggle = (index: number, feature: string) => {
-    setVehicles((prev) => {
-      const updated = [...prev];
-      const selected = updated[index].accessibilityFeatures.includes(feature);
-      updated[index].accessibilityFeatures = selected
-        ? updated[index].accessibilityFeatures.filter((f) => f !== feature)
-        : [...updated[index].accessibilityFeatures, feature];
-      return updated;
-    });
-  };
+const handleFeatureToggle = (index: number, feature: string) => {
+  setVehicles((prev) => {
+    const updated = [...prev];
+    const vehicle = { ...updated[index] }; 
+
+    const selected = vehicle.accessibilityFeatures.includes(feature);
+    vehicle.accessibilityFeatures = selected
+      ? vehicle.accessibilityFeatures.filter((f) => f !== feature)
+      : [...vehicle.accessibilityFeatures, feature];
+
+    updated[index] = vehicle; 
+    return updated;
+  });
+};
+
 
   const handleImageChange = (
     index: number,
@@ -100,7 +106,7 @@ export default function DriverVehicleRegistration() {
   };
 
   const validateDriver = () => {
-    if (!driverData.fullName || !driverData.email || !driverData.phone)
+    if (!driverData.name || !driverData.email || !driverData.phone || !driverData.licenseNumber)
       return "Please fill in all driver details.";
     return null;
   };
@@ -113,11 +119,29 @@ export default function DriverVehicleRegistration() {
     return null;
   };
 
-  const handleDriverSubmit = (e: React.FormEvent) => {
+  const handleDriverSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
     e.preventDefault();
     const error = validateDriver();
     if (error) return toast.error(error);
-    setActiveTab("vehicle");
+    console.log(driverData)
+
+    try {
+      await apiRequest("/registration/driver", "POST", driverData);
+      console.log(driverData)
+      toast.success("Driver registration successful!");
+      setActiveTab("vehicle");
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+        console.log(err.message)
+      } else {
+        toast.error("An unknown error occurred");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleVehicleSubmit = async (e: React.FormEvent) => {
@@ -128,8 +152,8 @@ export default function DriverVehicleRegistration() {
     setLoading(true);
     try {
       const formData = new FormData();
-
       formData.append("driverData", JSON.stringify(driverData));
+
       vehicles.forEach((v, i) => {
         formData.append(
           `vehicles[${i}]`,
@@ -166,7 +190,7 @@ export default function DriverVehicleRegistration() {
         vehicle.image.forEach((url) => URL.revokeObjectURL(url));
       });
     };
-  }, );
+  }, []);
 
   const fadeSlide = {
     initial: { opacity: 0, y: 20 },
@@ -212,8 +236,8 @@ export default function DriverVehicleRegistration() {
               <div className="grid grid-cols-2 gap-4">
                 <InputField
                   label="Full Name"
-                  name="fullName"
-                  value={driverData.fullName}
+                  name="name"
+                  value={driverData.name}
                   onChange={handleDriverChange}
                   required
                 />
@@ -251,7 +275,7 @@ export default function DriverVehicleRegistration() {
                   required
                 />
               </div>
-              <Button variant="primary" size="lg" type="submit">
+              <Button variant="outline" size="sm" type="submit">
                 Save and Continue to Vehicle Registration
               </Button>
             </motion.form>
@@ -370,10 +394,14 @@ export default function DriverVehicleRegistration() {
                             </label>
                             <div className="grid grid-cols-2 gap-2 text-gray-700">
                               {[
-                                "Wheelchair Ramp",
-                                "Hand Controls",
-                                "Lowered Floor",
-                                "Other",
+                               "Ramps_and_lifts",
+  "Wide_door_openings",
+  "Lowered_floors",
+  "Swivel_seats",
+  "Wheelchair_restraints",
+  "Spacious_interior",
+  "Customizable_seating",
+  "Others"
                               ].map((feature) => (
                                 <label
                                   key={feature}
@@ -481,3 +509,4 @@ export default function DriverVehicleRegistration() {
     </div>
   );
 }
+
