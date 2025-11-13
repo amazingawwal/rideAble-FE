@@ -63,3 +63,13 @@ export interface VehicleData {
   accessibilityFeature: string[];
   // otherFeatures: string;
 }
+
+export type DriverLogin = {
+  email : string
+  phone : string
+}
+
+export type DriverDTO = {
+  driver:DriverLogin
+  access_token: string
+}

@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "../../utils/Spinner";
 import type { LoginProps } from "../../assets/types";
 
+
 export default function Login({ onAuthSuccess }: LoginProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

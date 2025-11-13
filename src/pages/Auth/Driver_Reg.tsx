@@ -13,7 +13,6 @@ export default function DriverVehicleRegistration() {
   const [loading, setLoading] = useState(false);
   const [driverEmailAddress, setDriverEmailAddress] = useState("");
 
-
   const [driverData, setDriverData] = useState<DriverData>({
     name: "",
     email: "",
@@ -33,10 +32,9 @@ export default function DriverVehicleRegistration() {
       vehicleModel: "",
       VehicleYear: "",
       accessibilityFeature: [],
-    //   otherFeatures: "",
+      //   otherFeatures: "",
     },
   ]);
-
 
   const [openIndexes, setOpenIndexes] = useState<number[]>([0]);
 
@@ -45,30 +43,27 @@ export default function DriverVehicleRegistration() {
     setDriverData({ ...driverData, [name]: value });
   };
 
-//   const handleVehicleChange = (
-//     index: number,
-//     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-//   ) => {
-//     const { name, value } = e.target;
-//     const newVehicles = [...vehicles];
-//     newVehicles[index][name as keyof VehicleData] = value as never;
-//     const newV = [newVehicles[index].driverEmail='ffff',  ...newVehicles]
-//     setVehicles(newV);
-//   };
+  //   const handleVehicleChange = (
+  //     index: number,
+  //     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  //   ) => {
+  //     const { name, value } = e.target;
+  //     const newVehicles = [...vehicles];
+  //     newVehicles[index][name as keyof VehicleData] = value as never;
+  //     const newV = [newVehicles[index].driverEmail='ffff',  ...newVehicles]
+  //     setVehicles(newV);
+  //   };
 
-const handleVehicleChange = (
-  index: number,
-  e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-) => {
-  const { name, value } = e.target;
+  const handleVehicleChange = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
 
-  setVehicles((prev) =>
-    prev.map((v, i) =>
-      i === index ? { ...v, [name]: value } : v
-    )
-  );
-};
-
+    setVehicles((prev) =>
+      prev.map((v, i) => (i === index ? { ...v, [name]: value } : v)),
+    );
+  };
 
   const handleFeatureToggle = (index: number, feature: string) => {
     setVehicles((prev) => {
@@ -151,14 +146,13 @@ const handleVehicleChange = (
     if (error) return toast.error(error);
     console.log(driverData);
     setDriverEmailAddress(driverData.email);
-    localStorage.setItem("driverEmail", driverData.email)    
-    console.log(driverEmailAddress)
+    localStorage.setItem("driverEmail", driverData.email);
+    console.log(driverEmailAddress);
     try {
       await apiRequest("/registration/driver", "POST", driverData);
       console.log(driverData);
       toast.success("Driver registration successful!");
       setActiveTab("vehicle");
-
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message);
@@ -170,22 +164,22 @@ const handleVehicleChange = (
       setLoading(false);
     }
   };
- useEffect(() => {
-  const savedEmail = localStorage.getItem("driverEmail");
-  if (savedEmail) setDriverEmailAddress(savedEmail);
-}, []);
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("driverEmail");
+    if (savedEmail) setDriverEmailAddress(savedEmail);
+  }, []);
 
   const handleVehicleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const error = validateVehicle();
     if (error) return toast.error(error);
-    console.log(vehicles)
-    console.log('email: ', driverEmailAddress)
+    console.log(vehicles);
+    console.log("email: ", driverEmailAddress);
     setLoading(true);
     try {
-        await apiRequest("/registration/vehicle", "POST", vehicles[0]);
+      await apiRequest("/registration/vehicle", "POST", vehicles[0]);
 
-      console.log(vehicles)
+      console.log(vehicles);
 
       toast.success("Registration completed successfully!");
     } catch (err) {
@@ -198,13 +192,12 @@ const handleVehicleChange = (
   };
 
   useEffect(() => {
-  if (driverEmailAddress) {
-    setVehicles((prev) =>
-      prev.map((v) => ({ ...v, driverEmail: driverEmailAddress }))
-    );
-  }
-}, [driverEmailAddress]);
-
+    if (driverEmailAddress) {
+      setVehicles((prev) =>
+        prev.map((v) => ({ ...v, driverEmail: driverEmailAddress })),
+      );
+    }
+  }, [driverEmailAddress]);
 
   useEffect(() => {
     return () => {
@@ -297,14 +290,20 @@ const handleVehicleChange = (
                   required
                 />
               </div>
-              <Button variant="outline" loading={loading} size="sm" type="submit">
-                {loading?(
-                <div className="flex items-center justify-center gap-2">
-                  <Spinner />
-                  <span>Loading request...</span>
-                </div>
-              ):
-                "Save and Continue to Vehicle Registration"}
+              <Button
+                variant="outline"
+                loading={loading}
+                size="sm"
+                type="submit"
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <Spinner />
+                    <span>Loading request...</span>
+                  </div>
+                ) : (
+                  "Save and Continue to Vehicle Registration"
+                )}
               </Button>
             </motion.form>
           )}
@@ -534,11 +533,13 @@ const handleVehicleChange = (
                 loading={loading}
               >
                 {loading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <Spinner />
-                  <span>Loading request...</span>
-                </div>
-              ) : "Start Operations"}
+                  <div className="flex items-center justify-center gap-2">
+                    <Spinner />
+                    <span>Loading request...</span>
+                  </div>
+                ) : (
+                  "Start Operations"
+                )}
               </Button>
             </motion.form>
           )}

@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import DriverVehicleRegistration from "./pages/Auth/Driver_Reg";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
+import DriverLogin from "./pages/Auth/Driver_Login";
 
 function App() {
   const [user, setUser] = useState<PassengerData | null>(null);
@@ -27,11 +28,12 @@ function App() {
         <Toaster />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/driver/login" element={<DriverVehicleRegistration />} />
+          <Route path="/driver/reg" element={<DriverVehicleRegistration />} />
           <Route
             path="/auth/login"
             element={<Login onAuthSuccess={handleAuthSuccess} />}
           />
+          <Route path="/driver/login" element={<DriverLogin  />} />
           <Route path="/auth/signup" element={<Signup />} />
           <Route
             path="/dashboard"
