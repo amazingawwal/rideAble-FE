@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { AccessIcon } from "../../components/React_Icons/Accessible";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../../utils/Spinner";
 import type { LoginProps } from "../../assets/types";
 
 export default function Login({ onAuthSuccess }: LoginProps) {
@@ -94,7 +95,14 @@ export default function Login({ onAuthSuccess }: LoginProps) {
 
           <div className="pt-4">
             <Button type="submit" size="md" loading={loading}>
-              {loading ? <p>Logging in...</p> : <p>Log in</p>}
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <Spinner />
+                  <span>Logging in...</span>
+                </div>
+              ) : (
+                "Login"
+              )}
             </Button>
           </div>
 
