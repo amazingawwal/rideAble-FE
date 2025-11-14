@@ -1,7 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import type { PassengerData, DriverDTO } from "../assets/types";
 
-export default function Navbar({ user }: { user: PassengerData | DriverDTO | null }) {
+export default function Navbar({
+  user,
+}: {
+  user: PassengerData | DriverDTO | null;
+}) {
   const navigate = useNavigate();
 
   return (
@@ -30,7 +34,7 @@ export default function Navbar({ user }: { user: PassengerData | DriverDTO | nul
       <div className="flex items-center gap-4">
         {user ? (
           <h1 className="text-2xl font-light text-sky-600">
-            Welcome, {user.role === "pax"? user.pax.name : "User"}!
+            Welcome, {user.role === "pax" ? user.pax.name : "User"}!
           </h1>
         ) : (
           <button

@@ -14,11 +14,11 @@ export type Pax = {
   password: string;
 };
 
-export interface PassengerData  {
+export interface PassengerData {
   role: "pax";
   pax: Pax;
   access_token: string;
-};
+}
 
 export type LoginProps = {
   onAuthSuccess?: (data: PassengerData) => void;
@@ -75,9 +75,8 @@ export type DriverLogin = {
 //   access_token: string;
 // };
 
-export interface DriverDTO  {
+export interface DriverDTO {
   role: "driver";
   driver: DriverLogin;
   access_token: string;
-};
-
+}

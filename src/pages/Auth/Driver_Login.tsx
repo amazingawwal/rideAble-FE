@@ -36,7 +36,11 @@ export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
     }
 
     try {
-      const response = await apiRequest("/registration/sign-in", "POST", formData);
+      const response = await apiRequest(
+        "/registration/sign-in",
+        "POST",
+        formData,
+      );
       toast.success("Driver login successful!");
 
       onAuthSuccess?.(response);
