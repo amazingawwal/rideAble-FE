@@ -13,5 +13,3 @@ export function AccessIcon() {
 export function AccessVehicle() {
   return <LuAmbulance size={150} className="text-black-600 mx-auto" />;
 }
-
-

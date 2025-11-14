@@ -14,7 +14,8 @@ export type Pax = {
   password: string;
 };
 
-export type PassengerData = {
+export interface PassengerData  {
+  role: "pax";
   pax: Pax;
   access_token: string;
 };
@@ -33,7 +34,7 @@ export type Mat_Symbol = {
 };
 
 export type UserProps = {
-  user: PassengerData | null;
+  user: PassengerData | DriverDTO | null;
 };
 
 export type ProtectedRouteProps = {
@@ -65,11 +66,18 @@ export interface VehicleData {
 }
 
 export type DriverLogin = {
-  email : string
-  phone : string
-}
+  email: string;
+  phone: string;
+};
 
-export type DriverDTO = {
-  driver:DriverLogin
-  access_token: string
-}
+// export interface DriverDTO  {
+//   driver: DriverLogin;
+//   access_token: string;
+// };
+
+export interface DriverDTO  {
+  role: "driver";
+  driver: DriverLogin;
+  access_token: string;
+};
+
