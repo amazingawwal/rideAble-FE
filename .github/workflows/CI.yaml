@@ -26,9 +26,9 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: |
-          export HUSKY=0
-          npm install
+        run: npm install
+        env:
+          HUSKY: 0
       - name: Run ESLint
         run: npm run lint --if-present
 

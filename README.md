@@ -1,73 +1,102 @@
-# React + TypeScript + Vite
+# RideAble FE
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+RideAble FE is the **frontend application** for the RideAble fullstack platform — an accessibility-focused web app that helps users manage mobility and accessibility-related services.  
+Built with **React + TypeScript + TailwindCSS**, it’s designed to be **fast, responsive, and accessible** for everyone.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
 
-## React Compiler
+| Technology                                    | Purpose                     |
+| --------------------------------------------- | --------------------------- |
+| [React](https://react.dev/)                   | UI framework                |
+| [TypeScript](https://www.typescriptlang.org/) | Static typing               |
+| [Vite](https://vitejs.dev/)                   | Build tool and dev server   |
+| [Tailwind CSS](https://tailwindcss.com/)      | Utility-first styling       |
+| [React Router](https://reactrouter.com/)      | Client-side routing         |
+| [Axios](https://axios-http.com/)              | API communication           |
+| [ESLint + Prettier](https://eslint.org/)      | Code linting and formatting |
+| [Husky](https://typicode.github.io/husky)     | Git hooks for code quality  |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Clone the Repository
 
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```bash
+git clone https://github.com/amazingawwal/rideAble-FE.git
+cd rideAble-FE
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+# Install Dependencies
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+`npm install`
+or
+`npm ci`
 
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+# Set Up Environment Variables
+
+Create a .env file in the root directory:
+
 ```
+VITE_API_URL=https://api.rideable-be.render.com
+VITE_APP_ENV=production
+```
+
+# Run the App
+
+```bash
+npm run dev
+```
+
+App runs locally on http://localhost:5173
+
+# Build for Production
+
+```bash
+npm run build
+```
+
+This will generate an optimized production build in the /dist folder.
+
+# To preview:
+
+```bash
+npm run preview
+```
+
+# Code Quality
+
+Before every commit, Husky runs automated checks to ensure:
+
+- Code follows ESLint + Prettier standards
+- All TypeScript files compile cleanly
+- Commit messages follow the configured linting style
+
+## You can also run manually:
+
+```bash
+npm run lint
+npm run format
+```
+
+# Deployment
+
+Build the project:
+
+```bash
+npm run build
+```
+
+# Contributing
+
+Contributions are welcome!
+Please read CONTRIBUTING.md before submitting pull requests.
+
+# Contact
+
+For inquiries or support:
+
+- Email: sakeebmawwal01@gmail.com
+- GitHub: @amazingawwal
