@@ -4,7 +4,7 @@ import type { UserProps } from "../assets/types";
 
 const Dashboard: React.FC<UserProps> = ({ user }) => {
   const navigate = useNavigate();
-  console.log("USER-",user)
+  console.log("USER-", user);
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Heart, User, Clock } from "lucide-react";
 import Button from "../../components/Button";
+import GoogleMapView from "../../utils/services/GoogleMapView";
 
 interface Journey {
   from: string;
@@ -13,6 +14,24 @@ interface Journey {
 }
 
 export default function PassengerDashboard() {
+
+  const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
+
+useEffect(() => {
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      setUserLocation({
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+      });
+    },
+    () => {
+      setUserLocation(null); // fallback to default
+    }
+  );
+}, []);
+
+
   // ----- COMPLETED JOURNEYS MOCK DATA -----
   const allJourneys: Journey[] = [
     {
@@ -79,30 +98,37 @@ export default function PassengerDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center px-4 py-6">
+       <User size={18} />
       {/* NAVBAR */}
-      <header className="w-full max-w-6xl flex items-center justify-between py-4">
+      {/* <header className="w-full max-w-6xl flex items-center justify-between py-4">
         <h1 className="text-2xl font-bold">
           ride<span className="text-sky-500">Able</span>
         </h1>
 
         <button className="text-gray-600 hover:text-sky-600 font-medium flex items-center gap-1">
-          <User size={18} />
+         
           Preferences
         </button>
-      </header>
+      </header> */}
 
       {/* MAIN LAYOUT */}
-      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
-
+      < div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
         {/* LEFT SIDE (same as before) */}
         <div className="flex flex-col gap-6">
           {/* MAP + REQUEST RIDE */}
           <div className="w-full bg-white rounded-xl shadow p-4 flex flex-col items-center">
-            <img
+            {/* <img
               src="/map-placeholder.png"
               className="w-full h-48 object-cover rounded-lg mb-4"
-            />
-            <Button variant="primary" size="lg">Request a Ride</Button>
+            /> */}
+            <div className="w-full h-52 rounded-xl overflow-hidden">
+  <GoogleMapView center={userLocation || undefined} />
+</div>
+
+               
+            <Button variant="primary" size="lg">
+              Request a Ride
+            </Button>
           </div>
 
           {/* SAVED LOCATIONS */}
@@ -121,9 +147,7 @@ export default function PassengerDashboard() {
                 <span className="text-gray-500 text-sm">456 Oak Ave.</span>
               </div>
             </div>
-            <Button variant="outline" >
-              Manage Locations
-            </Button>
+            <Button variant="outline">Manage Locations</Button>
           </div>
 
           {/* PREFERENCES */}
@@ -144,9 +168,7 @@ export default function PassengerDashboard() {
               </div>
             </div>
 
-            <Button variant="outline" >
-              Edit Preferences
-            </Button>
+            <Button variant="outline">Edit Preferences</Button>
           </div>
         </div>
 
@@ -215,21 +237,30 @@ export default function PassengerDashboard() {
               exit={{ scale: 0.8, opacity: 0 }}
               className="bg-white p-6 rounded-xl shadow-xl w-full max-w-md"
             >
-              <h3 className="text-xl font-semibold mb-4">
-                Journey Details
-              </h3>
+              <h3 className="text-xl font-semibold mb-4">Journey Details</h3>
 
               <div className="space-y-2 text-gray-700">
-                <p><strong>From:</strong> {selectedJourney.from}</p>
-                <p><strong>To:</strong> {selectedJourney.to}</p>
-                <p><strong>Date:</strong> {selectedJourney.date}</p>
-                <p><strong>Distance:</strong> {selectedJourney.distance}</p>
-                <p><strong>Duration:</strong> {selectedJourney.duration}</p>
-                <p><strong>Fare:</strong> {selectedJourney.fare}</p>
+                <p>
+                  <strong>From:</strong> {selectedJourney.from}
+                </p>
+                <p>
+                  <strong>To:</strong> {selectedJourney.to}
+                </p>
+                <p>
+                  <strong>Date:</strong> {selectedJourney.date}
+                </p>
+                <p>
+                  <strong>Distance:</strong> {selectedJourney.distance}
+                </p>
+                <p>
+                  <strong>Duration:</strong> {selectedJourney.duration}
+                </p>
+                <p>
+                  <strong>Fare:</strong> {selectedJourney.fare}
+                </p>
               </div>
 
               <Button
-                
                 variant="primary"
                 onClick={() => setSelectedJourney(null)}
               >
