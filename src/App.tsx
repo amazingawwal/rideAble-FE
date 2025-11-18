@@ -12,6 +12,7 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
 import DriverLogin from "./pages/Auth/Driver_Login";
 import type { DriverDTO } from "./assets/types";
+import PassengerDashboard from "./pages/Dashboard/PassengerDashboard";
 
 function App() {
   const [user, setUser] = useState<PassengerData | DriverDTO | null>(null);
@@ -36,6 +37,7 @@ function App() {
           />
           <Route path="/driver/login" element={<DriverLogin />} />
           <Route path="/auth/signup" element={<Signup />} />
+          <Route path="/dashboard/pax" element={<PassengerDashboard />}/>
           <Route
             path="/dashboard"
             element={
