@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Heart, User, Clock } from "lucide-react";
 import Button from "../../components/Button";
 import GoogleMapView from "../../utils/services/GoogleMapView";
+import { useNavigate } from "react-router-dom";
 
 interface Journey {
   from: string;
@@ -14,23 +15,28 @@ interface Journey {
 }
 
 export default function PassengerDashboard() {
+  const [userLocation, setUserLocation] =
+    useState<google.maps.LatLngLiteral | null>(null);
 
-  const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserLocation({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        });
+      },
+      () => {
+        setUserLocation(null); // fallback to default
+      },
+    );
+  }, []);
 
-useEffect(() => {
-  navigator.geolocation.getCurrentPosition(
-    (pos) => {
-      setUserLocation({
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude,
-      });
-    },
-    () => {
-      setUserLocation(null); // fallback to default
-    }
-  );
-}, []);
+  const navigate = useNavigate()
 
+  function handleRideRequest() {
+    navigate('/pax/ride-request')
+  }
 
   // ----- COMPLETED JOURNEYS MOCK DATA -----
   const allJourneys: Journey[] = [
@@ -98,7 +104,7 @@ useEffect(() => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center px-4 py-6">
-       <User size={18} />
+      <User size={18} />
       {/* NAVBAR */}
       {/* <header className="w-full max-w-6xl flex items-center justify-between py-4">
         <h1 className="text-2xl font-bold">
@@ -112,7 +118,7 @@ useEffect(() => {
       </header> */}
 
       {/* MAIN LAYOUT */}
-      < div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
         {/* LEFT SIDE (same as before) */}
         <div className="flex flex-col gap-6">
           {/* MAP + REQUEST RIDE */}
@@ -122,17 +128,16 @@ useEffect(() => {
               className="w-full h-48 object-cover rounded-lg mb-4"
             /> */}
             <div className="w-full h-52 rounded-xl overflow-hidden">
-  <GoogleMapView center={userLocation || undefined} />
-</div>
+              <GoogleMapView center={userLocation || undefined} />
+            </div>
 
-               
-            <Button variant="primary" size="lg">
+            <Button onClick={handleRideRequest} variant="primary" size="lg">
               Request a Ride
             </Button>
           </div>
 
           {/* SAVED LOCATIONS */}
-          <div className="w-full bg-white rounded-xl shadow p-4">
+          <div className="w-full  bg-white rounded-xl shadow p-4">
             <h2 className="flex items-center gap-2 text-gray-700 font-semibold mb-3">
               <MapPin size={18} className="text-sky-600" />
               Saved Locations
@@ -195,7 +200,8 @@ useEffect(() => {
           </div>
 
           {/* PAGINATION */}
-          <div className="flex justify-between items-center mt-5">
+          <div className="flex flex-col">
+          <div className="flex justify-between gap-2 items-center mt-5">
             <Button
               variant="outline"
               size="sm"
@@ -205,10 +211,6 @@ useEffect(() => {
               Previous
             </Button>
 
-            <span className="text-sm text-gray-500">
-              Page {page} of {totalPages}
-            </span>
-
             <Button
               variant="outline"
               size="sm"
@@ -217,6 +219,10 @@ useEffect(() => {
             >
               Next
             </Button>
+          </div>
+            <span className="text-sm text-center mt-2 text-gray-600">
+              Page {page} of {totalPages}
+            </span>
           </div>
         </div>
       </div>
@@ -261,7 +267,7 @@ useEffect(() => {
               </div>
 
               <Button
-                variant="primary"
+                variant="primary" size="sm"
                 onClick={() => setSelectedJourney(null)}
               >
                 Close

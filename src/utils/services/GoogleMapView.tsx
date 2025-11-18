@@ -11,7 +11,7 @@ const containerStyle = {
   borderRadius: "16px",
 };
 
-const defaultCenter = { lat: 40.7128, lng: -74.006 }; // NYC fallback
+const defaultCenter = { lat: 9.0579, lng: 7.4951 };
 
 export default function GoogleMapView({
   center = defaultCenter,
@@ -22,14 +22,15 @@ export default function GoogleMapView({
     libraries: ["places"],
   });
 
-  if (!isLoaded) return <div className="flex items-center justify-center h-full">Loading map...</div>;
+  if (!isLoaded)
+    return (
+      <div className="flex items-center justify-center h-full">
+        Loading map...
+      </div>
+    );
 
   return (
-    <GoogleMap
-      mapContainerStyle={containerStyle}
-      center={center}
-      zoom={zoom}
-    >
+    <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={zoom}>
       <Marker position={center} />
       {/* <Marker
   position={center}
@@ -42,10 +43,6 @@ export default function GoogleMapView({
     strokeColor: "white",
   }}
 /> */}
-
-
-
     </GoogleMap>
-    
   );
 }

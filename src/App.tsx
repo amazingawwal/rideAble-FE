@@ -13,6 +13,7 @@ import { Toaster } from "react-hot-toast";
 import DriverLogin from "./pages/Auth/Driver_Login";
 import type { DriverDTO } from "./assets/types";
 import PassengerDashboard from "./pages/Dashboard/PassengerDashboard";
+import RequestRide from "./pages/RideRequest";
 
 function App() {
   const [user, setUser] = useState<PassengerData | DriverDTO | null>(null);
@@ -38,6 +39,7 @@ function App() {
           <Route path="/driver/login" element={<DriverLogin />} />
           <Route path="/auth/signup" element={<Signup />} />
           <Route path="/dashboard/pax" element={<PassengerDashboard />} />
+          <Route path="/pax/ride-request" element={<RequestRide />} />
           <Route
             path="/dashboard"
             element={
