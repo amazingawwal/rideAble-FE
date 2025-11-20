@@ -13,8 +13,10 @@ export function RequestRide1() {
   const [destination, setDestination] = useState("");
   const [accessible, setAccessible] = useState(false);
 
-  const [pickupAC, setPickupAC] = useState<google.maps.places.Autocomplete | null>(null);
-  const [destinationAC, setDestinationAC] = useState<google.maps.places.Autocomplete | null>(null);
+  const [pickupAC, setPickupAC] =
+    useState<google.maps.places.Autocomplete | null>(null);
+  const [destinationAC, setDestinationAC] =
+    useState<google.maps.places.Autocomplete | null>(null);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
@@ -48,7 +50,6 @@ export function RequestRide1() {
   return (
     <div className="w-full min-h-screen bg-gray-50 flex justify-center py-10">
       <div className="w-full max-w-2xl bg-white rounded-2xl shadow p-8">
-
         {/* Title */}
         <h1 className="text-3xl font-bold text-center">Where to?</h1>
         <p className="text-center text-gray-500">
@@ -57,14 +58,16 @@ export function RequestRide1() {
 
         {/* Form */}
         <form onSubmit={onSubmit} className="space-y-5 mt-8">
-
           {/* Pickup Input */}
           <div>
-            <Autocomplete onLoad={setPickupAC} onPlaceChanged={() => {
-              if (pickupAC) {
-                setPickup(pickupAC.getPlace()?.formatted_address || "");
-              }
-            }}>
+            <Autocomplete
+              onLoad={setPickupAC}
+              onPlaceChanged={() => {
+                if (pickupAC) {
+                  setPickup(pickupAC.getPlace()?.formatted_address || "");
+                }
+              }}
+            >
               <input
                 className="w-full px-4 py-3 border rounded-xl bg-gray-100 focus:ring-sky-500"
                 placeholder="Enter pickup location"
@@ -76,11 +79,16 @@ export function RequestRide1() {
 
           {/* Destination Input */}
           <div>
-            <Autocomplete onLoad={setDestinationAC} onPlaceChanged={() => {
-              if (destinationAC) {
-                setDestination(destinationAC.getPlace()?.formatted_address || "");
-              }
-            }}>
+            <Autocomplete
+              onLoad={setDestinationAC}
+              onPlaceChanged={() => {
+                if (destinationAC) {
+                  setDestination(
+                    destinationAC.getPlace()?.formatted_address || "",
+                  );
+                }
+              }}
+            >
               <input
                 className="w-full px-4 py-3 border rounded-xl bg-gray-100 focus:ring-sky-500"
                 placeholder="Enter destination"
@@ -103,9 +111,7 @@ export function RequestRide1() {
           <div className="pt-4">
             <h3 className="font-semibold mb-2">Accessibility Options</h3>
 
-            <label
-              className="flex items-center justify-between p-4 border rounded-xl bg-gray-100 cursor-pointer"
-            >
+            <label className="flex items-center justify-between p-4 border rounded-xl bg-gray-100 cursor-pointer">
               <div className="flex items-center gap-3">
                 <span className="text-sky-600 text-xl">🦽</span>
                 <span>Wheelchair accessible vehicle</span>
@@ -127,20 +133,15 @@ export function RequestRide1() {
               Cancel
             </button>
 
-            <Button
-              type="submit"
-              variant="primary"
-            >
+            <Button type="submit" variant="primary">
               Find a Ride
             </Button>
           </div>
-
         </form>
       </div>
     </div>
   );
 }
-
 
 import React, { useState, useEffect } from "react";
 import {
@@ -170,28 +171,24 @@ export default function RequestRide() {
     libraries: ["places"],
   });
 
-  
-
   const defaultCenter = { lat: 9.0579, lng: 7.4951 };
 
-    const [userLocation, setUserLocation] =
-      useState<google.maps.LatLngLiteral | null>(null);
-  
-    useEffect(() => {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setUserLocation({
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude,
-          });
-        },
-        () => {
-          setUserLocation(defaultCenter); 
-        },
-      );
-    }, []);
+  const [userLocation, setUserLocation] =
+    useState<google.maps.LatLngLiteral | null>(null);
 
-  
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserLocation({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        });
+      },
+      () => {
+        setUserLocation(defaultCenter);
+      },
+    );
+  }, []);
 
   /** Generate the route + compute distance + duration */
   const generateRoute = () => {
@@ -221,14 +218,12 @@ export default function RequestRide() {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-        if (!pickup || !destination) {
+    if (!pickup || !destination) {
       alert("Please fill pickup and destination.");
       return;
     }
     generateRoute();
   };
-  
-  
 
   if (!isLoaded) return <p>Loading map…</p>;
 
@@ -247,7 +242,6 @@ export default function RequestRide() {
             }}
           >
             <InputField
-              
               placeholder="Enter pickup location"
               value={pickup}
               onChange={(e) => setPickup(e.target.value)}
@@ -281,7 +275,7 @@ export default function RequestRide() {
           </div>
 
           {/* ⭐ Distance + Duration Summary Card */}
-          {(distance && duration) && (
+          {distance && duration && (
             <div className="p-4 bg-gray-100 rounded-xl shadow-sm">
               <h3 className="font-semibold mb-2">Trip Summary</h3>
 
@@ -297,27 +291,24 @@ export default function RequestRide() {
             </div>
           )}
 
-          {(distance && duration)?           <div className="flex justify-between gap-4 pt-4">
-            <button
-              type="button"
-              className="w-1/2 border py-3 rounded-xl hover:bg-red-400 font-medium"
-            >
-              Cancel
-            </button>
+          {distance && duration ? (
+            <div className="flex justify-between gap-4 pt-4">
+              <button
+                type="button"
+                className="w-1/2 border py-3 rounded-xl hover:bg-red-400 font-medium"
+              >
+                Cancel
+              </button>
 
-            <Button
-              type="submit"
-              variant="outline"
-            >
-              Find a ride
+              <Button type="submit" variant="outline">
+                Find a ride
+              </Button>
+            </div>
+          ) : (
+            <Button type="submit" size="sm" variant="outline">
+              Show Route
             </Button>
-          </div>: <Button
-            type="submit"
-            size="sm"
-            variant="outline"
-          >
-             Show Route 
-          </Button>}
+          )}
         </form>
       </div>
     </div>

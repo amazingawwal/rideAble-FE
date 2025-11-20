@@ -6,8 +6,6 @@ interface MapProps {
   children?: React.ReactNode;
 }
 
-
-
 const containerStyle = {
   width: "100%",
   height: "100%",
