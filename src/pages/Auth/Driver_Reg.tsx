@@ -32,7 +32,6 @@ export default function DriverVehicleRegistration() {
       vehicleModel: "",
       VehicleYear: "",
       accessibilityFeature: [],
-      //   otherFeatures: "",
     },
   ]);
 
@@ -454,14 +453,6 @@ export default function DriverVehicleRegistration() {
                               ))}
                             </div>
                           </div>
-
-                          {/* <InputField
-                            label="Specify other features"
-                            name="otherFeatures"
-                            value={vehicle.otherFeatures}
-                            onChange={(e) => handleVehicleChange(index, e)}
-                          /> */}
-
                           <div>
                             <label className="block font-medium text-gray-700 mb-2">
                               Upload Vehicle Images

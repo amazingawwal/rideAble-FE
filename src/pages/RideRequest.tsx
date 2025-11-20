@@ -166,6 +166,17 @@ export default function RequestRide() {
   const [distance, setDistance] = useState<string | null>(null);
   const [duration, setDuration] = useState<string | null>(null);
 
+  const [selected, setSelected] = useState<string[]>([]);
+
+const toggleItem = (item: string) => {
+  setSelected((prev) =>
+    prev.includes(item)
+      ? prev.filter((i) => i !== item)
+      : [...prev, item]
+  );
+};
+
+
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
     libraries: ["places"],
@@ -273,7 +284,50 @@ export default function RequestRide() {
               {directions && <DirectionsRenderer directions={directions} />}
             </GoogleMap>
           </div>
+<h3 className="font-semibold mb-2">Accessibility Options</h3>
+          <div className="relative">
+  <div className="border rounded-lg px-4 py-2 cursor-pointer bg-white">
+    <span className="text-gray-500">
+      {selected.length === 0 ? "Select accessibility features" : ""}
+    </span>
 
+    <div className="flex flex-wrap gap-2">
+      {selected.map((item) => (
+        <span
+          key={item}
+          className="bg-sky-100 text-sky-700 px-2 py-1 rounded-md flex items-center gap-1"
+        >
+          {item.replace(/_/g, " ")}
+          <button onClick={() => toggleItem(item)}>✕</button>
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <div className="border flex flex-wrap justify-between rounded-lg mt-1 bg-white shadow p-2">
+    {[
+                                "Ramps_and_lifts",
+                                "Wide_door_openings",
+                                "Lowered_floors",
+                                "Swivel_seats",
+                                "Wheelchair_restraints",
+                                "Spacious_interior",
+                                "Customizable_seating",
+                                "Others",
+                              ].map((feature) => (
+      <div
+        key={feature}
+        className="px-2  py-1 hover:bg-sky-200 rounded-lg cursor-pointer"
+        onClick={() => toggleItem(feature)}
+      >
+        {feature.replace(/_/g, " ")}
+      </div>
+    ))}
+  </div>
+</div>
+
+
+                                    
           {/* ⭐ Distance + Duration Summary Card */}
           {distance && duration && (
             <div className="p-4 bg-gray-100 rounded-xl shadow-sm">
@@ -314,3 +368,38 @@ export default function RequestRide() {
     </div>
   );
 }
+
+
+                        //   <div>
+                        //     <label className="block font-medium mb-2">
+                        //       Accessibility Features
+                        //     </label>
+                        //     <div className="grid grid-cols-2 gap-2 text-gray-700">
+                        //       {[
+                        //         "Ramps_and_lifts",
+                        //         "Wide_door_openings",
+                        //         "Lowered_floors",
+                        //         "Swivel_seats",
+                        //         "Wheelchair_restraints",
+                        //         "Spacious_interior",
+                        //         "Customizable_seating",
+                        //         "Others",
+                        //       ].map((feature) => (
+                        //         <label
+                        //           key={feature}
+                        //           className="flex items-center gap-2"
+                        //         >
+                        //           <input
+                        //             type="checkbox"
+                        //             checked={vehicle.accessibilityFeature.includes(
+                        //               feature,
+                        //             )}
+                        //             onChange={() =>
+                        //               handleFeatureToggle(index, feature)
+                        //             }
+                        //           />
+                        //           {feature}
+                        //         </label>
+                        //       ))}
+                        //     </div>
+                        //   </div>
