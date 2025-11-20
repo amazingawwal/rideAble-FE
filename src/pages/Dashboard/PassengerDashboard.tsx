@@ -32,10 +32,10 @@ export default function PassengerDashboard() {
     );
   }, []);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function handleRideRequest() {
-    navigate('/pax/ride-request')
+    navigate("/pax/ride-request");
   }
 
   // ----- COMPLETED JOURNEYS MOCK DATA -----
@@ -123,15 +123,11 @@ export default function PassengerDashboard() {
         <div className="flex flex-col gap-6">
           {/* MAP + REQUEST RIDE */}
           <div className="w-full bg-white rounded-xl shadow p-4 flex flex-col items-center">
-            {/* <img
-              src="/map-placeholder.png"
-              className="w-full h-48 object-cover rounded-lg mb-4"
-            /> */}
             <div className="w-full h-52 rounded-xl overflow-hidden">
               <GoogleMapView center={userLocation || undefined} />
             </div>
 
-            <Button onClick={handleRideRequest} variant="primary" size="lg">
+            <Button onClick={handleRideRequest} variant="primary" size="sm">
               Request a Ride
             </Button>
           </div>
@@ -201,25 +197,25 @@ export default function PassengerDashboard() {
 
           {/* PAGINATION */}
           <div className="flex flex-col">
-          <div className="flex justify-between gap-2 items-center mt-5">
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={page === 1}
-              onClick={() => setPage((p) => p - 1)}
-            >
-              Previous
-            </Button>
+            <div className="flex justify-between gap-2 items-center mt-5">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={page === 1}
+                onClick={() => setPage((p) => p - 1)}
+              >
+                Previous
+              </Button>
 
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={page === totalPages}
-              onClick={() => setPage((p) => p + 1)}
-            >
-              Next
-            </Button>
-          </div>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={page === totalPages}
+                onClick={() => setPage((p) => p + 1)}
+              >
+                Next
+              </Button>
+            </div>
             <span className="text-sm text-center mt-2 text-gray-600">
               Page {page} of {totalPages}
             </span>
@@ -267,7 +263,8 @@ export default function PassengerDashboard() {
               </div>
 
               <Button
-                variant="primary" size="sm"
+                variant="primary"
+                size="sm"
                 onClick={() => setSelectedJourney(null)}
               >
                 Close

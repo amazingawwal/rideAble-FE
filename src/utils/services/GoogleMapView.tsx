@@ -3,7 +3,10 @@ import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 interface MapProps {
   center?: google.maps.LatLngLiteral;
   zoom?: number;
+  children?: React.ReactNode;
 }
+
+
 
 const containerStyle = {
   width: "100%",
@@ -32,17 +35,6 @@ export default function GoogleMapView({
   return (
     <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={zoom}>
       <Marker position={center} />
-      {/* <Marker
-  position={center}
-  icon={{
-    path: google.maps.SymbolPath.CIRCLE,
-    scale: 8,
-    fillColor: "#4285F4",
-    fillOpacity: 1,
-    strokeWeight: 2,
-    strokeColor: "white",
-  }}
-/> */}
     </GoogleMap>
   );
 }
