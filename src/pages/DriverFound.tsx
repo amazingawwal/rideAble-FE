@@ -31,19 +31,18 @@ export default function DriverFoundScreen({
 }) {
   const [openAccessibility, setOpenAccessibility] = useState(false);
   const [driverPosition, setDriverPosition] = useState({
-  lat: Number(vehicle.initialLat),
-  lng: Number(vehicle.initialLng)
-});
+    lat: Number(vehicle.initialLat),
+    lng: Number(vehicle.initialLng),
+  });
 
   const [routePath, setRoutePath] = useState([]);
   const [activeImage, setActiveImage] = useState(0);
 
   // Load Google Maps
-const { isLoaded } = useJsApiLoader({
-  googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-  libraries: ["places"],
-});
-
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    libraries: ["places"],
+  });
 
   // Simulate live driver movement (replace with WebSocket later)
   useEffect(() => {
@@ -79,7 +78,7 @@ const { isLoaded } = useJsApiLoader({
             })) || [];
           setRoutePath(points);
         }
-      }
+      },
     );
   }, [driverPosition, passengerLocation, isLoaded]);
 
@@ -94,10 +93,10 @@ const { isLoaded } = useJsApiLoader({
       {/* LEFT SIDE — MAP */}
       <div className="h-[45vh] md:h-screen  w-full">
         <GoogleMap
-  mapContainerStyle={containerStyle}
-  center={driverPosition}
-  zoom={14}>
-
+          mapContainerStyle={containerStyle}
+          center={driverPosition}
+          zoom={14}
+        >
           {/* Driver marker */}
           <Marker position={driverPosition} />
 
@@ -134,7 +133,7 @@ const { isLoaded } = useJsApiLoader({
           <div className="mt-3 flex items-center justify-center gap-2">
             <span className="flex h-3 w-3">
               <span className="animate-ping absolute h-3 w-3 rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>  
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
             </span>
             <span className="text-green-700 font-medium">En route</span>
           </div>
