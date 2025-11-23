@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { MapPin, User, Clock, ArrowRight } from "lucide-react";
 
-export default function IncomingRideRequest({
-  request,
-  onAccept,
-  onDecline,
-}) {
+export default function IncomingRideRequest({ request, onAccept, onDecline }) {
   const [seconds, setSeconds] = useState(20);
 
   // Countdown timer (auto-decline)

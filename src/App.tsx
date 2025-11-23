@@ -42,7 +42,10 @@ function App() {
           <Route path="/auth/signup" element={<Signup />} />
           <Route path="/dashboard/pax" element={<PassengerDashboard />} />
           <Route path="/pax/ride-request" element={<RequestRide />} />
-          <Route path="/dashboard/driver" element={<DriverDashboard driver={'driver'} />} />
+          <Route
+            path="/dashboard/driver"
+            element={<DriverDashboard driver={"driver"} />}
+          />
           <Route
             path="/pax/ride-request/driver-found"
             element={

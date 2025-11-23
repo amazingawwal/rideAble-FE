@@ -81,7 +81,6 @@ export interface DriverDTO {
   access_token: string;
 }
 
-
 export type DriverRideState =
   | "idle"
   | "incoming"

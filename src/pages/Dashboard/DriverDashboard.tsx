@@ -3,18 +3,14 @@ import IncomingRideRequest from "../../components/IncomingRideRequest";
 import { motion } from "framer-motion";
 import type { DriverRideState } from "../../assets/types";
 
-import {
-  GoogleMap,
-  Marker,
-  useJsApiLoader,
-} from "@react-google-maps/api";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import {
   Clock,
   CheckCircle,
   Car,
   DollarSign,
   MapPin,
-//   Phone,
+  //   Phone,
   User,
   BarChart,
 } from "lucide-react";
@@ -28,16 +24,12 @@ export default function DriverDashboard({ driver }) {
   const [currentRide, setCurrentRide] = useState(null);
   const [incomingRequest, setIncomingRequest] = useState(null);
   const [rideState, setRideState] = useState<DriverRideState>("idle");
-const [activeRide, setActiveRide] = useState(null);
-
+  const [activeRide, setActiveRide] = useState(null);
 
   const [driverPos, setDriverPos] = useState({
     lat: driver?.lat || 6.5244,
     lng: driver?.lng || 3.3792,
   });
-
-
-
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
@@ -55,38 +47,34 @@ const [activeRide, setActiveRide] = useState(null);
     return () => clearInterval(interval);
   }, []);
   useEffect(() => {
-  const timer = setTimeout(() => {
-    setIncomingRequest({
-      pickup: "Ikeja City Mall",
-      destination: "Lekki Phase 1",
-      passengerName: "Sarah Johnson",
-      distanceToPickup: 2.4,
-      estimatedFare: 2500,
-    });
-  }, 8000);
+    const timer = setTimeout(() => {
+      setIncomingRequest({
+        pickup: "Ikeja City Mall",
+        destination: "Lekki Phase 1",
+        passengerName: "Sarah Johnson",
+        distanceToPickup: 2.4,
+        estimatedFare: 2500,
+      });
+    }, 8000);
 
-  return () => clearTimeout(timer);
-}, []);
+    return () => clearTimeout(timer);
+  }, []);
 
-const handleAccept = (rideData) => {
-  setCurrentRide(incomingRequest);
-  setIncomingRequest(null);
-  setActiveRide(rideData);
-//   setRideState("en_route_pickup");
-};
+  const handleAccept = (rideData) => {
+    setCurrentRide(incomingRequest);
+    setIncomingRequest(null);
+    setActiveRide(rideData);
+    //   setRideState("en_route_pickup");
+  };
 
-
-const handleDecline = () => {
-  setIncomingRequest(null);
-};
-
-
+  const handleDecline = () => {
+    setIncomingRequest(null);
+  };
 
   if (!isLoaded) return <p>Loading map...</p>;
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-3 bg-gray-100">
-      
       {/* LEFT: MAP */}
       <div className="md:col-span-2 h-[40vh] md:h-screen">
         <GoogleMap
@@ -109,7 +97,9 @@ const handleDecline = () => {
 
         {/* ONLINE TOGGLE */}
         <div className="flex items-center justify-between p-3 bg-gray-100 rounded-xl mb-4">
-          <span className="font-semibold">Status: {online ? "Online" : "Offline"}</span>
+          <span className="font-semibold">
+            Status: {online ? "Online" : "Offline"}
+          </span>
           <button
             onClick={() => setOnline(!online)}
             className={`px-4 py-2 rounded-xl font-medium ${
@@ -122,7 +112,11 @@ const handleDecline = () => {
 
         {/* STATS */}
         <div className="grid grid-cols-2 gap-4 mb-6">
-          <StatCard icon={<DollarSign />} title="Earnings Today" value="₦12,400" />
+          <StatCard
+            icon={<DollarSign />}
+            title="Earnings Today"
+            value="₦12,400"
+          />
           <StatCard icon={<CheckCircle />} title="Rides Completed" value="6" />
           <StatCard icon={<Clock />} title="Online Hours" value="4.3 hrs" />
           <StatCard icon={<BarChart />} title="Rating" value="4.8 ⭐" />
@@ -179,43 +173,34 @@ const handleDecline = () => {
         </div>
       </motion.div>
       <IncomingRideRequest
-  request={incomingRequest}
-  onAccept={handleAccept}
-  onDecline={handleDecline}
-/>
-{
-  rideState === "en_route_pickup" && (
-    <EnRouteToPickup
-      ride={activeRide}
-      onArrived={() => setRideState("arrived")}
-    />
-  )
-}
+        request={incomingRequest}
+        onAccept={handleAccept}
+        onDecline={handleDecline}
+      />
+      {rideState === "en_route_pickup" && (
+        <EnRouteToPickup
+          ride={activeRide}
+          onArrived={() => setRideState("arrived")}
+        />
+      )}
 
-{
-  rideState === "arrived" && (
-    <ArrivedAtPickup
-      ride={activeRide}
-      onStartTrip={() => setRideState("in_trip")}
-    />
-  )
-}
+      {rideState === "arrived" && (
+        <ArrivedAtPickup
+          ride={activeRide}
+          onStartTrip={() => setRideState("in_trip")}
+        />
+      )}
 
-{
-  rideState === "in_trip" && (
-    <TripInProgress
-      ride={activeRide}
-      onEndTrip={() => setRideState("completed")}
-    />
-  )
-}
+      {rideState === "in_trip" && (
+        <TripInProgress
+          ride={activeRide}
+          onEndTrip={() => setRideState("completed")}
+        />
+      )}
 
-{
-  rideState === "completed" && (
-    <TripCompleted ride={activeRide} onFinish={() => reset()} />
-  )
-}
-
+      {rideState === "completed" && (
+        <TripCompleted ride={activeRide} onFinish={() => reset()} />
+      )}
     </div>
   );
 }

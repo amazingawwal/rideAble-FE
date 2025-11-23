@@ -140,7 +140,7 @@ export default function DriverFoundScreen({
         </div>
 
         {/* Driver Info */}
-        
+
         <div className="flex items-center gap-4 mb-6">
           <img
             src={driver.avatar}
@@ -164,7 +164,6 @@ export default function DriverFoundScreen({
           <div className="flex justify-between items-center">
             <p className="font-semibold text-gray-800">Vehicle</p>
             <button
-              
               className="text-sky-600 flex items-center gap-1"
               onClick={() => setOpenAccessibility(true)}
             >
@@ -179,7 +178,6 @@ export default function DriverFoundScreen({
             Plate Number: {vehicle.plateNumber}
           </p>
         </div>
-            
 
         {/* Vehicle Images Carousel */}
         {vehicle.images?.length > 0 && (
