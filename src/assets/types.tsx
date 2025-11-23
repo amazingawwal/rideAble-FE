@@ -80,3 +80,12 @@ export interface DriverDTO {
   driver: DriverLogin;
   access_token: string;
 }
+
+
+export type DriverRideState =
+  | "idle"
+  | "incoming"
+  | "en_route_pickup"
+  | "arrived"
+  | "in_trip"
+  | "completed";

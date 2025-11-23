@@ -15,6 +15,7 @@ import type { DriverDTO } from "./assets/types";
 import PassengerDashboard from "./pages/Dashboard/PassengerDashboard";
 import RequestRide from "./pages/RideRequest";
 import DriverFoundScreen from "./pages/DriverFound";
+import DriverDashboard from "./pages/Dashboard/DriverDashboard";
 
 function App() {
   const [user, setUser] = useState<PassengerData | DriverDTO | null>(null);
@@ -41,6 +42,7 @@ function App() {
           <Route path="/auth/signup" element={<Signup />} />
           <Route path="/dashboard/pax" element={<PassengerDashboard />} />
           <Route path="/pax/ride-request" element={<RequestRide />} />
+          <Route path="/dashboard/driver" element={<DriverDashboard driver={'driver'} />} />
           <Route
             path="/pax/ride-request/driver-found"
             element={

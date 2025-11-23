@@ -1,0 +1,233 @@
+import { useState, useEffect } from "react";
+import IncomingRideRequest from "../../components/IncomingRideRequest";
+import { motion } from "framer-motion";
+import type { DriverRideState } from "../../assets/types";
+
+import {
+  GoogleMap,
+  Marker,
+  useJsApiLoader,
+} from "@react-google-maps/api";
+import {
+  Clock,
+  CheckCircle,
+  Car,
+  DollarSign,
+  MapPin,
+//   Phone,
+  User,
+  BarChart,
+} from "lucide-react";
+import EnRouteToPickup from "../../components/EnrouteToPickup";
+import ArrivedAtPickup from "../../components/ArrivedAtPickup";
+import TripCompleted from "../../components/RideCompleted";
+import TripInProgress from "../../components/RideInProgress";
+
+export default function DriverDashboard({ driver }) {
+  const [online, setOnline] = useState(true);
+  const [currentRide, setCurrentRide] = useState(null);
+  const [incomingRequest, setIncomingRequest] = useState(null);
+  const [rideState, setRideState] = useState<DriverRideState>("idle");
+const [activeRide, setActiveRide] = useState(null);
+
+
+  const [driverPos, setDriverPos] = useState({
+    lat: driver?.lat || 6.5244,
+    lng: driver?.lng || 3.3792,
+  });
+
+
+
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    libraries: ["places"],
+  });
+
+  // Simulate GPS movement (replace with websocket)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDriverPos((p) => ({
+        lat: p.lat + 0.00002,
+        lng: p.lng + 0.00003,
+      }));
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+  useEffect(() => {
+  const timer = setTimeout(() => {
+    setIncomingRequest({
+      pickup: "Ikeja City Mall",
+      destination: "Lekki Phase 1",
+      passengerName: "Sarah Johnson",
+      distanceToPickup: 2.4,
+      estimatedFare: 2500,
+    });
+  }, 8000);
+
+  return () => clearTimeout(timer);
+}, []);
+
+const handleAccept = (rideData) => {
+  setCurrentRide(incomingRequest);
+  setIncomingRequest(null);
+  setActiveRide(rideData);
+//   setRideState("en_route_pickup");
+};
+
+
+const handleDecline = () => {
+  setIncomingRequest(null);
+};
+
+
+
+  if (!isLoaded) return <p>Loading map...</p>;
+
+  return (
+    <div className="min-h-screen grid grid-cols-1 md:grid-cols-3 bg-gray-100">
+      
+      {/* LEFT: MAP */}
+      <div className="md:col-span-2 h-[40vh] md:h-screen">
+        <GoogleMap
+          zoom={15}
+          center={driverPos}
+          mapContainerStyle={{ width: "100%", height: "100%" }}
+        >
+          <Marker position={driverPos} />
+        </GoogleMap>
+      </div>
+
+      {/* RIGHT: DRIVER PANEL */}
+      <motion.div
+        initial={{ x: 40, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        className="bg-white p-6 shadow-xl rounded-l-2xl overflow-y-auto"
+      >
+        <h2 className="text-2xl font-bold mb-2">Driver Dashboard</h2>
+        <p className="text-gray-500 mb-4">Welcome back, {driver.name}</p>
+
+        {/* ONLINE TOGGLE */}
+        <div className="flex items-center justify-between p-3 bg-gray-100 rounded-xl mb-4">
+          <span className="font-semibold">Status: {online ? "Online" : "Offline"}</span>
+          <button
+            onClick={() => setOnline(!online)}
+            className={`px-4 py-2 rounded-xl font-medium ${
+              online ? "bg-green-600 text-white" : "bg-gray-300"
+            }`}
+          >
+            {online ? "Go Offline" : "Go Online"}
+          </button>
+        </div>
+
+        {/* STATS */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <StatCard icon={<DollarSign />} title="Earnings Today" value="₦12,400" />
+          <StatCard icon={<CheckCircle />} title="Rides Completed" value="6" />
+          <StatCard icon={<Clock />} title="Online Hours" value="4.3 hrs" />
+          <StatCard icon={<BarChart />} title="Rating" value="4.8 ⭐" />
+        </div>
+
+        {/* CURRENT RIDE */}
+        {currentRide ? (
+          <div className="p-4 bg-blue-50 rounded-xl mb-6">
+            <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
+              <Car size={18} /> Upcoming Ride
+            </h3>
+
+            <div className="mb-3">
+              <p className="text-gray-600 text-sm">Pickup</p>
+              <p className="font-medium">{currentRide.pickup}</p>
+            </div>
+
+            <div className="mb-3">
+              <p className="text-gray-600 text-sm">Destination</p>
+              <p className="font-medium">{currentRide.destination}</p>
+            </div>
+
+            <div className="flex items-center gap-2 mb-3">
+              <User size={18} className="text-gray-600" />
+              <span className="font-medium">{currentRide.passengerName}</span>
+            </div>
+
+            <button className="w-full bg-sky-600 text-white py-3 rounded-xl font-semibold shadow">
+              Start Ride
+            </button>
+          </div>
+        ) : (
+          <p className="text-gray-500 mb-6">No rides assigned yet.</p>
+        )}
+
+        {/* RECENT TRIPS */}
+        <h3 className="font-bold text-lg mb-3">Recent Trips</h3>
+
+        <div className="space-y-3">
+          {[1, 2, 3].map((trip) => (
+            <div
+              key={trip}
+              className="p-3 bg-gray-50 rounded-xl border flex justify-between"
+            >
+              <div>
+                <p className="font-medium">Trip #{trip}</p>
+                <p className="text-gray-500 text-sm flex items-center gap-1">
+                  <MapPin size={14} /> 3.4 km • 12 min
+                </p>
+              </div>
+              <span className="font-semibold">₦1,900</span>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+      <IncomingRideRequest
+  request={incomingRequest}
+  onAccept={handleAccept}
+  onDecline={handleDecline}
+/>
+{
+  rideState === "en_route_pickup" && (
+    <EnRouteToPickup
+      ride={activeRide}
+      onArrived={() => setRideState("arrived")}
+    />
+  )
+}
+
+{
+  rideState === "arrived" && (
+    <ArrivedAtPickup
+      ride={activeRide}
+      onStartTrip={() => setRideState("in_trip")}
+    />
+  )
+}
+
+{
+  rideState === "in_trip" && (
+    <TripInProgress
+      ride={activeRide}
+      onEndTrip={() => setRideState("completed")}
+    />
+  )
+}
+
+{
+  rideState === "completed" && (
+    <TripCompleted ride={activeRide} onFinish={() => reset()} />
+  )
+}
+
+    </div>
+  );
+}
+
+function StatCard({ icon, title, value }) {
+  return (
+    <div className="p-4 bg-gray-50 rounded-xl shadow-sm flex items-center gap-3">
+      <div className="p-2 bg-sky-100 text-sky-700 rounded-lg">{icon}</div>
+      <div>
+        <p className="text-gray-500 text-sm">{title}</p>
+        <p className="text-lg font-bold">{value}</p>
+      </div>
+    </div>
+  );
+}
