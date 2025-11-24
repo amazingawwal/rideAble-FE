@@ -66,84 +66,79 @@ export default function RequestRide() {
   }, []);
 
   interface CoordResult {
-  lat: number;
-  lng: number;
-  ors: [number, number];
-}
+    lat: number;
+    lng: number;
+    ors: [number, number];
+  }
 
-const generateCoord = (id: string | undefined): Promise<CoordResult>=> {
-  return new Promise((resolve, reject) => {
-    const geocoder = new google.maps.Geocoder();
+  const generateCoord = (id: string | undefined): Promise<CoordResult> => {
+    return new Promise((resolve, reject) => {
+      const geocoder = new google.maps.Geocoder();
 
-    geocoder.geocode({ placeId: id }, (results, status) => {
-      if (status === "OK" && results && results[0]) {
-        const loc = results[0].geometry.location;
-        resolve({
-          lat: loc.lat(),
-          lng: loc.lng(),
-          ors: [loc.lng(), loc.lat()] // ready for ORS
-        });
-      } else {
-        reject("Failed to geocode placeId " + id);
-      }
-    });
-  });
-};
-
-
-
-
-  const generateRoute  = (): Promise<google.maps.DirectionsResult> => {
-  return new Promise((resolve, reject) => {
-    const service = new google.maps.DirectionsService();
-
-    service.route(
-      {
-        origin: pickup,
-        destination: destination,
-        travelMode: google.maps.TravelMode.DRIVING,
-      },
-      (result, status) => {
-        if (status === "OK" && result) {
-          setDirections(result);
-          const leg = result.routes[0].legs[0];
-          setDistance(leg.distance?.text || null);
-          setDuration(leg.duration?.text || null);
-          resolve(result);
+      geocoder.geocode({ placeId: id }, (results, status) => {
+        if (status === "OK" && results && results[0]) {
+          const loc = results[0].geometry.location;
+          resolve({
+            lat: loc.lat(),
+            lng: loc.lng(),
+            ors: [loc.lng(), loc.lat()], // ready for ORS
+          });
         } else {
-          reject("Failed to generate route");
+          reject("Failed to geocode placeId " + id);
         }
-      }
-    );
-  });
-};
-
-
-  const onSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-
-  if (!pickup || !destination) return;
-
-  const route = await generateRoute();
-
-  const pickupId = route.geocoded_waypoints![0].place_id;
-  const destId = route.geocoded_waypoints![1].place_id;
-
-  const pickupCoords = await generateCoord(pickupId);
-  const destCoords = await generateCoord(destId);
-
-  const payload: RideRequest = {
-    accessibilityFeatures: selected,
-    pickup: pickupCoords.ors,   
-    destination: destCoords.ors 
+      });
+    });
   };
 
-  const data = await apiRideRequest("/rides/request", "POST", payload);
+  const generateRoute = (): Promise<google.maps.DirectionsResult> => {
+    return new Promise((resolve, reject) => {
+      const service = new google.maps.DirectionsService();
 
-  console.log(data);
-  return  data
-};
+      service.route(
+        {
+          origin: pickup,
+          destination: destination,
+          travelMode: google.maps.TravelMode.DRIVING,
+        },
+        (result, status) => {
+          if (status === "OK" && result) {
+            setDirections(result);
+            const leg = result.routes[0].legs[0];
+            setDistance(leg.distance?.text || null);
+            setDuration(leg.duration?.text || null);
+            resolve(result);
+          } else {
+            reject("Failed to generate route");
+          }
+        },
+      );
+    });
+  };
 
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!pickup || !destination) return;
+
+    const route = await generateRoute();
+
+    const pickupId = route.geocoded_waypoints![0].place_id;
+    const destId = route.geocoded_waypoints![1].place_id;
+
+    const pickupCoords = await generateCoord(pickupId);
+    const destCoords = await generateCoord(destId);
+
+    const payload: RideRequest = {
+      accessibilityFeatures: selected,
+      pickup: pickupCoords.ors,
+      destination: destCoords.ors,
+    };
+
+    const data = await apiRideRequest("/rides/request", "POST", payload);
+
+    console.log(data);
+    return data;
+  };
 
   //   const findRide = ()=>{
 
