@@ -1,148 +1,4 @@
-import InputField from "../components/Input";
-import Button from "../components/Button";
-import Spinner from "../utils/Spinner";
-
-const containerStyle = {
-  width: "100%",
-  height: "260px",
-  borderRadius: "12px",
-};
-
-export function RequestRide1() {
-  const [pickup, setPickup] = useState("");
-  const [destination, setDestination] = useState("");
-  const [accessible, setAccessible] = useState(false);
-
-  const [pickupAC, setPickupAC] =
-    useState<google.maps.places.Autocomplete | null>(null);
-  const [destinationAC, setDestinationAC] =
-    useState<google.maps.places.Autocomplete | null>(null);
-
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
-    libraries: ["places"],
-  });
-
-  const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // San Francisco
-
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!pickup || !destination) {
-      alert("Please fill pickup and destination.");
-      return;
-    }
-
-    console.log({
-      pickup,
-      destination,
-      accessibleVehicle: accessible,
-    });
-  };
-
-  if (!isLoaded)
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Spinner />
-      </div>
-    );
-
-  return (
-    <div className="w-full min-h-screen bg-gray-50 flex justify-center py-10">
-      <div className="w-full max-w-2xl bg-white rounded-2xl shadow p-8">
-        {/* Title */}
-        <h1 className="text-3xl font-bold text-center">Where to?</h1>
-        <p className="text-center text-gray-500">
-          Request a ride with the accessibility you need.
-        </p>
-
-        {/* Form */}
-        <form onSubmit={onSubmit} className="space-y-5 mt-8">
-          {/* Pickup Input */}
-          <div>
-            <Autocomplete
-              onLoad={setPickupAC}
-              onPlaceChanged={() => {
-                if (pickupAC) {
-                  setPickup(pickupAC.getPlace()?.formatted_address || "");
-                }
-              }}
-            >
-              <input
-                className="w-full px-4 py-3 border rounded-xl bg-gray-100 focus:ring-sky-500"
-                placeholder="Enter pickup location"
-                value={pickup}
-                onChange={(e) => setPickup(e.target.value)}
-              />
-            </Autocomplete>
-          </div>
-
-          {/* Destination Input */}
-          <div>
-            <Autocomplete
-              onLoad={setDestinationAC}
-              onPlaceChanged={() => {
-                if (destinationAC) {
-                  setDestination(
-                    destinationAC.getPlace()?.formatted_address || "",
-                  );
-                }
-              }}
-            >
-              <input
-                className="w-full px-4 py-3 border rounded-xl bg-gray-100 focus:ring-sky-500"
-                placeholder="Enter destination"
-                value={destination}
-                onChange={(e) => setDestination(e.target.value)}
-              />
-            </Autocomplete>
-          </div>
-
-          {/* Map */}
-          <div className="overflow-hidden rounded-xl">
-            <GoogleMap
-              mapContainerStyle={containerStyle}
-              center={defaultCenter}
-              zoom={13}
-            />
-          </div>
-
-          {/* Accessibility Options */}
-          <div className="pt-4">
-            <h3 className="font-semibold mb-2">Accessibility Options</h3>
-
-            <label className="flex items-center justify-between p-4 border rounded-xl bg-gray-100 cursor-pointer">
-              <div className="flex items-center gap-3">
-                <span className="text-sky-600 text-xl">🦽</span>
-                <span>Wheelchair accessible vehicle</span>
-              </div>
-              <input
-                type="checkbox"
-                checked={accessible}
-                onChange={() => setAccessible(!accessible)}
-              />
-            </label>
-          </div>
-
-          {/* Buttons */}
-          <div className="flex justify-between gap-4 pt-4">
-            <button
-              type="button"
-              className="w-1/2 border py-3 rounded-xl hover:bg-gray-100 font-medium"
-            >
-              Cancel
-            </button>
-
-            <Button type="submit" variant="primary">
-              Find a Ride
-            </Button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-}
-
+// import { apiRequest } from "../utils/api/api";
 import React, { useState, useEffect } from "react";
 import {
   GoogleMap,
@@ -150,6 +6,16 @@ import {
   Autocomplete,
   DirectionsRenderer,
 } from "@react-google-maps/api";
+import InputField from "../components/Input";
+import Button from "../components/Button";
+import Spinner from "../utils/Spinner";
+import { apiRideRequest } from "../utils/api/rideRequestAPI";
+
+const containerStyle = {
+  width: "100%",
+  height: "260px",
+  borderRadius: "12px",
+};
 
 export default function RequestRide() {
   const [pickup, setPickup] = useState("");
@@ -198,13 +64,35 @@ export default function RequestRide() {
     );
   }, []);
 
+
+  const generateCoord = async (id:string | undefined )=>{
+        const geocoder = new google.maps.Geocoder();
+
+  return await geocoder.geocode({ placeId: id }, (results, status) => {
+  if (status === "OK") {
+    const location = results![0].geometry.location;
+    const lat = location.lat();
+    const lng = location.lng();
+
+    const orsCoordinates = [lng, lat];
+
+    console.log("Ready for ORS:", orsCoordinates);
+
+  }
+  else{
+    console.log('No ORS')
+  }
+});
+  }
+
   /** Generate the route + compute distance + duration */
-  const generateRoute = () => {
+  const generateRoute = async () => {
     if (!pickup || !destination) return;
 
     const service = new google.maps.DirectionsService();
 
-    service.route(
+
+    return await service.route(
       {
         origin: pickup,
         destination: destination,
@@ -213,27 +101,72 @@ export default function RequestRide() {
       (result, status) => {
         if (status === "OK" && result) {
           setDirections(result);
-
+          console.log(result)   
           const leg = result.routes[0].legs[0];
+        //   const pickup_id = result.geocoded_waypoints![0].place_id
+        //   const destination_id = result.geocoded_waypoints![1].place_id
 
           setDistance(leg.distance?.text || null);
           setDuration(leg.duration?.text || null);
+
+           {
+        //   generateCoord(pickup_id), 
+        //   generateCoord(destination_id)
+          }
         }
       },
     );
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!pickup || !destination) {
       alert("Please fill pickup and destination.");
       return;
     }
-    generateRoute();
+    const generatedRoute = await generateRoute();
+    const A_lat = (await generateCoord(generatedRoute?.geocoded_waypoints![0].place_id)).results[0].geometry.location.lat()
+    const A_lng = (await generateCoord(generatedRoute?.geocoded_waypoints![0].place_id)).results[0].geometry.location.lng()
+    const B_lat = (await generateCoord(generatedRoute?.geocoded_waypoints![1].place_id)).results[0].geometry.location.lat()
+    const B_lng = (await generateCoord(generatedRoute?.geocoded_waypoints![1].place_id)).results[0].geometry.location.lng()
+    
+
+    const pickupCoord = [A_lng, A_lat];
+    const destinationCoord = [B_lng, B_lat];
+
+
+    console.log({
+        pickup,
+        destination,
+        accessibility:selected,
+        route:generatedRoute,
+        pickupCoord,
+        destinationCoord
+    })
+
+
+    const payload = {
+        pickup: generateCoord(generatedRoute?.geocoded_waypoints![0].place_id),
+        destination: generateCoord(generatedRoute?.geocoded_waypoints![1].place_id),
+        accessibilityFeatures:selected,
+        pickupCoord,
+        destinationCoord
+    }
+
+      await apiRideRequest('/rides/request', 'POST', payload)
   };
 
-  if (!isLoaded) return <p>Loading map…</p>;
+//   const findRide = ()=>{
+
+//   }
+
+   if (!isLoaded)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner />
+      </div>
+    );
 
   return (
     <div className="w-full min-h-screen bg-gray-50 flex justify-center py-10">
@@ -274,7 +207,7 @@ export default function RequestRide() {
           {/* Map */}
           <div className="rounded-xl overflow-hidden">
             <GoogleMap
-              mapContainerStyle={{ width: "100%", height: "260px" }}
+              mapContainerStyle={containerStyle}
               center={userLocation || undefined}
               zoom={12}
             >

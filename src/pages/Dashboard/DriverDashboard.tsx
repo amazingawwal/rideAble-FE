@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import IncomingRideRequest from "../../components/IncomingRideRequest";
 import { motion } from "framer-motion";
 import type { DriverRideState } from "../../assets/types";
-
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import {
   Clock,
@@ -14,10 +12,11 @@ import {
   User,
   BarChart,
 } from "lucide-react";
-import EnRouteToPickup from "../../components/EnrouteToPickup";
-import ArrivedAtPickup from "../../components/ArrivedAtPickup";
-import TripCompleted from "../../components/RideCompleted";
-import TripInProgress from "../../components/RideInProgress";
+import EnRouteToPickup from "../../components/Ride-Request/EnrouteToPickup";
+import ArrivedAtPickup from "../../components/Ride-Request/ArrivedAtPickup";
+import TripCompleted from "../../components/Ride-Request/RideCompleted";
+import TripInProgress from "../../components/Ride-Request/RideInProgress";
+import IncomingRideRequest from "../../components/Ride-Request/IncomingRideRequest";
 
 export default function DriverDashboard({ driver }) {
   const [online, setOnline] = useState(true);
@@ -46,6 +45,7 @@ export default function DriverDashboard({ driver }) {
     }, 4000);
     return () => clearInterval(interval);
   }, []);
+  
   useEffect(() => {
     const timer = setTimeout(() => {
       setIncomingRequest({
