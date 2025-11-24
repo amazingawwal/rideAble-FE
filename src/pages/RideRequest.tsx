@@ -10,6 +10,7 @@ import InputField from "../components/Input";
 import Button from "../components/Button";
 import Spinner from "../utils/Spinner";
 import { apiRideRequest } from "../utils/api/rideRequestAPI";
+import type { RideRequest } from "../assets/types";
 
 const containerStyle = {
   width: "100%",
@@ -64,31 +65,39 @@ export default function RequestRide() {
     );
   }, []);
 
-  const generateCoord = async (id: string | undefined) => {
+  interface CoordResult {
+  lat: number;
+  lng: number;
+  ors: [number, number];
+}
+
+const generateCoord = (id: string | undefined): Promise<CoordResult>=> {
+  return new Promise((resolve, reject) => {
     const geocoder = new google.maps.Geocoder();
 
-    return await geocoder.geocode({ placeId: id }, (results, status) => {
-      if (status === "OK") {
-        const location = results![0].geometry.location;
-        const lat = location.lat();
-        const lng = location.lng();
-
-        const orsCoordinates = [lng, lat];
-
-        console.log("Ready for ORS:", orsCoordinates);
+    geocoder.geocode({ placeId: id }, (results, status) => {
+      if (status === "OK" && results && results[0]) {
+        const loc = results[0].geometry.location;
+        resolve({
+          lat: loc.lat(),
+          lng: loc.lng(),
+          ors: [loc.lng(), loc.lat()] // ready for ORS
+        });
       } else {
-        console.log("No ORS");
+        reject("Failed to geocode placeId " + id);
       }
     });
-  };
+  });
+};
 
-  /** Generate the route + compute distance + duration */
-  const generateRoute = async () => {
-    if (!pickup || !destination) return;
 
+
+
+  const generateRoute  = (): Promise<google.maps.DirectionsResult> => {
+  return new Promise((resolve, reject) => {
     const service = new google.maps.DirectionsService();
 
-    return await service.route(
+    service.route(
       {
         origin: pickup,
         destination: destination,
@@ -97,68 +106,44 @@ export default function RequestRide() {
       (result, status) => {
         if (status === "OK" && result) {
           setDirections(result);
-          console.log(result);
           const leg = result.routes[0].legs[0];
-          //   const pickup_id = result.geocoded_waypoints![0].place_id
-          //   const destination_id = result.geocoded_waypoints![1].place_id
-
           setDistance(leg.distance?.text || null);
           setDuration(leg.duration?.text || null);
-
-          {
-            //   generateCoord(pickup_id),
-            //   generateCoord(destination_id)
-          }
+          resolve(result);
+        } else {
+          reject("Failed to generate route");
         }
-      },
+      }
     );
-  };
+  });
+};
+
 
   const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!pickup || !destination) {
-      alert("Please fill pickup and destination.");
-      return;
-    }
-    const generatedRoute = await generateRoute();
-    const A_lat = (
-      await generateCoord(generatedRoute?.geocoded_waypoints![0].place_id)
-    ).results[0].geometry.location.lat();
-    const A_lng = (
-      await generateCoord(generatedRoute?.geocoded_waypoints![0].place_id)
-    ).results[0].geometry.location.lng();
-    const B_lat = (
-      await generateCoord(generatedRoute?.geocoded_waypoints![1].place_id)
-    ).results[0].geometry.location.lat();
-    const B_lng = (
-      await generateCoord(generatedRoute?.geocoded_waypoints![1].place_id)
-    ).results[0].geometry.location.lng();
+  if (!pickup || !destination) return;
 
-    const pickupCoord = [A_lng, A_lat];
-    const destinationCoord = [B_lng, B_lat];
+  const route = await generateRoute();
 
-    console.log({
-      pickup,
-      destination,
-      accessibility: selected,
-      route: generatedRoute,
-      pickupCoord,
-      destinationCoord,
-    });
+  const pickupId = route.geocoded_waypoints![0].place_id;
+  const destId = route.geocoded_waypoints![1].place_id;
 
-    const payload = {
-      pickup: generateCoord(generatedRoute?.geocoded_waypoints![0].place_id),
-      destination: generateCoord(
-        generatedRoute?.geocoded_waypoints![1].place_id,
-      ),
-      accessibilityFeatures: selected,
-      pickupCoord,
-      destinationCoord,
-    };
+  const pickupCoords = await generateCoord(pickupId);
+  const destCoords = await generateCoord(destId);
 
-    await apiRideRequest("/rides/request", "POST", payload);
+  const payload: RideRequest = {
+    accessibilityFeatures: selected,
+    pickup: pickupCoords.ors,   
+    destination: destCoords.ors 
   };
+
+  const data = await apiRideRequest("/rides/request", "POST", payload);
+
+  console.log(data);
+  return  data
+};
+
 
   //   const findRide = ()=>{
 
