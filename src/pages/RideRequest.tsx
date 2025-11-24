@@ -64,33 +64,29 @@ export default function RequestRide() {
     );
   }, []);
 
+  const generateCoord = async (id: string | undefined) => {
+    const geocoder = new google.maps.Geocoder();
 
-  const generateCoord = async (id:string | undefined )=>{
-        const geocoder = new google.maps.Geocoder();
+    return await geocoder.geocode({ placeId: id }, (results, status) => {
+      if (status === "OK") {
+        const location = results![0].geometry.location;
+        const lat = location.lat();
+        const lng = location.lng();
 
-  return await geocoder.geocode({ placeId: id }, (results, status) => {
-  if (status === "OK") {
-    const location = results![0].geometry.location;
-    const lat = location.lat();
-    const lng = location.lng();
+        const orsCoordinates = [lng, lat];
 
-    const orsCoordinates = [lng, lat];
-
-    console.log("Ready for ORS:", orsCoordinates);
-
-  }
-  else{
-    console.log('No ORS')
-  }
-});
-  }
+        console.log("Ready for ORS:", orsCoordinates);
+      } else {
+        console.log("No ORS");
+      }
+    });
+  };
 
   /** Generate the route + compute distance + duration */
   const generateRoute = async () => {
     if (!pickup || !destination) return;
 
     const service = new google.maps.DirectionsService();
-
 
     return await service.route(
       {
@@ -101,17 +97,17 @@ export default function RequestRide() {
       (result, status) => {
         if (status === "OK" && result) {
           setDirections(result);
-          console.log(result)   
+          console.log(result);
           const leg = result.routes[0].legs[0];
-        //   const pickup_id = result.geocoded_waypoints![0].place_id
-        //   const destination_id = result.geocoded_waypoints![1].place_id
+          //   const pickup_id = result.geocoded_waypoints![0].place_id
+          //   const destination_id = result.geocoded_waypoints![1].place_id
 
           setDistance(leg.distance?.text || null);
           setDuration(leg.duration?.text || null);
 
-           {
-        //   generateCoord(pickup_id), 
-        //   generateCoord(destination_id)
+          {
+            //   generateCoord(pickup_id),
+            //   generateCoord(destination_id)
           }
         }
       },
@@ -126,42 +122,49 @@ export default function RequestRide() {
       return;
     }
     const generatedRoute = await generateRoute();
-    const A_lat = (await generateCoord(generatedRoute?.geocoded_waypoints![0].place_id)).results[0].geometry.location.lat()
-    const A_lng = (await generateCoord(generatedRoute?.geocoded_waypoints![0].place_id)).results[0].geometry.location.lng()
-    const B_lat = (await generateCoord(generatedRoute?.geocoded_waypoints![1].place_id)).results[0].geometry.location.lat()
-    const B_lng = (await generateCoord(generatedRoute?.geocoded_waypoints![1].place_id)).results[0].geometry.location.lng()
-    
+    const A_lat = (
+      await generateCoord(generatedRoute?.geocoded_waypoints![0].place_id)
+    ).results[0].geometry.location.lat();
+    const A_lng = (
+      await generateCoord(generatedRoute?.geocoded_waypoints![0].place_id)
+    ).results[0].geometry.location.lng();
+    const B_lat = (
+      await generateCoord(generatedRoute?.geocoded_waypoints![1].place_id)
+    ).results[0].geometry.location.lat();
+    const B_lng = (
+      await generateCoord(generatedRoute?.geocoded_waypoints![1].place_id)
+    ).results[0].geometry.location.lng();
 
     const pickupCoord = [A_lng, A_lat];
     const destinationCoord = [B_lng, B_lat];
 
-
     console.log({
-        pickup,
-        destination,
-        accessibility:selected,
-        route:generatedRoute,
-        pickupCoord,
-        destinationCoord
-    })
-
+      pickup,
+      destination,
+      accessibility: selected,
+      route: generatedRoute,
+      pickupCoord,
+      destinationCoord,
+    });
 
     const payload = {
-        pickup: generateCoord(generatedRoute?.geocoded_waypoints![0].place_id),
-        destination: generateCoord(generatedRoute?.geocoded_waypoints![1].place_id),
-        accessibilityFeatures:selected,
-        pickupCoord,
-        destinationCoord
-    }
+      pickup: generateCoord(generatedRoute?.geocoded_waypoints![0].place_id),
+      destination: generateCoord(
+        generatedRoute?.geocoded_waypoints![1].place_id,
+      ),
+      accessibilityFeatures: selected,
+      pickupCoord,
+      destinationCoord,
+    };
 
-      await apiRideRequest('/rides/request', 'POST', payload)
+    await apiRideRequest("/rides/request", "POST", payload);
   };
 
-//   const findRide = ()=>{
+  //   const findRide = ()=>{
 
-//   }
+  //   }
 
-   if (!isLoaded)
+  if (!isLoaded)
     return (
       <div className="flex justify-center items-center h-screen">
         <Spinner />

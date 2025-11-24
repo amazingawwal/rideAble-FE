@@ -45,7 +45,7 @@ export default function DriverDashboard({ driver }) {
     }, 4000);
     return () => clearInterval(interval);
   }, []);
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIncomingRequest({

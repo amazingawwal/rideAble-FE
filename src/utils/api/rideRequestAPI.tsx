@@ -5,7 +5,7 @@ import type {
   DriverData,
   VehicleData,
   DriverLogin,
-  RideRequest
+  RideRequest,
 } from "../../assets/types";
 
 export async function apiRideRequest(

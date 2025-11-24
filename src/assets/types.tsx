@@ -89,8 +89,8 @@ export type DriverRideState =
   | "in_trip"
   | "completed";
 
-
- export type RideRequest = 
- {pickup: number[] | undefined;
+export type RideRequest = {
+  pickup: number[] | undefined;
   destination: number[] | undefined;
-  accessibilityFeatures: string[]}
+  accessibilityFeatures: string[];
+};
