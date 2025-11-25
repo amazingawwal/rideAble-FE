@@ -10,7 +10,10 @@ import InputField from "../components/Input";
 import Button from "../components/Button";
 import Spinner from "../utils/Spinner";
 import { apiRideRequest } from "../utils/api/rideRequestAPI";
-import type { RideRequest } from "../assets/types";
+import type { RideRequest, RideRequestProps } from "../assets/types";
+import toast from "react-hot-toast";
+// import { useRide } from "../hooks/DriverContext";
+import { useNavigate } from "react-router-dom";
 
 const containerStyle = {
   width: "100%",
@@ -18,9 +21,12 @@ const containerStyle = {
   borderRadius: "12px",
 };
 
-export default function RequestRide() {
+export default function RequestRide({ onDriverFound }: RideRequestProps) {
+  const [loading, setLoading] = useState(false);
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
+
+  const navigate = useNavigate();
 
   const [pickupAC, setPickupAC] =
     useState<google.maps.places.Autocomplete | null>(null);
@@ -34,6 +40,8 @@ export default function RequestRide() {
   const [duration, setDuration] = useState<string | null>(null);
 
   const [selected, setSelected] = useState<string[]>([]);
+
+//   const {setRide} = useRide()
 
   const toggleItem = (item: string) => {
     setSelected((prev) =>
@@ -117,13 +125,26 @@ export default function RequestRide() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setLoading(true);
+    try {
     if (!pickup || !destination) return;
-
     await generateRoute();
+    // toast.success("Route found");
+        
+    } catch (err) {
+          if (err instanceof Error) {
+            toast.error(err.message);
+          } else {
+            toast.error("Unexpected error occurred.");
+          }
+        } finally {
+          setLoading(false);
+        }
   };
 
   const findRide = async () => {
+    
+    try {
     const route = await generateRoute();
 
     const pickupId = route.geocoded_waypoints![0].place_id;
@@ -139,9 +160,22 @@ export default function RequestRide() {
     };
 
     const data = await apiRideRequest("/rides/request", "POST", payload);
-
+    setLoading(true)
+    onDriverFound?.(data);
+    navigate("/pax/ride-request/driver-found");
+    toast.success("Ride found");
+    // setRide(data)
     console.log(data);
     return data;
+    } catch (err) {
+          if (err instanceof Error) {
+            toast.error(err.message);
+          } else {
+            toast.error("Unexpected error occurred.");
+          }
+        } finally {
+          setLoading(false);
+        }
   };
 
   if (!isLoaded)
@@ -266,12 +300,26 @@ export default function RequestRide() {
               </button>
 
               <Button onClick={findRide} type="submit" variant="outline">
-                Find a ride
+                {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <Spinner />
+                  <span>Finding your ride...</span>
+                </div>
+              ) : (
+                "Find ride"
+              )}
               </Button>
             </div>
           ) : (
             <Button type="submit" size="sm" variant="outline">
-              Show Route
+                            {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <Spinner />
+                  <span>Routing...</span>
+                </div>
+              ) : (
+                "Show route"
+              )}
             </Button>
           )}
         </form>

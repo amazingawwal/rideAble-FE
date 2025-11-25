@@ -14,7 +14,7 @@ import {
   ChevronRight,
   Info,
 } from "lucide-react";
-
+import type { RideContextType } from "../assets/types";
 import AccessibilityModal from "../components/AccessibilityModal";
 
 const containerStyle = {
@@ -22,22 +22,21 @@ const containerStyle = {
   height: "100%",
 };
 
-export default function DriverFoundScreen({
-  driver,
-  vehicle,
-  eta,
-  passengerLocation,
-  onCancel,
-}) {
+export default function DriverFoundScreen({ride, clearRide}:RideContextType) {
+   
   const [openAccessibility, setOpenAccessibility] = useState(false);
   const [driverPosition, setDriverPosition] = useState({
-    lat: Number(vehicle.initialLat),
-    lng: Number(vehicle.initialLng),
+    lat: Number(-1.4663704),
+    lng: Number(53.3786278),
   });
+
+  const passengerLocation = { lat: 6.600044, lng: 3.33445 }
+  const avatar = "https://lh3.googleusercontent.com/aida-public/AB6AXuAG3UhZr5O2o_Cg0INDC1FFRC0AnIbf_S3o5RAWLvyNMn4ZEMez5yMYHAt8VTpgL2lqbVfixNH1040Vjs9Z7tdfTmQNPtwffofDnRsa1EpxXZuwGcYc5a95xQmMOQxRxAmaoOfGFZ1k6cM3WMikrp-Bh1gxWFo19Qq1bEkIOa9N2YOQhCmCrhLin4NWa4H8Zr5SSG7Z4CXq_k4g05GO3EnUvdZEqcn8Jky6RpLbsDXIkoyDf0BujTMLiIfO2NcJb4slXjXNCc5-xRY"
 
   const [routePath, setRoutePath] = useState([]);
   const [activeImage, setActiveImage] = useState(0);
 
+  const {driver, route} = ride!;
   // Load Google Maps
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
@@ -80,12 +79,13 @@ export default function DriverFoundScreen({
         }
       },
     );
-  }, [driverPosition, passengerLocation, isLoaded]);
+  }, [driverPosition, "-1.4663704, 53.3786278", isLoaded]);
 
   useEffect(() => {
     fetchRoute();
   }, [fetchRoute]);
 
+  if (!ride) return <p>No ride assigned.</p>;
   if (!isLoaded) return <p>Loading map...</p>;
 
   return (
@@ -143,19 +143,19 @@ export default function DriverFoundScreen({
 
         <div className="flex items-center gap-4 mb-6">
           <img
-            src={driver.avatar}
+            src={avatar}
             className="w-16 h-16 rounded-full border shadow"
           />
           <div>
-            <p className="text-xl font-semibold">{driver.name}</p>
-            <p className="text-yellow-600 text-sm">⭐ {driver.rating}</p>
+            <p className="text-xl font-semibold">{driver.driver.name || "Ayo"}</p>
+            <p className="text-yellow-600 text-sm">⭐ {4.9}</p>
 
             <div className="flex items-center gap-1 text-green-600 mt-1">
               <ShieldCheck size={16} />
               <span className="text-sm font-medium">Verified Driver</span>
             </div>
 
-            <p className="text-gray-500 text-sm mt-1">{eta} min arrival</p>
+            <p className="text-gray-500 text-sm mt-1">{route.durationMin} min arrival</p>
           </div>
         </div>
 
@@ -172,25 +172,25 @@ export default function DriverFoundScreen({
           </div>
 
           <p className="font-semibold mt-1">
-            {vehicle.make} {vehicle.model}
+            {driver.vehicleMake} {driver.vehicleModel}
           </p>
           <p className="text-gray-500 text-sm">
-            Plate Number: {vehicle.plateNumber}
+            Plate Number: {driver.plateNumber}
           </p>
         </div>
 
         {/* Vehicle Images Carousel */}
-        {vehicle.images?.length > 0 && (
+        {driver.images?.length > 0 && (
           <div className="relative mb-6">
             <img
-              src={vehicle.images[activeImage]}
+              src={driver.images[activeImage]}
               className="w-full h-40 object-cover rounded-xl shadow"
             />
 
             <button
               className="absolute right-2 top-1/2 bg-white p-2 rounded-full shadow"
               onClick={() =>
-                setActiveImage((prev) => (prev + 1) % vehicle.images.length)
+                setActiveImage((prev) => (prev + 1) % driver.images.length)
               }
             >
               <ChevronRight size={18} />
@@ -217,7 +217,7 @@ export default function DriverFoundScreen({
         </div>
 
         <button
-          onClick={onCancel}
+          onClick={clearRide}
           className="mt-5 w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl font-medium shadow"
         >
           Cancel Ride
@@ -228,8 +228,11 @@ export default function DriverFoundScreen({
       <AccessibilityModal
         open={openAccessibility}
         onClose={() => setOpenAccessibility(false)}
-        features={vehicle.accessibilityFeatures}
+        features={driver.accessibilityFeature}
       />
     </div>
   );
 }
+
+
+

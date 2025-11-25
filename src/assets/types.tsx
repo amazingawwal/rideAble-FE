@@ -94,3 +94,51 @@ export type RideRequest = {
   destination: number[] | undefined;
   accessibilityFeatures: string[];
 };
+
+
+export interface RideResponse {
+  route: RouteInfo;
+  driver: DriverWithVehicle;
+}
+
+export interface RouteInfo {
+  distanceKm: string;    
+  durationMin: string;   
+}
+
+export interface DriverWithVehicle {
+  id: string;
+  driverEmail: string;
+  plateNumber: string;
+  type: "Car" | "Van" | "Bus"
+  capacity: number;
+  status: 'Active' 
+  createdAt: string;             
+  vehicleMake: string;
+  vehicleModel: string;
+  VehicleYear: string;           
+  accessibilityFeature: string[];
+  images: string[];
+  driver: DriverDetails;        
+}
+
+export interface DriverDetails {
+  id: string;
+  name: string;
+  phone: string;
+  email: string;
+  licenseNumber: string;
+  status:  "Available" | "Unavailable"
+  createdAt: string;            
+  licenseExpiry: string;     
+}
+
+export type RideRequestProps = {
+  onDriverFound?: (data: RideResponse) => void;
+};
+
+export interface RideContextType {
+  ride?: RideResponse | null;
+  setRide?: (data: RideResponse | null) => void;
+  clearRide?: () => void;
+}
