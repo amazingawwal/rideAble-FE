@@ -120,6 +120,11 @@ export default function RequestRide() {
 
     if (!pickup || !destination) return;
 
+    await generateRoute();
+  };
+
+    const findRide = async ()=>{
+
     const route = await generateRoute();
 
     const pickupId = route.geocoded_waypoints![0].place_id;
@@ -138,11 +143,7 @@ export default function RequestRide() {
 
     console.log(data);
     return data;
-  };
-
-  //   const findRide = ()=>{
-
-  //   }
+    }
 
   if (!isLoaded)
     return (
@@ -265,7 +266,7 @@ export default function RequestRide() {
                 Cancel
               </button>
 
-              <Button type="submit" variant="outline">
+              <Button onClick={findRide} type="submit" variant="outline">
                 Find a ride
               </Button>
             </div>
