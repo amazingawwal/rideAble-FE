@@ -123,8 +123,7 @@ export default function RequestRide() {
     await generateRoute();
   };
 
-    const findRide = async ()=>{
-
+  const findRide = async () => {
     const route = await generateRoute();
 
     const pickupId = route.geocoded_waypoints![0].place_id;
@@ -143,7 +142,7 @@ export default function RequestRide() {
 
     console.log(data);
     return data;
-    }
+  };
 
   if (!isLoaded)
     return (
