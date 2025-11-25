@@ -4,11 +4,10 @@ import "./index.css";
 import { RideProvider } from "./hooks/DriverContext.tsx";
 import App from "./App.tsx";
 
-
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RideProvider>
-    <App />
+      <App />
     </RideProvider>
   </StrictMode>,
 );

@@ -23,18 +23,16 @@ function App() {
   const { setRide } = useRide();
   const { ride, clearRide } = useRide();
 
-  
-
   const handleAuthSuccess = (data: PassengerData) => {
     localStorage.setItem("token", data.access_token);
     console.log(data);
     setUser(data);
   };
 
-  const handleFindRide = (data)=>{
-    setRide!(data)
-    console.log({context:data})
-  }
+  const handleFindRide = (data) => {
+    setRide!(data);
+    console.log({ context: data });
+  };
 
   return (
     <>
@@ -51,19 +49,17 @@ function App() {
           <Route path="/driver/login" element={<DriverLogin />} />
           <Route path="/auth/signup" element={<Signup />} />
           <Route path="/dashboard/pax" element={<PassengerDashboard />} />
-          <Route path="/pax/ride-request" element={<RequestRide  onDriverFound={handleFindRide} />} />
+          <Route
+            path="/pax/ride-request"
+            element={<RequestRide onDriverFound={handleFindRide} />}
+          />
           <Route
             path="/dashboard/driver"
             element={<DriverDashboard driver={"driver"} />}
           />
           <Route
             path="/pax/ride-request/driver-found"
-            element={
-              <DriverFoundScreen
-                ride={ride}
-                clearRide={clearRide}
-              />
-            }
+            element={<DriverFoundScreen ride={ride} clearRide={clearRide} />}
           />
           <Route
             path="/dashboard"

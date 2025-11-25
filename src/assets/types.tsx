@@ -95,31 +95,30 @@ export type RideRequest = {
   accessibilityFeatures: string[];
 };
 
-
 export interface RideResponse {
   route: RouteInfo;
   driver: DriverWithVehicle;
 }
 
 export interface RouteInfo {
-  distanceKm: string;    
-  durationMin: string;   
+  distanceKm: string;
+  durationMin: string;
 }
 
 export interface DriverWithVehicle {
   id: string;
   driverEmail: string;
   plateNumber: string;
-  type: "Car" | "Van" | "Bus"
+  type: "Car" | "Van" | "Bus";
   capacity: number;
-  status: 'Active' 
-  createdAt: string;             
+  status: "Active";
+  createdAt: string;
   vehicleMake: string;
   vehicleModel: string;
-  VehicleYear: string;           
+  VehicleYear: string;
   accessibilityFeature: string[];
   images: string[];
-  driver: DriverDetails;        
+  driver: DriverDetails;
 }
 
 export interface DriverDetails {
@@ -128,9 +127,9 @@ export interface DriverDetails {
   phone: string;
   email: string;
   licenseNumber: string;
-  status:  "Available" | "Unavailable"
-  createdAt: string;            
-  licenseExpiry: string;     
+  status: "Available" | "Unavailable";
+  createdAt: string;
+  licenseExpiry: string;
 }
 
 export type RideRequestProps = {

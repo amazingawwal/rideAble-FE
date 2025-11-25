@@ -5,7 +5,7 @@ import type { RideContextType } from "../assets/types";
 export const RideContext = createContext<RideContextType>({
   ride: null,
   setRide: () => {},
-  clearRide: () => {}
+  clearRide: () => {},
 });
 
 export const useRide = () => useContext(RideContext);

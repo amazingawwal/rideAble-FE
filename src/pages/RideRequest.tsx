@@ -41,7 +41,7 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
 
   const [selected, setSelected] = useState<string[]>([]);
 
-//   const {setRide} = useRide()
+  //   const {setRide} = useRide()
 
   const toggleItem = (item: string) => {
     setSelected((prev) =>
@@ -127,55 +127,53 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
     e.preventDefault();
     setLoading(true);
     try {
-    if (!pickup || !destination) return;
-    await generateRoute();
-    // toast.success("Route found");
-        
+      if (!pickup || !destination) return;
+      await generateRoute();
+      // toast.success("Route found");
     } catch (err) {
-          if (err instanceof Error) {
-            toast.error(err.message);
-          } else {
-            toast.error("Unexpected error occurred.");
-          }
-        } finally {
-          setLoading(false);
-        }
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error("Unexpected error occurred.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const findRide = async () => {
-    
     try {
-    const route = await generateRoute();
+      const route = await generateRoute();
 
-    const pickupId = route.geocoded_waypoints![0].place_id;
-    const destId = route.geocoded_waypoints![1].place_id;
+      const pickupId = route.geocoded_waypoints![0].place_id;
+      const destId = route.geocoded_waypoints![1].place_id;
 
-    const pickupCoords = await generateCoord(pickupId);
-    const destCoords = await generateCoord(destId);
+      const pickupCoords = await generateCoord(pickupId);
+      const destCoords = await generateCoord(destId);
 
-    const payload: RideRequest = {
-      accessibilityFeatures: selected,
-      pickup: pickupCoords.ors,
-      destination: destCoords.ors,
-    };
+      const payload: RideRequest = {
+        accessibilityFeatures: selected,
+        pickup: pickupCoords.ors,
+        destination: destCoords.ors,
+      };
 
-    const data = await apiRideRequest("/rides/request", "POST", payload);
-    setLoading(true)
-    onDriverFound?.(data);
-    navigate("/pax/ride-request/driver-found");
-    toast.success("Ride found");
-    // setRide(data)
-    console.log(data);
-    return data;
+      const data = await apiRideRequest("/rides/request", "POST", payload);
+      setLoading(true);
+      onDriverFound?.(data);
+      navigate("/pax/ride-request/driver-found");
+      toast.success("Ride found");
+      // setRide(data)
+      console.log(data);
+      return data;
     } catch (err) {
-          if (err instanceof Error) {
-            toast.error(err.message);
-          } else {
-            toast.error("Unexpected error occurred.");
-          }
-        } finally {
-          setLoading(false);
-        }
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error("Unexpected error occurred.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!isLoaded)
@@ -301,18 +299,18 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
 
               <Button onClick={findRide} type="submit" variant="outline">
                 {loading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <Spinner />
-                  <span>Finding your ride...</span>
-                </div>
-              ) : (
-                "Find ride"
-              )}
+                  <div className="flex items-center justify-center gap-2">
+                    <Spinner />
+                    <span>Finding your ride...</span>
+                  </div>
+                ) : (
+                  "Find ride"
+                )}
               </Button>
             </div>
           ) : (
             <Button type="submit" size="sm" variant="outline">
-                            {loading ? (
+              {loading ? (
                 <div className="flex items-center justify-center gap-2">
                   <Spinner />
                   <span>Routing...</span>

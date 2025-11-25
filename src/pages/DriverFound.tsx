@@ -22,21 +22,24 @@ const containerStyle = {
   height: "100%",
 };
 
-export default function DriverFoundScreen({ride, clearRide}:RideContextType) {
-   
+export default function DriverFoundScreen({
+  ride,
+  clearRide,
+}: RideContextType) {
   const [openAccessibility, setOpenAccessibility] = useState(false);
   const [driverPosition, setDriverPosition] = useState({
     lat: Number(-1.4663704),
     lng: Number(53.3786278),
   });
 
-  const passengerLocation = { lat: 6.600044, lng: 3.33445 }
-  const avatar = "https://lh3.googleusercontent.com/aida-public/AB6AXuAG3UhZr5O2o_Cg0INDC1FFRC0AnIbf_S3o5RAWLvyNMn4ZEMez5yMYHAt8VTpgL2lqbVfixNH1040Vjs9Z7tdfTmQNPtwffofDnRsa1EpxXZuwGcYc5a95xQmMOQxRxAmaoOfGFZ1k6cM3WMikrp-Bh1gxWFo19Qq1bEkIOa9N2YOQhCmCrhLin4NWa4H8Zr5SSG7Z4CXq_k4g05GO3EnUvdZEqcn8Jky6RpLbsDXIkoyDf0BujTMLiIfO2NcJb4slXjXNCc5-xRY"
+  const passengerLocation = { lat: 6.600044, lng: 3.33445 };
+  const avatar =
+    "https://lh3.googleusercontent.com/aida-public/AB6AXuAG3UhZr5O2o_Cg0INDC1FFRC0AnIbf_S3o5RAWLvyNMn4ZEMez5yMYHAt8VTpgL2lqbVfixNH1040Vjs9Z7tdfTmQNPtwffofDnRsa1EpxXZuwGcYc5a95xQmMOQxRxAmaoOfGFZ1k6cM3WMikrp-Bh1gxWFo19Qq1bEkIOa9N2YOQhCmCrhLin4NWa4H8Zr5SSG7Z4CXq_k4g05GO3EnUvdZEqcn8Jky6RpLbsDXIkoyDf0BujTMLiIfO2NcJb4slXjXNCc5-xRY";
 
   const [routePath, setRoutePath] = useState([]);
   const [activeImage, setActiveImage] = useState(0);
 
-  const {driver, route} = ride!;
+  const { driver, route } = ride!;
   // Load Google Maps
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
@@ -142,12 +145,11 @@ export default function DriverFoundScreen({ride, clearRide}:RideContextType) {
         {/* Driver Info */}
 
         <div className="flex items-center gap-4 mb-6">
-          <img
-            src={avatar}
-            className="w-16 h-16 rounded-full border shadow"
-          />
+          <img src={avatar} className="w-16 h-16 rounded-full border shadow" />
           <div>
-            <p className="text-xl font-semibold">{driver.driver.name || "Ayo"}</p>
+            <p className="text-xl font-semibold">
+              {driver.driver.name || "Ayo"}
+            </p>
             <p className="text-yellow-600 text-sm">⭐ {4.9}</p>
 
             <div className="flex items-center gap-1 text-green-600 mt-1">
@@ -155,7 +157,9 @@ export default function DriverFoundScreen({ride, clearRide}:RideContextType) {
               <span className="text-sm font-medium">Verified Driver</span>
             </div>
 
-            <p className="text-gray-500 text-sm mt-1">{route.durationMin} min arrival</p>
+            <p className="text-gray-500 text-sm mt-1">
+              {route.durationMin} min arrival
+            </p>
           </div>
         </div>
 
@@ -233,6 +237,3 @@ export default function DriverFoundScreen({ride, clearRide}:RideContextType) {
     </div>
   );
 }
-
-
-
