@@ -29,8 +29,8 @@ export default function DriverFoundScreen({
 }: RideContextType) {
   const [openAccessibility, setOpenAccessibility] = useState(false);
   const [driverPosition, setDriverPosition] = useState({
-    lat: Number(-1.4663704),
-    lng: Number(53.3786278),
+    lat: Number(6.4663704),
+    lng: Number(3.3786278),
   });
 
   const passengerLocation = { lat: 6.600044, lng: 3.33445 };
@@ -40,7 +40,6 @@ export default function DriverFoundScreen({
   const [routePath, setRoutePath] = useState([]);
   const [activeImage, setActiveImage] = useState(0);
 
-  const { driver, route } = ride!;
   // Load Google Maps
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
@@ -83,7 +82,7 @@ export default function DriverFoundScreen({
         }
       },
     );
-  }, [driverPosition, "-1.4663704, 53.3786278", isLoaded]);
+  }, [driverPosition, passengerLocation, isLoaded]);
 
   useEffect(() => {
     fetchRoute();
@@ -98,9 +97,12 @@ export default function DriverFoundScreen({
     clearRide!();
     navigate("/pax/ride-request");
   }
+  
+  if (!isLoaded) return <p>Loading map...</p>;
 
   if (!ride) return <p>No ride assigned.</p>;
-  if (!isLoaded) return <p>Loading map...</p>;
+  const { driver, route } = ride!;
+ 
 
   return (
     <div className="min-h-screen h-screen w-full grid grid-cols-1 md:grid-cols-2 bg-gray-50">
