@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import type { RideContextType } from "../assets/types";
 import AccessibilityModal from "../components/AccessibilityModal";
+import { useNavigate } from "react-router-dom";
 
 const containerStyle = {
   width: "100%",
@@ -87,6 +88,13 @@ export default function DriverFoundScreen({
   useEffect(() => {
     fetchRoute();
   }, [fetchRoute]);
+
+  const navigate = useNavigate();
+
+  function handleCancelRide(){
+    clearRide()
+    navigate("/pax/ride-request");
+  }
 
   if (!ride) return <p>No ride assigned.</p>;
   if (!isLoaded) return <p>Loading map...</p>;
@@ -221,7 +229,7 @@ export default function DriverFoundScreen({
         </div>
 
         <button
-          onClick={clearRide}
+          onClick={handleCancelRide}
           className="mt-5 w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl font-medium shadow"
         >
           Cancel Ride
