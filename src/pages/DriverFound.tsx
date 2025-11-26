@@ -97,12 +97,11 @@ export default function DriverFoundScreen({
     clearRide!();
     navigate("/pax/ride-request");
   }
-  
+
   if (!isLoaded) return <p>Loading map...</p>;
 
   if (!ride) return <p>No ride assigned.</p>;
   const { driver, route } = ride!;
- 
 
   return (
     <div className="min-h-screen h-screen w-full grid grid-cols-1 md:grid-cols-2 bg-gray-50">

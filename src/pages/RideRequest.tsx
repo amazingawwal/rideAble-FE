@@ -89,7 +89,7 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
           resolve({
             lat: loc.lat(),
             lng: loc.lng(),
-            ors: [loc.lng(), loc.lat()], 
+            ors: [loc.lng(), loc.lat()],
           });
         } else {
           reject("Failed to geocode placeId " + id);
@@ -116,11 +116,9 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
             setDuration(leg.duration?.text || null);
             resolve(result);
             if (!pickup.trim() || !destination.trim()) {
-  return reject(new Error("Pickup or destination is empty"));
-}
-
+              return reject(new Error("Pickup or destination is empty"));
+            }
           } else {
-            
             reject("Failed to generate route");
           }
         },
@@ -133,9 +131,10 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
     setLoading(true);
     try {
       if (!pickup || !destination) {
-        alert("Please enter pickup and drop off locations")
+        alert("Please enter pickup and drop off locations");
         setLoading(false);
-        return};
+        return;
+      }
       await generateRoute();
       // toast.success("Route found");
     } catch (err) {
@@ -151,13 +150,11 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
 
   const findRide = async () => {
     try {
-
-        
-      
       if (selected.length === 0) {
-        alert("Please select your preferred accessibility options")
-        return};
-      
+        alert("Please select your preferred accessibility options");
+        return;
+      }
+
       const route = await generateRoute();
 
       const pickupId = route.geocoded_waypoints![0].place_id;
@@ -172,9 +169,10 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
         destination: destCoords.ors,
       };
 
-      setLoading(true); setLoading(true);
+      setLoading(true);
+      setLoading(true);
       const data = await apiRideRequest("/rides/request", "POST", payload);
-     
+
       onDriverFound?.(data);
       navigate("/pax/ride-request/driver-found");
       toast.success("Ride found");
@@ -313,7 +311,7 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
                 Cancel
               </button>
 
-              <Button onClick={findRide} type="button"  variant="outline">
+              <Button onClick={findRide} type="button" variant="outline">
                 {loading ? (
                   <div className="flex items-center justify-center gap-2">
                     <Spinner />
