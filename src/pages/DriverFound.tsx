@@ -91,8 +91,11 @@ export default function DriverFoundScreen({
 
   const navigate = useNavigate();
 
-  function handleCancelRide(){
-    clearRide()
+  function handleCancelRide() {
+    // if(!clearRide){
+    //     return
+    // }
+    clearRide!();
     navigate("/pax/ride-request");
   }
 
