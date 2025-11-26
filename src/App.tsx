@@ -5,7 +5,7 @@ import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Sign-Up";
 import Navbar from "./components/Navbar";
 import { useState } from "react";
-import type { PassengerData } from "./assets/types";
+import type { PassengerData, RideResponse } from "./assets/types";
 import Dashboard from "./pages/Dashboard";
 import DriverVehicleRegistration from "./pages/Auth/Driver_Reg";
 import ProtectedRoute from "./utils/ProtectedRoute";
@@ -29,8 +29,8 @@ function App() {
     setUser(data);
   };
 
-  const handleFindRide = (data) => {
-    setRide!(data);
+  const handleFindRide = (data:RideResponse) => {
+    setRide?.(data);
     console.log({ context: data });
   };
 

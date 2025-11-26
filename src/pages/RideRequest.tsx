@@ -10,7 +10,7 @@ import InputField from "../components/Input";
 import Button from "../components/Button";
 import Spinner from "../utils/Spinner";
 import { apiRideRequest } from "../utils/api/rideRequestAPI";
-import type { RideRequest, RideRequestProps } from "../assets/types";
+import type { RideRequest, RideRequestProps, RideResponse } from "../assets/types";
 import toast from "react-hot-toast";
 // import { useRide } from "../hooks/DriverContext";
 import { useNavigate } from "react-router-dom";
@@ -171,7 +171,7 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
 
       setLoading(true);
       setLoading(true);
-      const data = await apiRideRequest("/rides/request", "POST", payload);
+      const data:RideResponse = await apiRideRequest("/rides/request", "POST", payload);
 
       onDriverFound?.(data);
       navigate("/pax/ride-request/driver-found");

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   GoogleMap,
@@ -37,7 +37,7 @@ export default function DriverFoundScreen({
   const avatar =
     "https://lh3.googleusercontent.com/aida-public/AB6AXuAG3UhZr5O2o_Cg0INDC1FFRC0AnIbf_S3o5RAWLvyNMn4ZEMez5yMYHAt8VTpgL2lqbVfixNH1040Vjs9Z7tdfTmQNPtwffofDnRsa1EpxXZuwGcYc5a95xQmMOQxRxAmaoOfGFZ1k6cM3WMikrp-Bh1gxWFo19Qq1bEkIOa9N2YOQhCmCrhLin4NWa4H8Zr5SSG7Z4CXq_k4g05GO3EnUvdZEqcn8Jky6RpLbsDXIkoyDf0BujTMLiIfO2NcJb4slXjXNCc5-xRY";
 
-  const [routePath, setRoutePath] = useState([]);
+  const [routePath, setRoutePath] = useState<google.maps.LatLngLiteral[]>([]);
   const [activeImage, setActiveImage] = useState(0);
 
   // Load Google Maps
@@ -58,6 +58,13 @@ export default function DriverFoundScreen({
 
     return () => clearInterval(interval);
   }, []);
+
+  const polylineOptions = useMemo(() => ({
+  strokeColor: "#0284c7",
+  strokeOpacity: 0.9,
+  strokeWeight: 5,
+}), []);
+
 
   // Get route polyline between driver → passenger
   const fetchRoute = useCallback(() => {
@@ -91,16 +98,17 @@ export default function DriverFoundScreen({
   const navigate = useNavigate();
 
   function handleCancelRide() {
-    // if(!clearRide){
-    //     return
-    // }
-    clearRide!();
+    clearRide?.();
     navigate("/pax/ride-request");
   }
 
   if (!isLoaded) return <p>Loading map...</p>;
 
-  if (!ride) return <p>No ride assigned.</p>;
+  if (!ride) {
+  navigate("/pax/ride-request");
+  return null;
+}
+
   const { driver, route } = ride!;
 
   return (
@@ -126,11 +134,7 @@ export default function DriverFoundScreen({
           {/* Animated polyline */}
           <Polyline
             path={routePath}
-            options={{
-              strokeColor: "#0284c7",
-              strokeOpacity: 0.9,
-              strokeWeight: 5,
-            }}
+            options={polylineOptions}
           />
         </GoogleMap>
       </div>
@@ -160,7 +164,7 @@ export default function DriverFoundScreen({
           <img src={avatar} className="w-16 h-16 rounded-full border shadow" />
           <div>
             <p className="text-xl font-semibold">
-              {driver.driver.name || "Ayo"}
+              {driver.driver.name || "Driver"}
             </p>
             <p className="text-yellow-600 text-sm">⭐ {4.9}</p>
 
@@ -196,7 +200,7 @@ export default function DriverFoundScreen({
         </div>
 
         {/* Vehicle Images Carousel */}
-        {driver.images?.length > 0 && (
+        {Array.isArray(driver.images) && driver.images.length > 0 && (
           <div className="relative mb-6">
             <img
               src={driver.images[activeImage]}

@@ -141,3 +141,10 @@ export interface RideContextType {
   setRide?: (data: RideResponse | null) => void;
   clearRide?: () => void;
 }
+
+
+export interface AccessibilityModalType {
+  open : boolean
+  onClose : ()=> void
+  features : string[]
+}
