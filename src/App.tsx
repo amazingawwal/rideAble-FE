@@ -23,13 +23,13 @@ function App() {
   const { setRide } = useRide();
   const { ride, clearRide } = useRide();
 
-  const handleAuthSuccess = (data: PassengerData) => {
+  const handleAuthSuccess = (data: PassengerData | DriverDTO ) => {
     localStorage.setItem("token", data.access_token);
-    console.log(data);
+    console.log("Data:", data);
     setUser(data);
   };
 
-  const handleFindRide = (data:RideResponse) => {
+  const handleFindRide = (data: RideResponse) => {
     setRide?.(data);
     console.log({ context: data });
   };
@@ -46,7 +46,7 @@ function App() {
             path="/auth/login"
             element={<Login onAuthSuccess={handleAuthSuccess} />}
           />
-          <Route path="/driver/login" element={<DriverLogin />} />
+          <Route path="/driver/login" element={<DriverLogin onAuthSuccess={handleAuthSuccess} />} />
           <Route path="/auth/signup" element={<Signup />} />
           <Route path="/dashboard/pax" element={<PassengerDashboard />} />
           <Route
@@ -66,7 +66,7 @@ function App() {
             element={
               <ProtectedRoute>
                 {" "}
-                <Dashboard user={user} />
+                <Dashboard user={user} setUser={setUser} />
               </ProtectedRoute>
             }
           />

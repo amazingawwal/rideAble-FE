@@ -7,11 +7,10 @@ import toast from "react-hot-toast";
 import { apiRequest } from "../../utils/api/api";
 import { AccessVehicle } from "../../components/React_Icons/Accessible";
 import { Link } from "react-router-dom";
-import type { DriverLogin, DriverDTO } from "../../assets/types";
+import type { DriverDTO, DriverLogin, DriverLoginProps } from "../../assets/types";
+import { useNavigate } from "react-router-dom";
 
-interface DriverLoginProps {
-  onAuthSuccess?: (data: DriverDTO) => void;
-}
+
 
 export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
   const [formData, setFormData] = useState<DriverLogin>({
@@ -19,6 +18,8 @@ export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
     phone: "",
   });
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,7 +37,7 @@ export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
     }
 
     try {
-      const response = await apiRequest(
+      const response: DriverDTO = await apiRequest(
         "/registration/sign-in",
         "POST",
         formData,
@@ -44,6 +45,8 @@ export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
       toast.success("Driver login successful!");
 
       onAuthSuccess?.(response);
+      // console.log(response)
+      navigate('/dashboard/driver')
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message || "Login failed");

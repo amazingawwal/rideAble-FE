@@ -16,7 +16,7 @@ export type Pax = {
 
 export interface PassengerData {
   role: "pax";
-  pax: Pax;
+  response: Pax;
   access_token: string;
 }
 
@@ -65,9 +65,17 @@ export interface VehicleData {
   // otherFeatures: string;
 }
 
+// export type DriverLogin = {
+//   email: string;
+//   phone: string;
+// };
+
 export type DriverLogin = {
-  email: string;
-  phone: string;
+  name: string
+  phone: string
+  email: string
+  licenseNumber: string
+  status: "Unavailable" | "Available" | "Suspended"
 };
 
 // export interface DriverDTO  {
@@ -77,8 +85,12 @@ export type DriverLogin = {
 
 export interface DriverDTO {
   role: "driver";
-  driver: DriverLogin;
+  response: DriverLogin;
   access_token: string;
+}
+
+export interface DriverLoginProps {
+  onAuthSuccess?: (data: DriverDTO) => void;
 }
 
 export type DriverRideState =
@@ -142,9 +154,16 @@ export interface RideContextType {
   clearRide?: () => void;
 }
 
-
 export interface AccessibilityModalType {
-  open : boolean
-  onClose : ()=> void
-  features : string[]
+  open: boolean;
+  onClose: () => void;
+  features: string[];
 }
+
+
+
+//  {  name: string
+//     phone: string
+//     email: string
+//     licenseNumber: string
+//     status: "Unavailable" | "Available" | "Suspended"}

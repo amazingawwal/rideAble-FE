@@ -59,12 +59,14 @@ export default function DriverFoundScreen({
     return () => clearInterval(interval);
   }, []);
 
-  const polylineOptions = useMemo(() => ({
-  strokeColor: "#0284c7",
-  strokeOpacity: 0.9,
-  strokeWeight: 5,
-}), []);
-
+  const polylineOptions = useMemo(
+    () => ({
+      strokeColor: "#0284c7",
+      strokeOpacity: 0.9,
+      strokeWeight: 5,
+    }),
+    [],
+  );
 
   // Get route polyline between driver → passenger
   const fetchRoute = useCallback(() => {
@@ -105,9 +107,9 @@ export default function DriverFoundScreen({
   if (!isLoaded) return <p>Loading map...</p>;
 
   if (!ride) {
-  navigate("/pax/ride-request");
-  return null;
-}
+    navigate("/pax/ride-request");
+    return null;
+  }
 
   const { driver, route } = ride!;
 
@@ -132,10 +134,7 @@ export default function DriverFoundScreen({
           />
 
           {/* Animated polyline */}
-          <Polyline
-            path={routePath}
-            options={polylineOptions}
-          />
+          <Polyline path={routePath} options={polylineOptions} />
         </GoogleMap>
       </div>
 

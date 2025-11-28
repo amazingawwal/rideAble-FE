@@ -1,7 +1,11 @@
 import { motion } from "framer-motion";
 import type { AccessibilityModalType } from "../assets/types";
 
-export default function AccessibilityModal({ open, onClose, features }:AccessibilityModalType) {
+export default function AccessibilityModal({
+  open,
+  onClose,
+  features,
+}: AccessibilityModalType) {
   if (!open) return null;
 
   return (
