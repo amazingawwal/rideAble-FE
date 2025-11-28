@@ -7,10 +7,12 @@ import toast from "react-hot-toast";
 import { apiRequest } from "../../utils/api/api";
 import { AccessVehicle } from "../../components/React_Icons/Accessible";
 import { Link } from "react-router-dom";
-import type { DriverDTO, DriverLogin, DriverLoginProps } from "../../assets/types";
+import type {
+  DriverDTO,
+  DriverLogin,
+  DriverLoginProps,
+} from "../../assets/types";
 import { useNavigate } from "react-router-dom";
-
-
 
 export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
   const [formData, setFormData] = useState<DriverLogin>({
@@ -19,7 +21,7 @@ export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
   });
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -46,7 +48,7 @@ export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
 
       onAuthSuccess?.(response);
       // console.log(response)
-      navigate('/dashboard/driver')
+      navigate("/dashboard/driver");
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message || "Login failed");

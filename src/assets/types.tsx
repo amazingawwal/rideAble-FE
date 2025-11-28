@@ -71,11 +71,11 @@ export interface VehicleData {
 // };
 
 export type DriverLogin = {
-  name: string
-  phone: string
-  email: string
-  licenseNumber: string
-  status: "Unavailable" | "Available" | "Suspended"
+  name: string;
+  phone: string;
+  email: string;
+  licenseNumber: string;
+  status: "Unavailable" | "Available" | "Suspended";
 };
 
 // export interface DriverDTO  {
@@ -159,8 +159,6 @@ export interface AccessibilityModalType {
   onClose: () => void;
   features: string[];
 }
-
-
 
 //  {  name: string
 //     phone: string

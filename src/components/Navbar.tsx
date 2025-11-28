@@ -3,7 +3,11 @@ import type { PassengerData, DriverDTO } from "../assets/types";
 
 // {user}: {user: PassengerData | DriverDTO | null;}
 
-export default function Navbar({user}: {user: PassengerData | DriverDTO | null;}) {
+export default function Navbar({
+  user,
+}: {
+  user: PassengerData | DriverDTO | null;
+}) {
   const navigate = useNavigate();
 
   return (

@@ -3,11 +3,10 @@ import Button from "../components/Button";
 import type { UserProps } from "../assets/types";
 
 // const Dashboard: React.FC<UserProps> = ({ user }) => {
-const Dashboard = ({ user }: UserProps , ) => {
+const Dashboard = ({ user }: UserProps) => {
   const navigate = useNavigate();
   console.log("USER-", user);
   const handleLogout = () => {
-    
     localStorage.removeItem("token");
     navigate("/");
   };
