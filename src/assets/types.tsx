@@ -166,9 +166,8 @@ export interface AccessibilityModalType {
 //     licenseNumber: string
 //     status: "Unavailable" | "Available" | "Suspended"}
 
-
 export interface UserContextType {
-  user?:  DriverDTO | PassengerData | null;
-  setUser?: (data: DriverDTO | PassengerData  | null) => void;
+  user?: DriverDTO | PassengerData | null;
+  setUser?: (data: DriverDTO | PassengerData | null) => void;
   clearUser?: () => void;
 }
