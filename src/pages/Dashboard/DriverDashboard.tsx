@@ -73,7 +73,10 @@ export default function DriverDashboard() {
     //   setRideState("en_route_pickup");
   };
 
-  const reset = () => {};
+  const reset = () => {
+    setRideState('idle')
+    setCurrentRide(null);
+  };
 
   const handleDecline = () => {
     setIncomingRequest(null);
@@ -147,7 +150,7 @@ export default function DriverDashboard() {
               <span className="font-medium">{currentRide.passengerName}</span>
             </div>
 
-            <button className="w-full bg-sky-600 text-white py-3 rounded-xl font-semibold shadow">
+            <button onClick={() => setRideState("en_route_pickup")} className="w-full bg-sky-600 text-white py-3 rounded-xl font-semibold shadow">
               Start Ride
             </button>
           </div>
@@ -181,14 +184,14 @@ export default function DriverDashboard() {
       />
       {rideState === "en_route_pickup" && (
         <EnRouteToPickup
-          ridePickup={incomingRequest}
+          ridePickup={currentRide}
           onArrived={() => setRideState("arrived")}
         />
       )}
 
       {rideState === "arrived" && (
         <ArrivedAtPickup
-          ridePickup={incomingRequest}
+          ridePickup={currentRide}
           onStartTrip={() => setRideState("in_trip")}
         />
       )}

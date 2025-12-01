@@ -7,7 +7,7 @@ export default function EnRouteToPickup({ ridePickup, onArrived }: RideStatus) {
     <motion.div
       initial={{ x: 40, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      className="bg-white p-6 shadow-xl rounded-l-2xl overflow-y-auto"
+      className=" bg-white p-6 shadow-xl rounded-l-2xl "
     >
       <div className="p-4">
         <h2 className="font-bold text-xl mb-2">Heading to Pickup</h2>

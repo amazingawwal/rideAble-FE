@@ -40,7 +40,7 @@ export default function PassengerDashboard() {
     navigate("/pax/ride-request");
   }
 
-  // ----- COMPLETED JOURNEYS MOCK DATA -----
+  
   const allJourneys: Journey[] = [
     {
       from: "123 Main St.",
@@ -92,7 +92,7 @@ export default function PassengerDashboard() {
     },
   ];
 
-  // ----- PAGINATION -----
+  
   const ITEMS_PER_PAGE = 5;
   const [page, setPage] = useState(1);
 
@@ -101,14 +101,14 @@ export default function PassengerDashboard() {
 
   const totalPages = Math.ceil(allJourneys.length / ITEMS_PER_PAGE);
 
-  // ----- MODAL -----
+
   const [selectedJourney, setSelectedJourney] = useState<Journey | null>(null);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center px-4 py-6 ">
-      {/* MAIN LAYOUT */}
+ 
       <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
-        {/* LEFT SIDE */}
+        
         <div className="flex flex-col gap-6">
           <div className="w-full bg-white rounded-xl shadow p-4 flex flex-col items-center">
             <div className="w-full h-52 rounded-xl overflow-hidden">
@@ -159,7 +159,7 @@ export default function PassengerDashboard() {
           </div>
         </div>
 
-        {/* RIGHT SIDE */}
+        
         <div className="hidden lg:block bg-white rounded-xl shadow p-4 h-fit">
           <h2 className="flex items-center gap-2 text-gray-700 font-semibold mb-4">
             <Clock size={18} className="text-sky-600" />
