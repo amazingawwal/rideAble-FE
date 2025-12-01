@@ -74,7 +74,7 @@ export default function DriverDashboard() {
   };
 
   const reset = () => {
-    setRideState('idle')
+    setRideState("idle");
     setCurrentRide(null);
   };
 
@@ -150,7 +150,10 @@ export default function DriverDashboard() {
               <span className="font-medium">{currentRide.passengerName}</span>
             </div>
 
-            <button onClick={() => setRideState("en_route_pickup")} className="w-full bg-sky-600 text-white py-3 rounded-xl font-semibold shadow">
+            <button
+              onClick={() => setRideState("en_route_pickup")}
+              className="w-full bg-sky-600 text-white py-3 rounded-xl font-semibold shadow"
+            >
               Start Ride
             </button>
           </div>
