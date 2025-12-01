@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { MapPin, User, Clock, ArrowRight } from "lucide-react";
+import type { IncomingRequest } from "../../assets/types";
 
-export default function IncomingRideRequest({ request, onAccept, onDecline }) {
+export default function IncomingRideRequest({ request, onAccept, onDecline }: IncomingRequest) {
   const [seconds, setSeconds] = useState(20);
 
-  // Countdown timer (auto-decline)
+
   useEffect(() => {
     if (!request) return;
 
@@ -93,7 +94,7 @@ export default function IncomingRideRequest({ request, onAccept, onDecline }) {
         </button>
 
         <button
-          onClick={onAccept}
+          onClick={()=>onAccept(request)}
           className="py-3 bg-green-600 text-white rounded-xl font-semibold"
         >
           Accept Ride

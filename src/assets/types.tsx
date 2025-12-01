@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export type DisabilityType =
   | ""
   | "Select option"
@@ -178,3 +180,59 @@ export interface ProfileMenuProps {
   onManageLocations: () => void;
   onManageAccessibility: () => void;
 }
+
+export interface StatCardProps {
+  icon: ReactNode;       
+  title: string;       
+  value: string | number 
+}
+
+export interface IncomingRideRequestType {
+    pickup: string
+    destination: string
+    passengerName: string
+    distanceToPickup: number
+    estimatedFare: number
+    estimatedTimeToPickup: number
+}
+
+export interface ActiveRideType {
+    pickup: string
+    destination: string
+    passengerName: string
+    estimatedFare: number
+    estimatedTime: number
+    estimatedDistance: number
+    estimatedDistanceRemaining: number
+    estimatedTimeRemaining: number
+    
+  }
+
+
+export interface IncomingRequest{
+  request : IncomingRideRequestType | null
+  onAccept : (rideData: IncomingRideRequestType)=>void
+  onDecline : ()=>void
+}
+
+export interface RideStatus{
+  ridePickup?: IncomingRideRequestType   | null
+  rideInprogress?: ActiveRideType | null
+  onArrived?: ()=> void
+  onStartTrip?: ()=> void
+  onEndTrip?:()=>void
+  onFinish?:()=>void
+}
+
+export type DriverLocation = {
+  lat: number
+  lng: number
+}
+
+
+export interface DriverLocationType {
+  driverLocation : DriverLocation
+}
+
+
+           

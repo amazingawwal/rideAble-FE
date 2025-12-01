@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import { User } from "lucide-react";
+import type { RideStatus } from "../../assets/types";
 
-export default function ArrivedAtPickup({ ride, onStartTrip }) {
+export default function ArrivedAtPickup({ ridePickup, onStartTrip }: RideStatus) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -15,7 +16,7 @@ export default function ArrivedAtPickup({ ride, onStartTrip }) {
           <User className="text-purple-500" />
           <div>
             <p className="text-sm text-gray-500">Passenger</p>
-            <p className="font-bold">{ride.passengerName}</p>
+            <p className="font-bold">{ridePickup?.passengerName}</p>
           </div>
         </div>
 

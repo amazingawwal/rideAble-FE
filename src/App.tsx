@@ -22,7 +22,7 @@ function App() {
   // const [user, setUser] = useState<PassengerData | DriverDTO | null>(null);
   const { setRide } = useRide();
   const { ride, clearRide } = useRide();
-  const { clearUser, setUser, user } = useUser();
+  const { setUser } = useUser();
 
   const handleAuthSuccess = (data: PassengerData | DriverDTO) => {
     localStorage.setItem("token", data.access_token);
@@ -38,7 +38,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Navbar user={user!} />
+        <Navbar />
         <Toaster />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -68,7 +68,7 @@ function App() {
             path="/dashboard/driver"
             element={
               <ProtectedRoute>
-                <DriverDashboard driver={"driver"} />
+                <DriverDashboard  />
               </ProtectedRoute>
             }
           />
@@ -84,7 +84,7 @@ function App() {
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <Dashboard user={user!} clearUser={clearUser} />
+                <Dashboard />
               </ProtectedRoute>
             }
           />

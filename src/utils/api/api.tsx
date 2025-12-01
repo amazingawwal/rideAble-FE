@@ -6,13 +6,13 @@ import type {
   Pax,
   DriverData,
   VehicleData,
-  DriverLogin,
+  DriverAuthType,
 } from "../../assets/types";
 
 export async function apiRequest(
   endpoint: string,
   method = "GET",
-  data: Pax | DriverData | VehicleData | DriverLogin,
+  data: Pax | DriverData | VehicleData | DriverAuthType,
 ) {
   const token = localStorage.getItem("authToken");
 

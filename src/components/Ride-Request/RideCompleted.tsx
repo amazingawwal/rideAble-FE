@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
+import type { RideStatus } from "../../assets/types";
 
-export default function TripCompleted({ ride, onFinish }) {
+export default function TripCompleted({ rideInprogress, onFinish }: RideStatus) {
   return (
     <motion.div
       initial={{ scale: 0.7, opacity: 0 }}
@@ -15,7 +16,7 @@ export default function TripCompleted({ ride, onFinish }) {
 
       <div className="bg-white p-4 shadow rounded-xl mb-5">
         <p className="text-gray-500 text-sm">Total Fare</p>
-        <p className="font-bold text-2xl">₦{ride.totalFare}</p>
+        <p className="font-bold text-2xl">₦{rideInprogress?.estimatedFare}</p>
       </div>
 
       <button

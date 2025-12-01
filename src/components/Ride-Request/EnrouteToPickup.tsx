@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import { Navigation, MapPin } from "lucide-react";
+import type { RideStatus } from "../../assets/types";
 
-export default function EnRouteToPickup({ ride, onArrived }) {
+export default function EnRouteToPickup({ ridePickup, onArrived }: RideStatus) {
   return (
     <motion.div
       initial={{ x: 40, opacity: 0 }}
@@ -15,12 +16,12 @@ export default function EnRouteToPickup({ ride, onArrived }) {
           <p className="text-gray-500 text-sm">Pickup Location</p>
           <p className="font-bold flex items-center gap-2">
             <MapPin className="text-red-500" size={18} />
-            {ride.pickup}
+            {ridePickup?.pickup}
           </p>
 
           <div className="mt-4">
             <p className="text-gray-500 text-sm">Estimated Arrival</p>
-            <p className="font-bold text-lg">{ride.etaToPickup} mins</p>
+            <p className="font-bold text-lg">{ridePickup?.estimatedTimeToPickup} mins</p>
           </div>
 
           <button

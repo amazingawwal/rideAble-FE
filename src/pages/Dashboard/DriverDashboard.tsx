@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import type { DriverRideState } from "../../assets/types";
+import type { ActiveRideType, DriverRideState, IncomingRideRequestType, StatCardProps } from "../../assets/types";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import {
   Clock,
@@ -17,25 +17,33 @@ import ArrivedAtPickup from "../../components/Ride-Request/ArrivedAtPickup";
 import TripCompleted from "../../components/Ride-Request/RideCompleted";
 import TripInProgress from "../../components/Ride-Request/RideInProgress";
 import IncomingRideRequest from "../../components/Ride-Request/IncomingRideRequest";
+import { activeRideData, newIncomingRequest } from "../../assets/staticData";
+import { driverLocation } from "../../assets/staticData";
+import { useUser } from "../../hooks/user/userContext";
 
-export default function DriverDashboard({ driver }) {
+
+
+export default function DriverDashboard() {
   const [online, setOnline] = useState(true);
-  const [currentRide, setCurrentRide] = useState(null);
-  const [incomingRequest, setIncomingRequest] = useState(null);
+  const [currentRide, setCurrentRide] = useState<IncomingRideRequestType | null>(null);
+  const [incomingRequest, setIncomingRequest] = useState<IncomingRideRequestType | null>(null);
   const [rideState, setRideState] = useState<DriverRideState>("idle");
-  const [activeRide, setActiveRide] = useState(null);
+  const [activeRide, setActiveRide] = useState<ActiveRideType | null>(null);
 
   const [driverPos, setDriverPos] = useState({
-    lat: driver?.lat || 6.5244,
-    lng: driver?.lng || 3.3792,
+    lat: driverLocation.lat ,
+    lng: driverLocation.lng,
   });
+
+  const {user} = useUser()
+  const driver = user?.response
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     libraries: ["places"],
   });
 
-  // Simulate GPS movement (replace with websocket)
+
   useEffect(() => {
     const interval = setInterval(() => {
       setDriverPos((p) => ({
@@ -48,24 +56,20 @@ export default function DriverDashboard({ driver }) {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIncomingRequest({
-        pickup: "Ikeja City Mall",
-        destination: "Lekki Phase 1",
-        passengerName: "Sarah Johnson",
-        distanceToPickup: 2.4,
-        estimatedFare: 2500,
-      });
+      setIncomingRequest(newIncomingRequest);
     }, 8000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  const handleAccept = (rideData) => {
+  const handleAccept = (rideData: ActiveRideType ) => {
     setCurrentRide(incomingRequest);
     setIncomingRequest(null);
     setActiveRide(rideData);
     //   setRideState("en_route_pickup");
   };
+
+  const reset = ()=>{}
 
   const handleDecline = () => {
     setIncomingRequest(null);
@@ -75,7 +79,7 @@ export default function DriverDashboard({ driver }) {
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-3 bg-gray-100">
-      {/* LEFT: MAP */}
+     
       <div className="md:col-span-2 h-[40vh] md:h-screen">
         <GoogleMap
           zoom={15}
@@ -86,16 +90,16 @@ export default function DriverDashboard({ driver }) {
         </GoogleMap>
       </div>
 
-      {/* RIGHT: DRIVER PANEL */}
+      
       <motion.div
         initial={{ x: 40, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         className="bg-white p-6 shadow-xl rounded-l-2xl overflow-y-auto"
       >
         <h2 className="text-2xl font-bold mb-2">Driver Dashboard</h2>
-        <p className="text-gray-500 mb-4">Welcome back, {driver.name}</p>
+        <p className="text-gray-500 mb-4">Welcome back, {driver?.name}</p>
 
-        {/* ONLINE TOGGLE */}
+       
         <div className="flex items-center justify-between p-3 bg-gray-100 rounded-xl mb-4">
           <span className="font-semibold">
             Status: {online ? "Online" : "Offline"}
@@ -110,7 +114,7 @@ export default function DriverDashboard({ driver }) {
           </button>
         </div>
 
-        {/* STATS */}
+        
         <div className="grid grid-cols-2 gap-4 mb-6">
           <StatCard
             icon={<DollarSign />}
@@ -122,7 +126,7 @@ export default function DriverDashboard({ driver }) {
           <StatCard icon={<BarChart />} title="Rating" value="4.8 ⭐" />
         </div>
 
-        {/* CURRENT RIDE */}
+       
         {currentRide ? (
           <div className="p-4 bg-blue-50 rounded-xl mb-6">
             <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
@@ -152,7 +156,7 @@ export default function DriverDashboard({ driver }) {
           <p className="text-gray-500 mb-6">No rides assigned yet.</p>
         )}
 
-        {/* RECENT TRIPS */}
+        
         <h3 className="font-bold text-lg mb-3">Recent Trips</h3>
 
         <div className="space-y-3">
@@ -174,38 +178,38 @@ export default function DriverDashboard({ driver }) {
       </motion.div>
       <IncomingRideRequest
         request={incomingRequest}
-        onAccept={handleAccept}
+        onAccept={()=>handleAccept(activeRideData)}
         onDecline={handleDecline}
       />
       {rideState === "en_route_pickup" && (
         <EnRouteToPickup
-          ride={activeRide}
+          ridePickup={incomingRequest}
           onArrived={() => setRideState("arrived")}
         />
       )}
 
       {rideState === "arrived" && (
         <ArrivedAtPickup
-          ride={activeRide}
+          ridePickup={incomingRequest}
           onStartTrip={() => setRideState("in_trip")}
         />
       )}
 
       {rideState === "in_trip" && (
         <TripInProgress
-          ride={activeRide}
+          rideInprogress={activeRide}
           onEndTrip={() => setRideState("completed")}
         />
       )}
 
       {rideState === "completed" && (
-        <TripCompleted ride={activeRide} onFinish={() => reset()} />
+        <TripCompleted rideInprogress={activeRide} onFinish={() => reset()} />
       )}
     </div>
   );
 }
 
-function StatCard({ icon, title, value }) {
+function StatCard({ icon, title, value }: StatCardProps) {
   return (
     <div className="p-4 bg-gray-50 rounded-xl shadow-sm flex items-center gap-3">
       <div className="p-2 bg-sky-100 text-sky-700 rounded-lg">{icon}</div>

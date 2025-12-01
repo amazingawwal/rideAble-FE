@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
+import type { RideStatus } from "../../assets/types";
 // import { Clock, Route } from "lucide-react";
 
-export default function TripInProgress({ ride, onEndTrip }) {
+export default function TripInProgress({ rideInprogress, onEndTrip }: RideStatus) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -14,11 +15,11 @@ export default function TripInProgress({ ride, onEndTrip }) {
         <div className="flex justify-between">
           <div>
             <p className="text-gray-500 text-sm">Distance Left</p>
-            <p className="font-bold text-lg">{ride.distanceRemaining} km</p>
+            <p className="font-bold text-lg">{rideInprogress?.estimatedDistanceRemaining} km</p>
           </div>
           <div>
             <p className="text-gray-500 text-sm">Arrival In</p>
-            <p className="font-bold text-lg">{ride.etaToDestination} min</p>
+            <p className="font-bold text-lg">{rideInprogress?.estimatedTimeRemaining} min</p>
           </div>
         </div>
 
