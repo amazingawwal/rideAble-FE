@@ -1,11 +1,13 @@
 import { Navigate } from "react-router-dom";
 import type { ProtectedRouteProps } from "../assets/types";
 import Spinner from "./Spinner";
+import { useUser } from "../hooks/user/userContext";
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   loading,
 }) => {
+  const {user} = useUser()
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen bg-gray-50">
@@ -13,9 +15,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       </div>
     );
   }
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
 
-  if (!token) {
+  if (!user ) {
     return <Navigate to="/" replace />;
   }
   return children;

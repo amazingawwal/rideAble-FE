@@ -26,7 +26,7 @@ export default function Login({ onAuthSuccess }: LoginProps) {
       const data = await apiRequest("/auth/login", "POST", { email, password });
       setMessage("Login successful!");
       onAuthSuccess?.(data);
-      navigate("/dashboard");
+      navigate("/dashboard/pax");
     } catch (err) {
       if (err instanceof Error) {
         setMessage(err.message);

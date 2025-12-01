@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Heart, User, Clock } from "lucide-react";
+import { MapPin, Heart, Clock } from "lucide-react";
 import Button from "../../components/Button";
 import GoogleMapView from "../../utils/services/GoogleMapView";
 import { useNavigate } from "react-router-dom";
+
+// import { useUser } from "../../hooks/user/userContext";
 
 interface Journey {
   from: string;
@@ -17,7 +19,7 @@ interface Journey {
 export default function PassengerDashboard() {
   const [userLocation, setUserLocation] =
     useState<google.maps.LatLngLiteral | null>(null);
-
+  
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
@@ -27,7 +29,7 @@ export default function PassengerDashboard() {
         });
       },
       () => {
-        setUserLocation(null); // fallback to default
+        setUserLocation(null); 
       },
     );
   }, []);
@@ -46,7 +48,7 @@ export default function PassengerDashboard() {
       date: "Jan 12, 2025",
       distance: "4.2 miles",
       duration: "13 mins",
-      fare: "$12.50",
+      fare: "₦1200.00",
     },
     {
       from: "456 Oak Ave.",
@@ -54,7 +56,7 @@ export default function PassengerDashboard() {
       date: "Jan 9, 2025",
       distance: "2.8 miles",
       duration: "8 mins",
-      fare: "$9.00",
+      fare: "₦900.00",
     },
     {
       from: "Home",
@@ -62,7 +64,7 @@ export default function PassengerDashboard() {
       date: "Jan 3, 2025",
       distance: "6.5 miles",
       duration: "17 mins",
-      fare: "$15.80",
+      fare: "₦1500.00",
     },
     {
       from: "12 Clover St.",
@@ -70,7 +72,7 @@ export default function PassengerDashboard() {
       date: "Dec 28, 2024",
       distance: "10.8 miles",
       duration: "25 mins",
-      fare: "$28.00",
+      fare: "₦2800.00",
     },
     {
       from: "333 Pine Ln.",
@@ -78,7 +80,7 @@ export default function PassengerDashboard() {
       date: "Dec 21, 2024",
       distance: "3.3 miles",
       duration: "10 mins",
-      fare: "$11.20",
+      fare: "₦1100.20",
     },
     {
       from: "80 Monroe St.",
@@ -86,7 +88,7 @@ export default function PassengerDashboard() {
       date: "Dec 16, 2024",
       distance: "1.5 miles",
       duration: "6 mins",
-      fare: "$6.80",
+      fare: "₦600.00",
     },
   ];
 
@@ -103,25 +105,15 @@ export default function PassengerDashboard() {
   const [selectedJourney, setSelectedJourney] = useState<Journey | null>(null);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center px-4 py-6">
-      <User size={18} />
-      {/* NAVBAR */}
-      {/* <header className="w-full max-w-6xl flex items-center justify-between py-4">
-        <h1 className="text-2xl font-bold">
-          ride<span className="text-sky-500">Able</span>
-        </h1>
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center px-4 py-6 ">
+      
 
-        <button className="text-gray-600 hover:text-sky-600 font-medium flex items-center gap-1">
-         
-          Preferences
-        </button>
-      </header> */}
 
       {/* MAIN LAYOUT */}
       <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
-        {/* LEFT SIDE (same as before) */}
+        {/* LEFT SIDE */}
         <div className="flex flex-col gap-6">
-          {/* MAP + REQUEST RIDE */}
+         
           <div className="w-full bg-white rounded-xl shadow p-4 flex flex-col items-center">
             <div className="w-full h-52 rounded-xl overflow-hidden">
               <GoogleMapView center={userLocation || undefined} />
@@ -132,7 +124,7 @@ export default function PassengerDashboard() {
             </Button>
           </div>
 
-          {/* SAVED LOCATIONS */}
+          
           <div className="w-full  bg-white rounded-xl shadow p-4">
             <h2 className="flex items-center gap-2 text-gray-700 font-semibold mb-3">
               <MapPin size={18} className="text-sky-600" />
@@ -151,7 +143,7 @@ export default function PassengerDashboard() {
             <Button variant="outline">Manage Locations</Button>
           </div>
 
-          {/* PREFERENCES */}
+          
           <div className="w-full bg-white rounded-xl shadow p-4">
             <h2 className="flex items-center gap-2 text-gray-700 font-semibold mb-3">
               <Heart size={18} className="text-sky-600" />
@@ -173,14 +165,14 @@ export default function PassengerDashboard() {
           </div>
         </div>
 
-        {/* RIGHT SIDE — COMPLETED JOURNEYS + PAGINATION */}
+        {/* RIGHT SIDE */}
         <div className="hidden lg:block bg-white rounded-xl shadow p-4 h-fit">
           <h2 className="flex items-center gap-2 text-gray-700 font-semibold mb-4">
             <Clock size={18} className="text-sky-600" />
             Completed Journeys
           </h2>
 
-          {/* JOURNEY LIST */}
+          
           <div className="space-y-4">
             {paginated.map((j, idx) => (
               <button
@@ -195,7 +187,7 @@ export default function PassengerDashboard() {
             ))}
           </div>
 
-          {/* PAGINATION */}
+         
           <div className="flex flex-col">
             <div className="flex justify-between gap-2 items-center mt-5">
               <Button
@@ -223,7 +215,7 @@ export default function PassengerDashboard() {
         </div>
       </div>
 
-      {/* ---------- MODAL ---------- */}
+     
       <AnimatePresence>
         {selectedJourney && (
           <motion.div
@@ -232,7 +224,7 @@ export default function PassengerDashboard() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {/* MODAL CONTENT */}
+           
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}

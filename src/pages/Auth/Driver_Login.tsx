@@ -8,6 +8,7 @@ import { apiRequest } from "../../utils/api/api";
 import { AccessVehicle } from "../../components/React_Icons/Accessible";
 import { Link } from "react-router-dom";
 import type {
+  DriverAuthType,
   DriverDTO,
   DriverLogin,
   DriverLoginProps,
@@ -15,7 +16,7 @@ import type {
 import { useNavigate } from "react-router-dom";
 
 export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
-  const [formData, setFormData] = useState<DriverLogin>({
+  const [formData, setFormData] = useState<DriverAuthType>({
     email: "",
     phone: "",
   });

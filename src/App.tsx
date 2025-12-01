@@ -4,7 +4,6 @@ import Home from "./pages/Home";
 import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Sign-Up";
 import Navbar from "./components/Navbar";
-import { useState } from "react";
 import type { PassengerData, RideResponse } from "./assets/types";
 import Dashboard from "./pages/Dashboard";
 import DriverVehicleRegistration from "./pages/Auth/Driver_Reg";
@@ -17,16 +16,18 @@ import RequestRide from "./pages/RideRequest";
 import DriverFoundScreen from "./pages/DriverFound";
 import DriverDashboard from "./pages/Dashboard/DriverDashboard";
 import { useRide } from "./hooks/UseRide";
+import { useUser } from "./hooks/user/userContext";
 
 function App() {
-  const [user, setUser] = useState<PassengerData | DriverDTO | null>(null);
+  // const [user, setUser] = useState<PassengerData | DriverDTO | null>(null);
   const { setRide } = useRide();
   const { ride, clearRide } = useRide();
+  const {clearUser, setUser, user} = useUser();
 
   const handleAuthSuccess = (data: PassengerData | DriverDTO) => {
     localStorage.setItem("token", data.access_token);
     console.log("Data:", data);
-    setUser(data);
+    setUser?.(data);
   };
 
   const handleFindRide = (data: RideResponse) => {
@@ -37,7 +38,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Navbar user={user} />
+        <Navbar user={user!} />
         <Toaster />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -51,24 +52,36 @@ function App() {
             element={<DriverLogin onAuthSuccess={handleAuthSuccess} />}
           />
           <Route path="/auth/signup" element={<Signup />} />
-          <Route path="/dashboard/pax" element={<PassengerDashboard />} />
+          <Route path="/dashboard/pax" element={
+            <ProtectedRoute>
+            <PassengerDashboard />
+            </ProtectedRoute>
+            } />
           <Route
             path="/pax/ride-request"
             element={<RequestRide onDriverFound={handleFindRide} />}
           />
           <Route
             path="/dashboard/driver"
-            element={<DriverDashboard driver={"driver"} />}
+            element={
+              <ProtectedRoute>
+            <DriverDashboard driver={"driver"} />
+            </ProtectedRoute>
+            }
           />
           <Route
             path="/pax/ride-request/driver-found"
-            element={<DriverFoundScreen ride={ride} clearRide={clearRide} />}
+            element={
+              <ProtectedRoute>
+            <DriverFoundScreen ride={ride} clearRide={clearRide} />
+            </ProtectedRoute>
+            }
           />
           <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <Dashboard user={user} />
+                <Dashboard user={user!} clearUser={clearUser} />
               </ProtectedRoute>
             }
           />
