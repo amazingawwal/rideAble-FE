@@ -3,9 +3,12 @@ import { motion } from "framer-motion";
 import { MapPin, User, Clock, ArrowRight } from "lucide-react";
 import type { IncomingRequest } from "../../assets/types";
 
-export default function IncomingRideRequest({ request, onAccept, onDecline }: IncomingRequest) {
+export default function IncomingRideRequest({
+  request,
+  onAccept,
+  onDecline,
+}: IncomingRequest) {
   const [seconds, setSeconds] = useState(20);
-
 
   useEffect(() => {
     if (!request) return;
@@ -94,7 +97,7 @@ export default function IncomingRideRequest({ request, onAccept, onDecline }: In
         </button>
 
         <button
-          onClick={()=>onAccept(request)}
+          onClick={() => onAccept(request)}
           className="py-3 bg-green-600 text-white rounded-xl font-semibold"
         >
           Accept Ride

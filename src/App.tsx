@@ -68,7 +68,7 @@ function App() {
             path="/dashboard/driver"
             element={
               <ProtectedRoute>
-                <DriverDashboard  />
+                <DriverDashboard />
               </ProtectedRoute>
             }
           />

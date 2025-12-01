@@ -21,7 +21,9 @@ export default function EnRouteToPickup({ ridePickup, onArrived }: RideStatus) {
 
           <div className="mt-4">
             <p className="text-gray-500 text-sm">Estimated Arrival</p>
-            <p className="font-bold text-lg">{ridePickup?.estimatedTimeToPickup} mins</p>
+            <p className="font-bold text-lg">
+              {ridePickup?.estimatedTimeToPickup} mins
+            </p>
           </div>
 
           <button

@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import type { ActiveRideType, DriverRideState, IncomingRideRequestType, StatCardProps } from "../../assets/types";
+import type {
+  ActiveRideType,
+  DriverRideState,
+  IncomingRideRequestType,
+  StatCardProps,
+} from "../../assets/types";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import {
   Clock,
@@ -21,28 +26,27 @@ import { activeRideData, newIncomingRequest } from "../../assets/staticData";
 import { driverLocation } from "../../assets/staticData";
 import { useUser } from "../../hooks/user/userContext";
 
-
-
 export default function DriverDashboard() {
   const [online, setOnline] = useState(true);
-  const [currentRide, setCurrentRide] = useState<IncomingRideRequestType | null>(null);
-  const [incomingRequest, setIncomingRequest] = useState<IncomingRideRequestType | null>(null);
+  const [currentRide, setCurrentRide] =
+    useState<IncomingRideRequestType | null>(null);
+  const [incomingRequest, setIncomingRequest] =
+    useState<IncomingRideRequestType | null>(null);
   const [rideState, setRideState] = useState<DriverRideState>("idle");
   const [activeRide, setActiveRide] = useState<ActiveRideType | null>(null);
 
   const [driverPos, setDriverPos] = useState({
-    lat: driverLocation.lat ,
+    lat: driverLocation.lat,
     lng: driverLocation.lng,
   });
 
-  const {user} = useUser()
-  const driver = user?.response
+  const { user } = useUser();
+  const driver = user?.response;
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     libraries: ["places"],
   });
-
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -62,14 +66,14 @@ export default function DriverDashboard() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleAccept = (rideData: ActiveRideType ) => {
+  const handleAccept = (rideData: ActiveRideType) => {
     setCurrentRide(incomingRequest);
     setIncomingRequest(null);
     setActiveRide(rideData);
     //   setRideState("en_route_pickup");
   };
 
-  const reset = ()=>{}
+  const reset = () => {};
 
   const handleDecline = () => {
     setIncomingRequest(null);
@@ -79,7 +83,6 @@ export default function DriverDashboard() {
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-3 bg-gray-100">
-     
       <div className="md:col-span-2 h-[40vh] md:h-screen">
         <GoogleMap
           zoom={15}
@@ -90,7 +93,6 @@ export default function DriverDashboard() {
         </GoogleMap>
       </div>
 
-      
       <motion.div
         initial={{ x: 40, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
@@ -99,7 +101,6 @@ export default function DriverDashboard() {
         <h2 className="text-2xl font-bold mb-2">Driver Dashboard</h2>
         <p className="text-gray-500 mb-4">Welcome back, {driver?.name}</p>
 
-       
         <div className="flex items-center justify-between p-3 bg-gray-100 rounded-xl mb-4">
           <span className="font-semibold">
             Status: {online ? "Online" : "Offline"}
@@ -114,7 +115,6 @@ export default function DriverDashboard() {
           </button>
         </div>
 
-        
         <div className="grid grid-cols-2 gap-4 mb-6">
           <StatCard
             icon={<DollarSign />}
@@ -126,7 +126,6 @@ export default function DriverDashboard() {
           <StatCard icon={<BarChart />} title="Rating" value="4.8 ⭐" />
         </div>
 
-       
         {currentRide ? (
           <div className="p-4 bg-blue-50 rounded-xl mb-6">
             <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
@@ -156,7 +155,6 @@ export default function DriverDashboard() {
           <p className="text-gray-500 mb-6">No rides assigned yet.</p>
         )}
 
-        
         <h3 className="font-bold text-lg mb-3">Recent Trips</h3>
 
         <div className="space-y-3">
@@ -178,7 +176,7 @@ export default function DriverDashboard() {
       </motion.div>
       <IncomingRideRequest
         request={incomingRequest}
-        onAccept={()=>handleAccept(activeRideData)}
+        onAccept={() => handleAccept(activeRideData)}
         onDecline={handleDecline}
       />
       {rideState === "en_route_pickup" && (

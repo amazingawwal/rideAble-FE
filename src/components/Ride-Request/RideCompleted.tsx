@@ -2,7 +2,10 @@ import { motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
 import type { RideStatus } from "../../assets/types";
 
-export default function TripCompleted({ rideInprogress, onFinish }: RideStatus) {
+export default function TripCompleted({
+  rideInprogress,
+  onFinish,
+}: RideStatus) {
   return (
     <motion.div
       initial={{ scale: 0.7, opacity: 0 }}

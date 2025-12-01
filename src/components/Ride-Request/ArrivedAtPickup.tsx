@@ -2,7 +2,10 @@ import { motion } from "framer-motion";
 import { User } from "lucide-react";
 import type { RideStatus } from "../../assets/types";
 
-export default function ArrivedAtPickup({ ridePickup, onStartTrip }: RideStatus) {
+export default function ArrivedAtPickup({
+  ridePickup,
+  onStartTrip,
+}: RideStatus) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
