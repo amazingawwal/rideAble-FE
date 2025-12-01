@@ -19,7 +19,7 @@ interface Journey {
 export default function PassengerDashboard() {
   const [userLocation, setUserLocation] =
     useState<google.maps.LatLngLiteral | null>(null);
-  
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
@@ -29,7 +29,7 @@ export default function PassengerDashboard() {
         });
       },
       () => {
-        setUserLocation(null); 
+        setUserLocation(null);
       },
     );
   }, []);
@@ -106,14 +106,10 @@ export default function PassengerDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center px-4 py-6 ">
-      
-
-
       {/* MAIN LAYOUT */}
       <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
         {/* LEFT SIDE */}
         <div className="flex flex-col gap-6">
-         
           <div className="w-full bg-white rounded-xl shadow p-4 flex flex-col items-center">
             <div className="w-full h-52 rounded-xl overflow-hidden">
               <GoogleMapView center={userLocation || undefined} />
@@ -124,7 +120,6 @@ export default function PassengerDashboard() {
             </Button>
           </div>
 
-          
           <div className="w-full  bg-white rounded-xl shadow p-4">
             <h2 className="flex items-center gap-2 text-gray-700 font-semibold mb-3">
               <MapPin size={18} className="text-sky-600" />
@@ -143,7 +138,6 @@ export default function PassengerDashboard() {
             <Button variant="outline">Manage Locations</Button>
           </div>
 
-          
           <div className="w-full bg-white rounded-xl shadow p-4">
             <h2 className="flex items-center gap-2 text-gray-700 font-semibold mb-3">
               <Heart size={18} className="text-sky-600" />
@@ -172,7 +166,6 @@ export default function PassengerDashboard() {
             Completed Journeys
           </h2>
 
-          
           <div className="space-y-4">
             {paginated.map((j, idx) => (
               <button
@@ -187,7 +180,6 @@ export default function PassengerDashboard() {
             ))}
           </div>
 
-         
           <div className="flex flex-col">
             <div className="flex justify-between gap-2 items-center mt-5">
               <Button
@@ -215,7 +207,6 @@ export default function PassengerDashboard() {
         </div>
       </div>
 
-     
       <AnimatePresence>
         {selectedJourney && (
           <motion.div
@@ -224,7 +215,6 @@ export default function PassengerDashboard() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-           
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}

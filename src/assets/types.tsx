@@ -167,13 +167,13 @@ export interface AccessibilityModalType {
 //     status: "Unavailable" | "Available" | "Suspended"}
 
 export interface UserContextType {
-  user?: DriverDTO | PassengerData | null ;
+  user?: DriverDTO | PassengerData | null;
   setUser?: (data: DriverDTO | PassengerData | null) => void;
   clearUser?: () => void;
 }
 
 export interface ProfileMenuProps {
-  user: DriverDTO | PassengerData | null ;
+  user: DriverDTO | PassengerData | null;
   onLogout: () => void;
   onManageLocations: () => void;
   onManageAccessibility: () => void;

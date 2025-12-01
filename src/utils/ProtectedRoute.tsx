@@ -7,7 +7,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   loading,
 }) => {
-  const {user} = useUser()
+  const { user } = useUser();
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen bg-gray-50">
@@ -17,7 +17,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
   // const token = localStorage.getItem("token");
 
-  if (!user ) {
+  if (!user) {
     return <Navigate to="/" replace />;
   }
   return children;

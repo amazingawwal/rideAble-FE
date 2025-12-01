@@ -1,16 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import type {  UserContextType } from "../assets/types";
+import type { UserContextType } from "../assets/types";
 import { useUser } from "../hooks/user/userContext";
 import ProfileMenu from "./ProfileMenu";
 // {user}: {user: PassengerData | DriverDTO | null;}
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const { user , clearUser }:UserContextType = useUser()
-  const handleHomeButton = ()=>{
-    clearUser?.()
-    navigate("/")
-  }
+  const { user, clearUser }: UserContextType = useUser();
+  const handleHomeButton = () => {
+    clearUser?.();
+    navigate("/");
+  };
   return (
     <header className="flex sticky top-0 z-50 items-center justify-between px-6 py-4 border-b border-gray-200 bg-white shadow-sm">
       <div
@@ -35,25 +35,29 @@ export default function Navbar() {
       </div>
 
       <div className="flex items-center gap-4">
-        {user &&       <div className=" ">
-              <ProfileMenu
-                user={user}
-                onLogout={() => {
-                  clearUser?.();
-                  localStorage.removeItem("token");
-                  navigate('/')
-                }}
-                onManageLocations={() => console.log("Open location modal")}
-                onManageAccessibility={() => console.log("Open accessibility modal")}
-              />
-              </div>}
+        {user && (
+          <div className=" ">
+            <ProfileMenu
+              user={user}
+              onLogout={() => {
+                clearUser?.();
+                localStorage.removeItem("token");
+                navigate("/");
+              }}
+              onManageLocations={() => console.log("Open location modal")}
+              onManageAccessibility={() =>
+                console.log("Open accessibility modal")
+              }
+            />
+          </div>
+        )}
         {user ? (
           <h1 className="text-2xl font-light text-sky-600">
             Welcome, {user.response.name || "Friend"}
           </h1>
         ) : (
           <button
-            onClick={()=>navigate("/driver/login")}
+            onClick={() => navigate("/driver/login")}
             className="px-4 py-2 rounded-b-lg border border-sky-500 text-sky-600 font-medium hover:bg-sky-100 transition"
           >
             Driver

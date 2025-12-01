@@ -22,7 +22,7 @@ function App() {
   // const [user, setUser] = useState<PassengerData | DriverDTO | null>(null);
   const { setRide } = useRide();
   const { ride, clearRide } = useRide();
-  const {clearUser, setUser, user} = useUser();
+  const { clearUser, setUser, user } = useUser();
 
   const handleAuthSuccess = (data: PassengerData | DriverDTO) => {
     localStorage.setItem("token", data.access_token);
@@ -52,11 +52,14 @@ function App() {
             element={<DriverLogin onAuthSuccess={handleAuthSuccess} />}
           />
           <Route path="/auth/signup" element={<Signup />} />
-          <Route path="/dashboard/pax" element={
-            <ProtectedRoute>
-            <PassengerDashboard />
-            </ProtectedRoute>
-            } />
+          <Route
+            path="/dashboard/pax"
+            element={
+              <ProtectedRoute>
+                <PassengerDashboard />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/pax/ride-request"
             element={<RequestRide onDriverFound={handleFindRide} />}
@@ -65,16 +68,16 @@ function App() {
             path="/dashboard/driver"
             element={
               <ProtectedRoute>
-            <DriverDashboard driver={"driver"} />
-            </ProtectedRoute>
+                <DriverDashboard driver={"driver"} />
+              </ProtectedRoute>
             }
           />
           <Route
             path="/pax/ride-request/driver-found"
             element={
               <ProtectedRoute>
-            <DriverFoundScreen ride={ride} clearRide={clearRide} />
-            </ProtectedRoute>
+                <DriverFoundScreen ride={ride} clearRide={clearRide} />
+              </ProtectedRoute>
             }
           />
           <Route

@@ -8,9 +8,9 @@ import App from "./App.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <UserProvider>
-    <RideProvider>
-      <App />
-    </RideProvider>
+      <RideProvider>
+        <App />
+      </RideProvider>
     </UserProvider>
   </StrictMode>,
 );

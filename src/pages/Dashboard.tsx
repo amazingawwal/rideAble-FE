@@ -1,16 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
-import type { UserContextType, } from "../assets/types";
+import type { UserContextType } from "../assets/types";
 import { useUser } from "../hooks/user/userContext";
 
 // const Dashboard: React.FC<UserProps> = ({ user }) => {
 const Dashboard = () => {
-  const { user , clearUser }:UserContextType = useUser()
+  const { user, clearUser }: UserContextType = useUser();
   const navigate = useNavigate();
   console.log("USER-", user);
   const handleLogout = () => {
     localStorage.removeItem("token");
-    clearUser?.()
+    clearUser?.();
     navigate("/");
   };
 

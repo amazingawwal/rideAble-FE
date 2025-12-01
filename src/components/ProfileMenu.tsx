@@ -3,9 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Accessibility, Settings, LogOut, User } from "lucide-react";
 import type { ProfileMenuProps } from "../assets/types";
 
-
-
-
 export default function ProfileMenu({
   user,
   onLogout,
@@ -14,8 +11,6 @@ export default function ProfileMenu({
 }: ProfileMenuProps) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
- 
- 
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -29,12 +24,11 @@ export default function ProfileMenu({
 
   return (
     <div className="relative" ref={menuRef}>
-     
       <button
         onClick={() => setOpen((prev) => !prev)}
         className="w-10 h-10 overflow-hidden  "
       >
-        <User size={28}/>
+        <User size={28} />
         {/* <img
           src={user.avatar || "https://i.pravatar.cc/100"}
           alt="avatar"
@@ -42,7 +36,6 @@ export default function ProfileMenu({
         /> */}
       </button>
 
-      
       <AnimatePresence>
         {open && (
           <motion.div
@@ -52,13 +45,13 @@ export default function ProfileMenu({
             transition={{ duration: 0.2 }}
             className="absolute right-0 mt-2 w-64 bg-white shadow-xl rounded-xl border p-2 z-50"
           >
-           
             <div className="p-3 border-b">
-              <p className="font-semibold text-gray-800">{user?.response.name}</p>
+              <p className="font-semibold text-gray-800">
+                {user?.response.name}
+              </p>
               <p className="text-sm text-gray-500">{user?.response.email}</p>
             </div>
 
-            
             <div className="py-2">
               <button
                 onClick={() => {
@@ -84,7 +77,6 @@ export default function ProfileMenu({
 
               <button
                 onClick={() => {
-                  
                   setOpen(false);
                 }}
                 className="flex items-center gap-3 px-4 py-2 w-full text-left hover:bg-gray-100 rounded-lg"
