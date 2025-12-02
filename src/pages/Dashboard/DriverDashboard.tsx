@@ -20,7 +20,11 @@ import ArrivedAtPickup from "../../components/Ride-Request/ArrivedAtPickup";
 import TripCompleted from "../../components/Ride-Request/RideCompleted";
 import TripInProgress from "../../components/Ride-Request/RideInProgress";
 import IncomingRideRequest from "../../components/Ride-Request/IncomingRideRequest";
-import { activeRideData, newIncomingRequest, recentTrips } from "../../assets/staticData";
+import {
+  activeRideData,
+  newIncomingRequest,
+  recentTrips,
+} from "../../assets/staticData";
 import { driverLocation } from "../../assets/staticData";
 import { useUser } from "../../hooks/user/userContext";
 import StatCard from "../../components/StatCard";
@@ -196,7 +200,8 @@ export default function DriverDashboard() {
               <div>
                 <p className="font-medium">Trip {trip.tripNumber}</p>
                 <p className="text-gray-500 text-sm flex items-center gap-1">
-                  <MapPin size={14} /> {trip.travelDistance} km • {trip.travelTime} min
+                  <MapPin size={14} /> {trip.travelDistance} km •{" "}
+                  {trip.travelTime} min
                 </p>
               </div>
               <span className="font-semibold">₦{trip.fare}</span>
@@ -212,5 +217,3 @@ export default function DriverDashboard() {
     </div>
   );
 }
-
-
