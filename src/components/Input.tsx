@@ -39,7 +39,7 @@ export default function InputField({
         onChange={onChange}
         placeholder={placeholder}
         required={required}
-        className={`w-full border rounded-lg px-3 py-2 mt-1 focus:ring-sky-500 focus:border-sky-500 ${
+        className={`w-full border rounded-xl px-3 py-2 mt-1 focus:ring-sky-500 focus:border-sky-500 ${
           error ? "border-red-500" : "border"
         }`}
       />

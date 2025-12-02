@@ -4,13 +4,14 @@ import type {
   Pax,
   DriverData,
   VehicleData,
-  DriverAuthType,
+  DriverLogin,
+  RideRequest,
 } from "../../assets/types";
 
-export async function apiRequest(
+export async function apiRideRequest(
   endpoint: string,
   method = "GET",
-  data: Pax | DriverData | VehicleData | DriverAuthType,
+  data: Pax | DriverData | VehicleData | DriverLogin | RideRequest,
 ) {
   const token = localStorage.getItem("authToken");
 
