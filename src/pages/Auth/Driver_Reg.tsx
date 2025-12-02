@@ -42,17 +42,6 @@ export default function DriverVehicleRegistration() {
     setDriverData({ ...driverData, [name]: value });
   };
 
-  //   const handleVehicleChange = (
-  //     index: number,
-  //     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  //   ) => {
-  //     const { name, value } = e.target;
-  //     const newVehicles = [...vehicles];
-  //     newVehicles[index][name as keyof VehicleData] = value as never;
-  //     const newV = [newVehicles[index].driverEmail='ffff',  ...newVehicles]
-  //     setVehicles(newV);
-  //   };
-
   const handleVehicleChange = (
     index: number,
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,

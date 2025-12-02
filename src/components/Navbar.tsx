@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import type { UserContextType } from "../assets/types";
 import { useUser } from "../hooks/user/userContext";
 import ProfileMenu from "./ProfileMenu";
-// {user}: {user: PassengerData | DriverDTO | null;}
+
 
 export default function Navbar() {
   const navigate = useNavigate();

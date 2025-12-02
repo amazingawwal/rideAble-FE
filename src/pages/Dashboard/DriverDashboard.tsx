@@ -73,7 +73,6 @@ export default function DriverDashboard() {
     setCurrentRide(incomingRequest);
     setIncomingRequest(null);
     setActiveRide(rideData);
-    //   setRideState("en_route_pickup");
   };
 
   const reset = () => {

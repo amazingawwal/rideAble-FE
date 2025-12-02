@@ -29,11 +29,6 @@ export default function ProfileMenu({
         className="w-10 h-10 overflow-hidden  "
       >
         <User size={28} />
-        {/* <img
-          src={user.avatar || "https://i.pravatar.cc/100"}
-          alt="avatar"
-          className="w-full h-full object-cover"
-        /> */}
       </button>
 
       <AnimatePresence>

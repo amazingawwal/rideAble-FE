@@ -48,7 +48,7 @@ export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
       toast.success("Driver login successful!");
 
       onAuthSuccess?.(response);
-      // console.log(response)
+      
       navigate("/dashboard/driver");
     } catch (err) {
       if (err instanceof Error) {
@@ -62,10 +62,6 @@ export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
   };
 
   return (
-    // <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
-
-    // </div>
-
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
       <motion.div
         initial={{ opacity: 0, x: 50 }}
@@ -79,12 +75,12 @@ export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md border border-gray-200"
         >
-          {/* Logo & Heading */}
+          
           <div className="flex flex-col items-center mb-6">
             <p className="text-gray-800  text-lg">Driver Login Portal</p>
           </div>
 
-          {/* Form */}
+          
           <form onSubmit={handleSubmit} className="space-y-4">
             <InputField
               label="Email Address"
@@ -115,7 +111,7 @@ export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
             </Button>
           </form>
 
-          {/* Footer */}
+          
           <div className="text-center mt-6 text-sm text-gray-500">
             <Link to="" className="text-sky-500 hover:underline">
               Forgot phone or email?

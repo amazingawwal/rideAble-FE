@@ -19,7 +19,7 @@ import { useRide } from "./hooks/UseRide";
 import { useUser } from "./hooks/user/userContext";
 
 function App() {
-  // const [user, setUser] = useState<PassengerData | DriverDTO | null>(null);
+  
   const { setRide } = useRide();
   const { ride, clearRide } = useRide();
   const { setUser } = useUser();

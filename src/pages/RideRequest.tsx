@@ -1,4 +1,3 @@
-// import { apiRequest } from "../utils/api/api";
 import React, { useState, useEffect } from "react";
 import {
   GoogleMap,
@@ -16,7 +15,7 @@ import type {
   RideResponse,
 } from "../assets/types";
 import toast from "react-hot-toast";
-// import { useRide } from "../hooks/DriverContext";
+
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
 
@@ -46,7 +45,6 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
 
   const [selected, setSelected] = useState<string[]>([]);
 
-  //   const {setRide} = useRide()
 
   const toggleItem = (item: string) => {
     setSelected((prev) =>
@@ -141,7 +139,7 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
         return;
       }
       await generateRoute();
-      // toast.success("Route found");
+      
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err instanceof Error ? err.message : String(err));
@@ -185,7 +183,6 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
       onDriverFound?.(data);
       navigate("/pax/ride-request/driver-found");
       toast.success("Ride found");
-      // setRide(data)
       console.log(data);
       return data;
     } catch (err) {
@@ -213,11 +210,11 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
       </div>
 
       <div className="w-full max-w-2xl bg-white rounded-2xl shadow p-8">
-        {/* <BackButton fallback="/dashboard/pax"/> */}
+        
         <h1 className="text-3xl font-bold text-center">Where to?</h1>
 
         <form onSubmit={onSubmit} className="space-y-5 mt-8">
-          {/* Pickup Input */}
+          
           <Autocomplete
             onLoad={setPickupAC}
             onPlaceChanged={() => {
@@ -232,7 +229,7 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
             />
           </Autocomplete>
 
-          {/* Destination Input */}
+          
           <Autocomplete
             onLoad={setDestinationAC}
             onPlaceChanged={() => {
@@ -247,7 +244,7 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
             />
           </Autocomplete>
 
-          {/* Map */}
+         
           <div className="rounded-xl overflow-hidden">
             <GoogleMap
               mapContainerStyle={containerStyle}
@@ -299,7 +296,7 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
             </div>
           </div>
 
-          {/* ⭐ Distance + Duration Summary Card */}
+          
           {distance && duration && (
             <div className="p-4 bg-gray-100 rounded-xl shadow-sm">
               <h3 className="font-semibold mb-2">Trip Summary</h3>
@@ -353,37 +350,3 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
     </div>
   );
 }
-
-//   <div>
-//     <label className="block font-medium mb-2">
-//       Accessibility Features
-//     </label>
-//     <div className="grid grid-cols-2 gap-2 text-gray-700">
-//       {[
-//         "Ramps_and_lifts",
-//         "Wide_door_openings",
-//         "Lowered_floors",
-//         "Swivel_seats",
-//         "Wheelchair_restraints",
-//         "Spacious_interior",
-//         "Customizable_seating",
-//         "Others",
-//       ].map((feature) => (
-//         <label
-//           key={feature}
-//           className="flex items-center gap-2"
-//         >
-//           <input
-//             type="checkbox"
-//             checked={vehicle.accessibilityFeature.includes(
-//               feature,
-//             )}
-//             onChange={() =>
-//               handleFeatureToggle(index, feature)
-//             }
-//           />
-//           {feature}
-//         </label>
-//       ))}
-//     </div>
-//   </div>
