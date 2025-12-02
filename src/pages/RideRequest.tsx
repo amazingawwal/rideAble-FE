@@ -18,6 +18,7 @@ import type {
 import toast from "react-hot-toast";
 // import { useRide } from "../hooks/DriverContext";
 import { useNavigate } from "react-router-dom";
+import BackButton from "../components/BackButton";
 
 const containerStyle = {
   width: "100%",
@@ -207,7 +208,12 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
 
   return (
     <div className="w-full min-h-screen bg-gray-50 flex justify-center py-10">
+      <div className="absolute top-20 left-1 z-50">
+  <BackButton fallback="/dashboard/pax" />
+</div>
+
       <div className="w-full max-w-2xl bg-white rounded-2xl shadow p-8">
+        {/* <BackButton fallback="/dashboard/pax"/> */}
         <h1 className="text-3xl font-bold text-center">Where to?</h1>
 
         <form onSubmit={onSubmit} className="space-y-5 mt-8">
