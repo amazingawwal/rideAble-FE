@@ -32,7 +32,6 @@ export default function DriverVehicleRegistration() {
       vehicleModel: "",
       VehicleYear: "",
       accessibilityFeature: [],
-      //   otherFeatures: "",
     },
   ]);
 
@@ -42,17 +41,6 @@ export default function DriverVehicleRegistration() {
     const { name, value } = e.target;
     setDriverData({ ...driverData, [name]: value });
   };
-
-  //   const handleVehicleChange = (
-  //     index: number,
-  //     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  //   ) => {
-  //     const { name, value } = e.target;
-  //     const newVehicles = [...vehicles];
-  //     newVehicles[index][name as keyof VehicleData] = value as never;
-  //     const newV = [newVehicles[index].driverEmail='ffff',  ...newVehicles]
-  //     setVehicles(newV);
-  //   };
 
   const handleVehicleChange = (
     index: number,
@@ -454,14 +442,6 @@ export default function DriverVehicleRegistration() {
                               ))}
                             </div>
                           </div>
-
-                          {/* <InputField
-                            label="Specify other features"
-                            name="otherFeatures"
-                            value={vehicle.otherFeatures}
-                            onChange={(e) => handleVehicleChange(index, e)}
-                          /> */}
-
                           <div>
                             <label className="block font-medium text-gray-700 mb-2">
                               Upload Vehicle Images

@@ -7,18 +7,22 @@ import toast from "react-hot-toast";
 import { apiRequest } from "../../utils/api/api";
 import { AccessVehicle } from "../../components/React_Icons/Accessible";
 import { Link } from "react-router-dom";
-import type { DriverLogin, DriverDTO } from "../../assets/types";
-
-interface DriverLoginProps {
-  onAuthSuccess?: (data: DriverDTO) => void;
-}
+import type {
+  DriverAuthType,
+  DriverDTO,
+  DriverLogin,
+  DriverLoginProps,
+} from "../../assets/types";
+import { useNavigate } from "react-router-dom";
 
 export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
-  const [formData, setFormData] = useState<DriverLogin>({
+  const [formData, setFormData] = useState<DriverAuthType>({
     email: "",
     phone: "",
   });
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,7 +40,7 @@ export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
     }
 
     try {
-      const response = await apiRequest(
+      const response: DriverDTO = await apiRequest(
         "/registration/sign-in",
         "POST",
         formData,
@@ -44,6 +48,8 @@ export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
       toast.success("Driver login successful!");
 
       onAuthSuccess?.(response);
+
+      navigate("/dashboard/driver");
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message || "Login failed");
@@ -56,10 +62,6 @@ export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
   };
 
   return (
-    // <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
-
-    // </div>
-
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
       <motion.div
         initial={{ opacity: 0, x: 50 }}
@@ -73,12 +75,10 @@ export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md border border-gray-200"
         >
-          {/* Logo & Heading */}
           <div className="flex flex-col items-center mb-6">
             <p className="text-gray-800  text-lg">Driver Login Portal</p>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <InputField
               label="Email Address"
@@ -109,7 +109,6 @@ export default function DriverLogin({ onAuthSuccess }: DriverLoginProps) {
             </Button>
           </form>
 
-          {/* Footer */}
           <div className="text-center mt-6 text-sm text-gray-500">
             <Link to="" className="text-sky-500 hover:underline">
               Forgot phone or email?
