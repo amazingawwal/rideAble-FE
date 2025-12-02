@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Navigation, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import type { RideStatus } from "../../assets/types";
 
 export default function EnRouteToPickup({ ridePickup, onArrived }: RideStatus) {
@@ -34,7 +34,6 @@ export default function EnRouteToPickup({ ridePickup, onArrived }: RideStatus) {
           </button>
         </div>
       </div>
-      <Navigation />
     </motion.div>
   );
 }
