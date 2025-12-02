@@ -86,7 +86,7 @@ export default function DriverDashboard() {
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-3 bg-gray-100">
-      <div className="md:col-span-2 h-[40vh] md:h-screen">
+      <div className="md:col-span-2 h-[40vh] md:h-screen md:sticky top-0  ">
         <GoogleMap
           zoom={15}
           center={driverPos}
