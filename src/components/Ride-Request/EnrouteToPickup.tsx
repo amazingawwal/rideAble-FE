@@ -7,12 +7,12 @@ export default function EnRouteToPickup({ ridePickup, onArrived }: RideStatus) {
     <motion.div
       initial={{ x: 40, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      className=" bg-white p-6 shadow-xl rounded-l-2xl "
+      className=" bg-white p-4 shadow-xl rounded-l-2xl "
     >
-      <div className="p-4">
+      <div className="">
         <h2 className="font-bold text-xl mb-2">Heading to Pickup</h2>
 
-        <div className="bg-white p-4 rounded-2xl shadow">
+        <div className="bg-white p-2 rounded-2xl shadow">
           <p className="text-gray-500 text-sm">Pickup Location</p>
           <p className="font-bold flex items-center gap-2">
             <MapPin className="text-red-500" size={18} />
