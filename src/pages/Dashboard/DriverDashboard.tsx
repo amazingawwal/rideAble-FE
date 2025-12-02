@@ -161,30 +161,30 @@ export default function DriverDashboard() {
           <p className="text-gray-500 mb-6">No rides assigned yet.</p>
         )}
 
-              {rideState === "en_route_pickup" && (
-        <EnRouteToPickup
-          ridePickup={currentRide}
-          onArrived={() => setRideState("arrived")}
-        />
-      )}
+        {rideState === "en_route_pickup" && (
+          <EnRouteToPickup
+            ridePickup={currentRide}
+            onArrived={() => setRideState("arrived")}
+          />
+        )}
 
-           {rideState === "arrived" && (
-        <ArrivedAtPickup
-          ridePickup={currentRide}
-          onStartTrip={() => setRideState("in_trip")}
-        />
-      )}
+        {rideState === "arrived" && (
+          <ArrivedAtPickup
+            ridePickup={currentRide}
+            onStartTrip={() => setRideState("in_trip")}
+          />
+        )}
 
-            {rideState === "in_trip" && (
-        <TripInProgress
-          rideInprogress={activeRide}
-          onEndTrip={() => setRideState("completed")}
-        />
-      )}
+        {rideState === "in_trip" && (
+          <TripInProgress
+            rideInprogress={activeRide}
+            onEndTrip={() => setRideState("completed")}
+          />
+        )}
 
-            {rideState === "completed" && (
-        <TripCompleted rideInprogress={activeRide} onFinish={() => reset()} />
-      )}
+        {rideState === "completed" && (
+          <TripCompleted rideInprogress={activeRide} onFinish={() => reset()} />
+        )}
 
         <h3 className="font-bold text-lg mb-3">Recent Trips</h3>
 
@@ -210,13 +210,6 @@ export default function DriverDashboard() {
         onAccept={() => handleAccept(activeRideData)}
         onDecline={handleDecline}
       />
-
-
- 
-
-
-
-
     </div>
   );
 }
