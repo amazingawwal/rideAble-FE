@@ -5,7 +5,6 @@ import Button from "../../components/Button";
 import GoogleMapView from "../../utils/services/GoogleMapView";
 import { useNavigate } from "react-router-dom";
 
-
 interface Journey {
   from: string;
   to: string;

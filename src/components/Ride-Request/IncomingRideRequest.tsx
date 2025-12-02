@@ -42,7 +42,6 @@ export default function IncomingRideRequest({
     >
       <h2 className="text-xl font-bold mb-3">New Ride Request</h2>
 
-     
       <div className="flex items-start gap-3 mb-3">
         <MapPin className="text-green-600" />
         <div>
@@ -51,7 +50,6 @@ export default function IncomingRideRequest({
         </div>
       </div>
 
-      
       <div className="flex items-start gap-3 mb-3">
         <ArrowRight className="text-blue-600" />
         <div>
@@ -60,7 +58,6 @@ export default function IncomingRideRequest({
         </div>
       </div>
 
-      
       <div className="flex items-start gap-3 mb-4">
         <User className="text-purple-600" />
         <div>
@@ -69,7 +66,6 @@ export default function IncomingRideRequest({
         </div>
       </div>
 
-      
       <div className="flex justify-between items-center bg-gray-100 p-3 rounded-xl mb-5">
         <div>
           <p className="text-xs text-gray-500">Distance to Pickup</p>
@@ -87,7 +83,6 @@ export default function IncomingRideRequest({
         </div>
       </div>
 
-      
       <div className="grid grid-cols-2 gap-3">
         <button
           onClick={onDecline}

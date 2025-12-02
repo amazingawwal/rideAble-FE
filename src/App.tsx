@@ -19,7 +19,6 @@ import { useRide } from "./hooks/UseRide";
 import { useUser } from "./hooks/user/userContext";
 
 function App() {
-  
   const { setRide } = useRide();
   const { ride, clearRide } = useRide();
   const { setUser } = useUser();

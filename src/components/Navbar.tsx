@@ -3,7 +3,6 @@ import type { UserContextType } from "../assets/types";
 import { useUser } from "../hooks/user/userContext";
 import ProfileMenu from "./ProfileMenu";
 
-
 export default function Navbar() {
   const navigate = useNavigate();
   const { user, clearUser }: UserContextType = useUser();

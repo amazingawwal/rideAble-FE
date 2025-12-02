@@ -45,7 +45,6 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
 
   const [selected, setSelected] = useState<string[]>([]);
 
-
   const toggleItem = (item: string) => {
     setSelected((prev) =>
       prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item],
@@ -139,7 +138,6 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
         return;
       }
       await generateRoute();
-      
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err instanceof Error ? err.message : String(err));
@@ -210,11 +208,9 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
       </div>
 
       <div className="w-full max-w-2xl bg-white rounded-2xl shadow p-8">
-        
         <h1 className="text-3xl font-bold text-center">Where to?</h1>
 
         <form onSubmit={onSubmit} className="space-y-5 mt-8">
-          
           <Autocomplete
             onLoad={setPickupAC}
             onPlaceChanged={() => {
@@ -229,7 +225,6 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
             />
           </Autocomplete>
 
-          
           <Autocomplete
             onLoad={setDestinationAC}
             onPlaceChanged={() => {
@@ -244,7 +239,6 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
             />
           </Autocomplete>
 
-         
           <div className="rounded-xl overflow-hidden">
             <GoogleMap
               mapContainerStyle={containerStyle}
@@ -296,7 +290,6 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
             </div>
           </div>
 
-          
           {distance && duration && (
             <div className="p-4 bg-gray-100 rounded-xl shadow-sm">
               <h3 className="font-semibold mb-2">Trip Summary</h3>
