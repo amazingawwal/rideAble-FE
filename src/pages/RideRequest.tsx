@@ -209,8 +209,8 @@ export default function RequestRide({ onDriverFound }: RideRequestProps) {
   return (
     <div className="w-full min-h-screen bg-gray-50 flex justify-center py-10">
       <div className="absolute top-20 left-1 z-50">
-  <BackButton fallback="/dashboard/pax" />
-</div>
+        <BackButton fallback="/dashboard/pax" />
+      </div>
 
       <div className="w-full max-w-2xl bg-white rounded-2xl shadow p-8">
         {/* <BackButton fallback="/dashboard/pax"/> */}

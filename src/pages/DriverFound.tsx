@@ -40,13 +40,11 @@ export default function DriverFoundScreen({
   const [routePath, setRoutePath] = useState<google.maps.LatLngLiteral[]>([]);
   const [activeImage, setActiveImage] = useState(0);
 
-  
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     libraries: ["places"],
   });
 
-  
   useEffect(() => {
     const interval = setInterval(() => {
       setDriverPosition((pos) => ({
@@ -68,7 +66,6 @@ export default function DriverFoundScreen({
     [],
   );
 
-  
   const fetchRoute = useCallback(() => {
     if (!isLoaded) return;
 
@@ -115,17 +112,14 @@ export default function DriverFoundScreen({
 
   return (
     <div className="min-h-screen h-screen w-full grid grid-cols-1 md:grid-cols-2 bg-gray-50">
-      
       <div className="h-[45vh] md:h-screen  w-full">
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={driverPosition}
           zoom={14}
         >
-          
           <Marker position={driverPosition} />
 
-          
           <Marker
             position={passengerLocation}
             icon={{
@@ -133,12 +127,10 @@ export default function DriverFoundScreen({
             }}
           />
 
-          
           <Polyline path={routePath} options={polylineOptions} />
         </GoogleMap>
       </div>
 
-    
       <motion.div
         initial={{ opacity: 0, x: 30 }}
         animate={{ opacity: 1, x: 0 }}
@@ -176,7 +168,6 @@ export default function DriverFoundScreen({
           </div>
         </div>
 
-      
         <div className="bg-gray-100 p-4 rounded-xl shadow-sm mb-5">
           <div className="flex justify-between items-center">
             <p className="font-semibold text-gray-800">Vehicle</p>
@@ -196,7 +187,6 @@ export default function DriverFoundScreen({
           </p>
         </div>
 
-       
         {Array.isArray(driver.images) && driver.images.length > 0 && (
           <div className="relative mb-6">
             <img
@@ -215,7 +205,6 @@ export default function DriverFoundScreen({
           </div>
         )}
 
-      
         <div className="grid grid-cols-3 gap-3 mt-auto">
           <button className="bg-sky-600 text-white rounded-xl py-3 flex flex-col items-center shadow">
             <Phone size={20} />
@@ -241,7 +230,6 @@ export default function DriverFoundScreen({
         </button>
       </motion.div>
 
-    
       <AccessibilityModal
         open={openAccessibility}
         onClose={() => setOpenAccessibility(false)}

@@ -79,13 +79,13 @@ export default function DriverDashboard() {
   const reset = () => {
     setRideState("idle");
     setCurrentRide(null);
-    if(activeRide){
+    if (activeRide) {
       recentTrips.push({
-      tripNumber : recentTrips.length + 1,
-      travelDistance : activeRide.estimatedDistance,
-      travelTime : activeRide.estimatedTime,
-      fare : activeRide.estimatedFare
-    })
+        tripNumber: recentTrips.length + 1,
+        travelDistance: activeRide.estimatedDistance,
+        travelTime: activeRide.estimatedTime,
+        fare: activeRide.estimatedFare,
+      });
     }
   };
 
