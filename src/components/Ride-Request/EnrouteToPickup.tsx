@@ -34,7 +34,6 @@ export default function EnRouteToPickup({ ridePickup, onArrived }: RideStatus) {
           </button>
         </div>
       </div>
-     
     </motion.div>
   );
 }
