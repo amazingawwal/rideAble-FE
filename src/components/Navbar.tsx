@@ -52,7 +52,7 @@ export default function Navbar() {
           </div>
         )}
         {user ? (
-          <h1 className="text-2xl font-light text-sky-600">
+          <h1 className="md:text-2xl hidden md:block font-light text-sky-600">
             Welcome, {user.response.name || "Friend"}
           </h1>
         ) : (
