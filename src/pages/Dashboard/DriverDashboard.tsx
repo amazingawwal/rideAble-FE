@@ -4,7 +4,6 @@ import type {
   ActiveRideType,
   DriverRideState,
   IncomingRideRequestType,
-  StatCardProps,
 } from "../../assets/types";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import {
@@ -13,7 +12,6 @@ import {
   Car,
   DollarSign,
   MapPin,
-  //   Phone,
   User,
   BarChart,
 } from "lucide-react";
@@ -22,9 +20,10 @@ import ArrivedAtPickup from "../../components/Ride-Request/ArrivedAtPickup";
 import TripCompleted from "../../components/Ride-Request/RideCompleted";
 import TripInProgress from "../../components/Ride-Request/RideInProgress";
 import IncomingRideRequest from "../../components/Ride-Request/IncomingRideRequest";
-import { activeRideData, newIncomingRequest } from "../../assets/staticData";
+import { activeRideData, newIncomingRequest, recentTrips } from "../../assets/staticData";
 import { driverLocation } from "../../assets/staticData";
 import { useUser } from "../../hooks/user/userContext";
+import StatCard from "../../components/StatCard";
 
 export default function DriverDashboard() {
   const [online, setOnline] = useState(true);
@@ -189,18 +188,18 @@ export default function DriverDashboard() {
         <h3 className="font-bold text-lg mb-3">Recent Trips</h3>
 
         <div className="space-y-3">
-          {[1, 2, 3].map((trip) => (
+          {recentTrips.map((trip) => (
             <div
-              key={trip}
+              key={trip.tripNumber}
               className="p-3 bg-gray-50 rounded-xl border flex justify-between"
             >
               <div>
-                <p className="font-medium">Trip #{trip}</p>
+                <p className="font-medium">Trip {trip.tripNumber}</p>
                 <p className="text-gray-500 text-sm flex items-center gap-1">
-                  <MapPin size={14} /> 3.4 km • 12 min
+                  <MapPin size={14} /> {trip.travelDistance} km • {trip.travelTime} min
                 </p>
               </div>
-              <span className="font-semibold">₦1,900</span>
+              <span className="font-semibold">₦{trip.fare}</span>
             </div>
           ))}
         </div>
@@ -214,14 +213,4 @@ export default function DriverDashboard() {
   );
 }
 
-function StatCard({ icon, title, value }: StatCardProps) {
-  return (
-    <div className="p-4 bg-gray-50 rounded-xl shadow-sm flex items-center gap-3">
-      <div className="p-2 bg-sky-100 text-sky-700 rounded-lg">{icon}</div>
-      <div>
-        <p className="text-gray-500 text-sm">{title}</p>
-        <p className="text-lg font-bold">{value}</p>
-      </div>
-    </div>
-  );
-}
+
