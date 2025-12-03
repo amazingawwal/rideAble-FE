@@ -34,7 +34,7 @@ export default function DriverVehicleRegistration() {
       accessibilityFeature: [],
     },
   ]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [openIndexes, setOpenIndexes] = useState<number[]>([0]);
 
   const handleDriverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -170,7 +170,7 @@ export default function DriverVehicleRegistration() {
       console.log(vehicles[0]);
 
       toast.success("Registration completed successfully!");
-      navigate("/dashboard/driver")
+      navigate("/dashboard/driver");
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message || "Registration failed");
