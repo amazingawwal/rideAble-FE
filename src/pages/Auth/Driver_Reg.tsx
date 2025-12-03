@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Button from "../../components/Button";
 import InputField from "../../components/Input";
@@ -34,7 +34,7 @@ export default function DriverVehicleRegistration() {
       accessibilityFeature: [],
     },
   ]);
-
+  const navigate = useNavigate()
   const [openIndexes, setOpenIndexes] = useState<number[]>([0]);
 
   const handleDriverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -167,9 +167,10 @@ export default function DriverVehicleRegistration() {
     try {
       await apiRequest("/registration/vehicle", "POST", vehicles[0]);
 
-      console.log(vehicles);
+      console.log(vehicles[0]);
 
       toast.success("Registration completed successfully!");
+      navigate("/dashboard/driver")
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message || "Registration failed");
