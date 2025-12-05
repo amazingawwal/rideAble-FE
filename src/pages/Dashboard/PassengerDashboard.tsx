@@ -7,8 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { allJourneys } from "../../assets/staticData";
 import type { Journey } from "../../assets/types";
 
-
-
 export default function PassengerDashboard() {
   const [userLocation, setUserLocation] =
     useState<google.maps.LatLngLiteral | null>(null);
@@ -32,8 +30,6 @@ export default function PassengerDashboard() {
   function handleRideRequest() {
     navigate("/pax/ride-request");
   }
-
-
 
   const ITEMS_PER_PAGE = 5;
   const [page, setPage] = useState(1);
