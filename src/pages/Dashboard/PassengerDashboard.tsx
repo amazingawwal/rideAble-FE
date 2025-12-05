@@ -4,15 +4,10 @@ import { MapPin, Heart, Clock } from "lucide-react";
 import Button from "../../components/Button";
 import GoogleMapView from "../../utils/services/GoogleMapView";
 import { useNavigate } from "react-router-dom";
+import { allJourneys } from "../../assets/staticData";
+import type { Journey } from "../../assets/types";
 
-interface Journey {
-  from: string;
-  to: string;
-  date: string;
-  distance: string;
-  duration: string;
-  fare: string;
-}
+
 
 export default function PassengerDashboard() {
   const [userLocation, setUserLocation] =
@@ -38,56 +33,7 @@ export default function PassengerDashboard() {
     navigate("/pax/ride-request");
   }
 
-  const allJourneys: Journey[] = [
-    {
-      from: "123 Main St.",
-      to: "Phoenix Medical Center",
-      date: "Jan 12, 2025",
-      distance: "4.2 miles",
-      duration: "13 mins",
-      fare: "₦1200.00",
-    },
-    {
-      from: "456 Oak Ave.",
-      to: "Greenwood Mall",
-      date: "Jan 9, 2025",
-      distance: "2.8 miles",
-      duration: "8 mins",
-      fare: "₦900.00",
-    },
-    {
-      from: "Home",
-      to: "St. Mary's Hospital",
-      date: "Jan 3, 2025",
-      distance: "6.5 miles",
-      duration: "17 mins",
-      fare: "₦1500.00",
-    },
-    {
-      from: "12 Clover St.",
-      to: "Airport Terminal 1",
-      date: "Dec 28, 2024",
-      distance: "10.8 miles",
-      duration: "25 mins",
-      fare: "₦2800.00",
-    },
-    {
-      from: "333 Pine Ln.",
-      to: "Northside Clinic",
-      date: "Dec 21, 2024",
-      distance: "3.3 miles",
-      duration: "10 mins",
-      fare: "₦1100.20",
-    },
-    {
-      from: "80 Monroe St.",
-      to: "City Library",
-      date: "Dec 16, 2024",
-      distance: "1.5 miles",
-      duration: "6 mins",
-      fare: "₦600.00",
-    },
-  ];
+
 
   const ITEMS_PER_PAGE = 5;
   const [page, setPage] = useState(1);

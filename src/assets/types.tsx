@@ -230,3 +230,12 @@ export type DriverLocation = {
 export interface DriverLocationType {
   driverLocation: DriverLocation;
 }
+
+export interface Journey {
+  from: string;
+  to: string;
+  date: string;
+  distance: string;
+  duration: string;
+  fare: string;
+}
